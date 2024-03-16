@@ -140,4 +140,6 @@ mix.version();
  | Refer official documentation for more information: https://laravel.com/docs/10.x/mix#browsersync-reloading
  */
 
+mix.js('resources/js/navbar.js', 'public/js');
+
 mix.browserSync('http://127.0.0.1:8000/');

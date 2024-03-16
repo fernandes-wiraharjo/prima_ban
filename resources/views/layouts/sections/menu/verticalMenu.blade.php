@@ -3,9 +3,9 @@
   <!-- ! Hide app brand if navbar-full -->
   <div class="app-brand demo">
     <a href="{{url('/')}}" class="app-brand-link">
-      <span class="app-brand-logo demo">
+      <!-- <span class="app-brand-logo demo">
         @include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])
-      </span>
+      </span> -->
       <span class="app-brand-text demo menu-text fw-bold ms-2">{{config('variables.templateName')}}</span>
     </a>
 
