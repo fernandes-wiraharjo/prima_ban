@@ -1,10 +1,29 @@
-@extends('layouts/blankLayout')
+@php
+$customizerHidden = 'customizer-hide';
+@endphp
 
-@section('title', 'Login Page')
+@extends('layouts/layoutMaster')
+
+@section('title', 'Halaman Login')
+
+@section('vendor-style')
+<!-- Vendor -->
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/@form-validation/umd/styles/index.min.css')}}" />
+@endsection
 
 @section('page-style')
 <!-- Page -->
 <link rel="stylesheet" href="{{asset('assets/vendor/css/pages/page-auth.css')}}">
+@endsection
+
+@section('vendor-script')
+<script src="{{asset('assets/vendor/libs/@form-validation/umd/bundle/popular.min.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/@form-validation/umd/plugin-bootstrap5/index.min.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js')}}"></script>
+@endsection
+
+@section('page-script')
+<script src="{{asset('assets/js/pages-auth.js')}}"></script>
 @endsection
 
 @section('content')
@@ -35,7 +54,7 @@
           @csrf
             <div class="mb-3">
               <label for="email" class="form-label">Username</label>
-              <input type="text" class="form-control" id="email" name="username" placeholder="Enter your username" autofocus>
+              <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" autofocus>
             </div>
             <div class="mb-3 form-password-toggle">
               <div class="d-flex justify-content-between">
@@ -67,12 +86,29 @@
             <a href="{{url('auth/register-basic')}}">
               <span>Create an account</span>
             </a>
-          </p> -->
+          </p>
+
+          <div class="divider my-4">
+            <div class="divider-text">or</div>
+          </div>
+
+          <div class="d-flex justify-content-center">
+            <a href="javascript:;" class="btn btn-icon btn-label-facebook me-3">
+              <i class="tf-icons bx bxl-facebook"></i>
+            </a>
+
+            <a href="javascript:;" class="btn btn-icon btn-label-google-plus me-3">
+              <i class="tf-icons bx bxl-google-plus"></i>
+            </a>
+
+            <a href="javascript:;" class="btn btn-icon btn-label-twitter">
+              <i class="tf-icons bx bxl-twitter"></i>
+            </a>
+          </div> -->
         </div>
       </div>
+      <!-- /Register -->
     </div>
-    <!-- /Register -->
   </div>
-</div>
 </div>
 @endsection

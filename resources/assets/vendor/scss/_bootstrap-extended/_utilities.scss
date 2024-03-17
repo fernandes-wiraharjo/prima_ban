@@ -840,6 +840,19 @@ $utilities: map-merge(
   }
 }
 
+@include rtl-only {
+  .row-bordered > .col::after,
+  .row-bordered > [class^='col-']::after,
+  .row-bordered > [class*=' col-']::after,
+  .row-bordered > [class^='col ']::after,
+  .row-bordered > [class*=' col ']::after,
+  .row-bordered > [class$=' col']::after,
+  .row-bordered > [class='col']::after {
+    left: auto;
+    right: -1px;
+  }
+}
+
 // Color
 // *******************************************************************************
 
@@ -851,10 +864,23 @@ $utilities: map-merge(
     @include border-light-variant('.border-light-#{$color}', $value);
   }
 }
+// BG hover: label to solid variant
+@each $color, $value in $theme-colors {
+  @if $color != primary {
+    @include bg-label-hover-variant('.bg-label-hover-#{$color}', $value);
+  }
+}
+// Bg- Gradient variant
+@each $color, $value in $theme-colors {
+  @if $color != primary {
+    @include bg-gradient-variant('.bg-gradient-#{$color}', $value);
+  }
+}
 
 // ! FIX: .bg-dark & .bg-label-dark color in dark mode
 @if $dark-style {
   @include border-label-variant('.border-label-dark', $light);
+  @include bg-label-hover-variant('.bg-label-hover-dark', $light);
 }
 
 // Anchor hover/focus bg colors

@@ -1,4 +1,4 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Typography - UI elements')
 

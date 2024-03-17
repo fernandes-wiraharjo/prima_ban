@@ -38,8 +38,12 @@ label.btn {
 
 @each $color, $value in $theme-colors {
   @if $color != primary {
-    @include template-button-variant('.btn-#{$color}', $value);
-    @include template-button-outline-variant('.btn-outline-#{$color}', $value);
+    @include template-button-variant('.btn-#{$color}', if($color== 'dark' and $dark-style, $dark, $value));
+    @include template-button-label-variant('.btn-label-#{$color}', if($color== 'dark' and $dark-style, $dark, $value));
+    @include template-button-outline-variant(
+      '.btn-outline-#{$color}',
+      if($color== 'dark' and $dark-style, $dark, $value)
+    );
   }
 }
 
@@ -109,6 +113,9 @@ label.btn {
   top: 0.75rem;
   @include ltr-style {
     right: 0.75rem;
+  }
+  @include rtl-style {
+    left: 0.75rem;
   }
 }
 

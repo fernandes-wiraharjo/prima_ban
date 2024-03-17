@@ -9,6 +9,7 @@ class MiscUnderMaintenance extends Controller
 {
   public function index()
   {
-    return view('content.pages.pages-misc-under-maintenance');
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('content.pages.pages-misc-under-maintenance', ['pageConfigs' => $pageConfigs]);
   }
 }

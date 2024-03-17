@@ -116,7 +116,7 @@
     }
   }
   // ? Match toggle border to menu bg belwo xl screen
-  @include media-breakpoint-down($menu-collapsed-layout-breakpoint) {
+  @include media-breakpoint-down(xl) {
     .app-brand .layout-menu-toggle {
       border: 7px solid map-get($colors, bg) !important;
     }

@@ -13,3 +13,17 @@
     }
   }
 }
+@include ltr-only {
+  .form-control:not([readonly]) {
+    &:focus::placeholder {
+      transform: translateX(5px);
+    }
+  }
+}
+@include rtl-only {
+  .form-control:not([readonly]) {
+    &:focus::placeholder {
+      transform: translateX(-5px);
+    }
+  }
+}

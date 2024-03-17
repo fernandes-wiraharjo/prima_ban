@@ -32,6 +32,10 @@
         right: 2px;
       }
 
+      @include rtl-style {
+        left: 2px;
+      }
+
       // For hover effect of close btn
       &:hover,
       &:focus,
@@ -48,12 +52,24 @@
 .toast-container {
   --#{$prefix}toast-zindex: 9;
 }
-
+// RTL close btn style
+@include rtl-only {
+  .toast-header {
+    .btn-close {
+      margin-left: $toast-padding-x * -0.5;
+      margin-right: $toast-padding-x;
+    }
+  }
+}
 // Bootstrap Toasts Example
 .toast-ex {
   position: fixed;
   top: 4.1rem;
   right: 2.5rem;
+  @include rtl-style {
+    left: 2.5rem;
+    right: auto;
+  }
 }
 // Placement Toast example
 .toast-placement-ex {

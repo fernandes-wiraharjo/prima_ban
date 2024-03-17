@@ -187,6 +187,10 @@
           padding-right: $input-height-inner;
           background-position: right $input-height-inner-quarter center;
         }
+        @include rtl-style {
+          padding-left: $input-height-inner;
+          background-position: left $input-height-inner-quarter center;
+        }
       }
 
       &:focus {
@@ -204,6 +208,10 @@
           padding-right: $input-height-inner;
           background-position: top $input-height-inner-quarter right $input-height-inner-quarter;
         }
+        @include rtl-style {
+          padding-left: $input-height-inner;
+          background-position: top $input-height-inner-quarter left $input-height-inner-quarter;
+        }
       }
     }
   }
@@ -217,6 +225,11 @@
           background-image: escape-svg($form-select-indicator), escape-svg($icon);
           padding-right: $form-select-feedback-icon-padding-end;
           background-position: $form-select-bg-position, $form-select-feedback-icon-position;
+        }
+        @include rtl-style {
+          background-image: escape-svg($form-select-indicator-rtl), escape-svg($icon);
+          padding-left: $form-select-feedback-icon-padding-end;
+          background-position: left $form-select-padding-x center, center left $form-select-indicator-padding; // RTL
         }
       }
 
@@ -250,6 +263,9 @@
     ~ .#{$state}-feedback {
       @include ltr-style {
         margin-left: 0.5em;
+      }
+      @include rtl-style {
+        margin-right: 0.5em;
       }
     }
   }

@@ -9,6 +9,7 @@ class RegisterBasic extends Controller
 {
   public function index()
   {
-    return view('content.authentications.auth-register-basic');
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('content.authentications.auth-register-basic', ['pageConfigs' => $pageConfigs]);
   }
 }

@@ -124,3 +124,47 @@
     margin-left: -1.75rem;
   }
 }
+
+// Avatar Group RTL with sizing
+@include rtl-only {
+  .avatar-group {
+    // Avatar Group Sizings
+    .avatar {
+      margin-right: -0.8rem;
+      margin-left: 0;
+    }
+    .avatar-xs {
+      margin-right: -0.65rem;
+    }
+    .avatar-sm {
+      margin-right: -0.75rem;
+    }
+    .avatar-md {
+      margin-right: -0.9rem;
+    }
+    .avatar-lg {
+      margin-right: -1.5rem;
+    }
+    .avatar-xl {
+      margin-right: -1.75rem;
+    }
+  }
+}
+
+// Avatar dark css
+@if $dark-style {
+  .avatar-group .avatar .avatar-initial {
+    background-color: tint-color($avatar-group-border, 10%);
+  }
+  // Avatar Status indication
+  .avatar {
+    &.avatar-online,
+    &.avatar-offline,
+    &.avatar-away,
+    &.avatar-busy {
+      &:after {
+        box-shadow: 0 0 0 2px $body-bg;
+      }
+    }
+  }
+}

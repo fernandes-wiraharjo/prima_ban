@@ -1,6 +1,13 @@
 // Pagination
 // *******************************************************************************
 
+// Pagination Mixins
+@each $color, $value in $theme-colors {
+  @if $color != primary and $color != light {
+    @include template-pagination-variant('.pagination-#{$color}', $value);
+  }
+}
+
 // Pagination next, prev, first & last css padding
 .page-item {
   &.first,
@@ -45,6 +52,16 @@
   box-shadow: none !important;
 }
 
+// Pagination shapes + border less
+.pagination {
+  &.pagination-square .page-item a {
+    @include border-radius(0);
+  }
+  &.pagination-round .page-item a {
+    @include border-radius(50%);
+  }
+}
+
 // Sizing
 // *******************************************************************************
 
@@ -87,6 +104,36 @@
     .page-link {
       padding-top: $pagination-padding-y-sm - 0.075rem;
       padding-bottom: $pagination-padding-y-sm - 0.075rem;
+    }
+  }
+}
+
+// RTL pagination
+// *******************************************************************************
+
+@include rtl-only {
+  .pagination {
+    padding-right: 0;
+  }
+
+  // Add spacing between pagination items
+  .page-item + .page-item .page-link,
+  .pagination li + li > a:not(.page-link) {
+    margin-left: 0;
+    margin-right: $pagination-margin-start;
+  }
+
+  .page-item {
+    &.first,
+    &.last,
+    &.next,
+    &.prev,
+    &.previous {
+      .page-link {
+        i {
+          transform: rotate(180deg);
+        }
+      }
     }
   }
 }

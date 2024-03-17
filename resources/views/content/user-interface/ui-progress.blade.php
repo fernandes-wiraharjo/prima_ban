@@ -1,4 +1,4 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Progress bars - UI elements')
 

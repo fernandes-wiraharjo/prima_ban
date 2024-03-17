@@ -1,4 +1,4 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Basic Inputs - Forms')
 
@@ -94,7 +94,7 @@
   <!-- Input Sizing -->
   <div class="col-md-6">
     <div class="card mb-4">
-      <h5 class="card-header">Input Sizing</h5>
+      <h5 class="card-header">Input Sizing & Shape</h5>
       <div class="card-body">
         <small class="text-light fw-medium">Input text</small>
 
@@ -140,6 +140,14 @@
             <option value="2">Two</option>
             <option value="3">Three</option>
           </select>
+        </div>
+      </div>
+      <hr class="m-0" />
+      <div class="card-body">
+        <small class="text-light fw-medium">Input Shape</small>
+        <div class="mt-2">
+          <label for="roundedInput" class="form-label">Rounded input</label>
+          <input id="roundedInput" class="form-control rounded-pill" type="text" placeholder="Default input" />
         </div>
       </div>
     </div>
@@ -247,6 +255,75 @@
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3" disabled />
               <label class="form-check-label" for="inlineRadio3">3 (disabled)</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="m-0" />
+      <!-- Checkboxes & Radio Colors -->
+      <div class="card-body">
+        <div class="row gy-3">
+          <div class="col-md">
+            <small class="text-light fw-medium d-block">Checkboxes Colors</small>
+
+            <div class="form-check form-check-primary mt-3">
+              <input class="form-check-input" type="checkbox" value="" id="customCheckPrimary" checked />
+              <label class="form-check-label" for="customCheckPrimary">Primary</label>
+            </div>
+            <div class="form-check form-check-secondary">
+              <input class="form-check-input" type="checkbox" value="" id="customCheckSecondary" checked />
+              <label class="form-check-label" for="customCheckSecondary">Secondary</label>
+            </div>
+            <div class="form-check form-check-success">
+              <input class="form-check-input" type="checkbox" value="" id="customCheckSuccess" checked />
+              <label class="form-check-label" for="customCheckSuccess">Success</label>
+            </div>
+            <div class="form-check form-check-danger">
+              <input class="form-check-input" type="checkbox" value="" id="customCheckDanger" checked />
+              <label class="form-check-label" for="customCheckDanger">Danger</label>
+            </div>
+            <div class="form-check form-check-warning">
+              <input class="form-check-input" type="checkbox" value="" id="customCheckWarning" checked />
+              <label class="form-check-label" for="customCheckWarning"> Warning </label>
+            </div>
+            <div class="form-check form-check-info">
+              <input class="form-check-input" type="checkbox" value="" id="customCheckInfo" checked />
+              <label class="form-check-label" for="customCheckInfo"> Info </label>
+            </div>
+            <div class="form-check form-check-dark">
+              <input class="form-check-input" type="checkbox" value="" id="customCheckDark" checked />
+              <label class="form-check-label" for="customCheckDark"> Dark </label>
+            </div>
+          </div>
+          <div class="col-md">
+            <small class="text-light fw-medium d-block">Radio Color</small>
+            <div class="form-check form-check-primary mt-3">
+              <input name="customRadioPrimary" class="form-check-input" type="radio" value="" id="customRadioPrimary" checked />
+              <label class="form-check-label" for="customRadioPrimary"> Primary </label>
+            </div>
+            <div class="form-check form-check-secondary">
+              <input name="customRadioSecondary" class="form-check-input" type="radio" value="" id="customRadioSecondary" checked />
+              <label class="form-check-label" for="customRadioSecondary"> Secondary </label>
+            </div>
+            <div class="form-check form-check-success">
+              <input name="customRadioSuccess" class="form-check-input" type="radio" value="" id="customRadioSuccess" checked />
+              <label class="form-check-label" for="customRadioSuccess"> Success </label>
+            </div>
+            <div class="form-check form-check-danger">
+              <input name="customRadioDanger" class="form-check-input" type="radio" value="" id="customRadioDanger" checked />
+              <label class="form-check-label" for="customRadioDanger"> Danger </label>
+            </div>
+            <div class="form-check form-check-warning">
+              <input name="customRadioWarning" class="form-check-input" type="radio" value="" id="customRadioWarning" checked />
+              <label class="form-check-label" for="customRadioWarning"> Warning </label>
+            </div>
+            <div class="form-check form-check-info">
+              <input name="customRadioInfo" class="form-check-input" type="radio" value="" id="customRadioInfo" checked />
+              <label class="form-check-label" for="customRadioInfo"> Info </label>
+            </div>
+            <div class="form-check form-check-dark">
+              <input name="customRadioDark" class="form-check-input" type="radio" value="" id="customRadioDark" checked />
+              <label class="form-check-label" for="customRadioDark"> Dark </label>
             </div>
           </div>
         </div>

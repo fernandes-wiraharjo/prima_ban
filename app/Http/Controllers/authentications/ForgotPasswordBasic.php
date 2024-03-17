@@ -9,6 +9,7 @@ class ForgotPasswordBasic extends Controller
 {
   public function index()
   {
-    return view('content.authentications.auth-forgot-password-basic');
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('content.authentications.auth-forgot-password-basic', ['pageConfigs' => $pageConfigs]);
   }
 }

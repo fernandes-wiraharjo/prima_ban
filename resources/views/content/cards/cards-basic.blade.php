@@ -1,4 +1,4 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Cards basic   - UI elements')
 

@@ -1,4 +1,4 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Pagination and breadcrumbs - UI elements')
 
@@ -48,6 +48,82 @@
             </ul>
           </nav>
           <!--/ Basic Pagination -->
+        </div>
+      </div>
+      <div class="col">
+        <small class="text-light fw-medium">Rounded</small>
+        <div class="demo-inline-spacing">
+          <!-- Basic Square Pagination -->
+          <nav aria-label="Page navigation">
+            <ul class="pagination pagination-round pagination-primary">
+              <li class="page-item first">
+                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
+              </li>
+              <li class="page-item prev">
+                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i></a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0);">1</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0);">2</a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="javascript:void(0);">3</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0);">4</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0);">5</a>
+              </li>
+              <li class="page-item next">
+                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i></a>
+              </li>
+              <li class="page-item last">
+                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i></a>
+              </li>
+            </ul>
+          </nav>
+          <!--/ Basic Square Pagination -->
+        </div>
+      </div>
+      <div class="col">
+        <div class="demo-inline-spacing">
+          <small class="text-light fw-medium">Square</small>
+          <!-- Basic Circle Pagination -->
+          <nav aria-label="Page navigation">
+            <ul class="pagination pagination-square pagination-primary">
+              <li class="page-item first">
+                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
+              </li>
+              <li class="page-item prev">
+                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i></a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0);">1</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0);">2</a>
+              </li>
+              <li class="page-item active">
+                <a class="page-link" href="javascript:void(0);">3</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0);">4</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="javascript:void(0);">5</a>
+              </li>
+              <li class="page-item next">
+                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i></a>
+              </li>
+              <li class="page-item last">
+                <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i></a>
+              </li>
+            </ul>
+          </nav>
+          <!--/ Basic Circle Pagination -->
         </div>
       </div>
     </div>
@@ -222,6 +298,214 @@
   </div>
 </div>
 <!--/ Pagination Sizes -->
+
+<!-- Pagination color options -->
+<div class="card mb-4">
+  <h5 class="card-header">Pagination Color Options</h5>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-6">
+        <nav aria-label="Page navigation">
+          <ul class="pagination pagination-primary">
+            <li class="page-item first">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
+            </li>
+            <li class="page-item prev">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i></a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">1</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">2</a>
+            </li>
+            <li class="page-item active">
+              <a class="page-link" href="javascript:void(0);">3</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">4</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">5</a>
+            </li>
+            <li class="page-item next">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i></a>
+            </li>
+            <li class="page-item last">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-lg-6">
+        <nav aria-label="Page navigation">
+          <ul class="pagination pagination-secondary">
+            <li class="page-item first">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
+            </li>
+            <li class="page-item prev">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i></a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">1</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">2</a>
+            </li>
+            <li class="page-item active">
+              <a class="page-link" href="javascript:void(0);">3</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">4</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">5</a>
+            </li>
+            <li class="page-item next">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i></a>
+            </li>
+            <li class="page-item last">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-lg-6">
+        <nav aria-label="Page navigation">
+          <ul class="pagination pagination-success">
+            <li class="page-item first">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
+            </li>
+            <li class="page-item prev">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i></a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">1</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">2</a>
+            </li>
+            <li class="page-item active">
+              <a class="page-link" href="javascript:void(0);">3</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">4</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">5</a>
+            </li>
+            <li class="page-item next">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i></a>
+            </li>
+            <li class="page-item last">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-lg-6">
+        <nav aria-label="Page navigation">
+          <ul class="pagination pagination-danger">
+            <li class="page-item first">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
+            </li>
+            <li class="page-item prev">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i></a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">1</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">2</a>
+            </li>
+            <li class="page-item active">
+              <a class="page-link" href="javascript:void(0);">3</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">4</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">5</a>
+            </li>
+            <li class="page-item next">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i></a>
+            </li>
+            <li class="page-item last">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-lg-6">
+        <nav aria-label="Page navigation">
+          <ul class="pagination pagination-warning">
+            <li class="page-item first">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
+            </li>
+            <li class="page-item prev">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i></a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">1</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">2</a>
+            </li>
+            <li class="page-item active">
+              <a class="page-link" href="javascript:void(0);">3</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">4</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">5</a>
+            </li>
+            <li class="page-item next">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i></a>
+            </li>
+            <li class="page-item last">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="col-lg-6">
+        <nav aria-label="Page navigation">
+          <ul class="pagination pagination-info">
+            <li class="page-item first">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-left"></i></a>
+            </li>
+            <li class="page-item prev">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-left"></i></a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">1</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">2</a>
+            </li>
+            <li class="page-item active">
+              <a class="page-link" href="javascript:void(0);">3</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">4</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="javascript:void(0);">5</a>
+            </li>
+            <li class="page-item next">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevron-right"></i></a>
+            </li>
+            <li class="page-item last">
+              <a class="page-link" href="javascript:void(0);"><i class="tf-icon bx bx-chevrons-right"></i></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/ Pagination color options -->
 
 <!-- Breadcrumb -->
 <div class="card">

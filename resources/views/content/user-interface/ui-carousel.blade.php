@@ -1,6 +1,22 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Carousel - UI elements')
+
+@section('vendor-style')
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/swiper/swiper.css')}}" />
+@endsection
+
+@section('page-style')
+<link rel="stylesheet" href="{{asset('assets/vendor/css/pages/ui-carousel.css')}}" />
+@endsection
+
+@section('vendor-script')
+<script src="{{asset('assets/vendor/libs/swiper/swiper.js')}}"></script>
+@endsection
+
+@section('page-script')
+<script src="{{asset('assets/js/ui-carousel.js')}}"></script>
+@endsection
 
 @section('content')
 <h4 class="py-3 mb-4"><span class="text-muted fw-light">UI elements /</span> Carousel</h4>
@@ -90,6 +106,195 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="visually-hidden">Next</span>
       </a>
+    </div>
+  </div>
+</div>
+
+<hr class="container-m-nx mt-5" />
+
+<h5 class="my-4">Swiper</h5>
+<div class="row">
+  <!-- Default -->
+  <div class="col-md-6 mb-4">
+    <h6 class="text-muted mt-3">Default</h6>
+    <div class="swiper" id="swiper-default">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/1.jpg')}})">Slide 1</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/5.jpg')}})">Slide 2</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/12.jpg')}})">Slide 3</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/7.jpg')}})">Slide 4</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/11.jpg')}})">Slide 5</div>
+      </div>
+    </div>
+  </div>
+  <!-- With arrows -->
+  <div class="col-md-6 mb-4">
+    <h6 class="text-muted mt-3">With arrows</h6>
+    <div class="swiper" id="swiper-with-arrows">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/11.jpg')}})">Slide 1</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/1.jpg')}})">Slide 2</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/5.jpg')}})">Slide 3</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/12.jpg')}})">Slide 4</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/7.jpg')}})">Slide 5</div>
+      </div>
+      <div class="swiper-button-next swiper-button-white custom-icon">
+      </div>
+      <div class="swiper-button-prev swiper-button-white custom-icon">
+      </div>
+    </div>
+  </div>
+  <!-- With pagination -->
+  <div class="col-md-6 mb-4">
+    <h6 class="text-muted mt-3">With pagination</h6>
+    <div class="swiper" id="swiper-with-pagination">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/7.jpg')}})">Slide 1</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/11.jpg')}})">Slide 2</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/1.jpg')}})">Slide 3</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/5.jpg')}})">Slide 4</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/12.jpg')}})">Slide 5</div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+
+  <!-- With progress -->
+  <div class="col-md-6 mb-4">
+    <h6 class="text-muted mt-3">With progress</h6>
+    <div class="swiper" id="swiper-with-progress">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/5.jpg')}})">Slide 1</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/12.jpg')}})">Slide 2</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/7.jpg')}})">Slide 3</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/11.jpg')}})">Slide 4</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/1.jpg')}})">Slide 5</div>
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next swiper-button-white custom-icon"></div>
+      <div class="swiper-button-prev swiper-button-white custom-icon"></div>
+    </div>
+  </div>
+
+  <!-- With scrollbar -->
+  <div class="col-md-6 mb-4">
+    <h6 class="text-muted mt-3">With scrollbar</h6>
+    <div class="swiper" id="swiper-with-scrollbar">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/1.jpg')}})">Slide 1</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/5.jpg')}})">Slide 2</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/12.jpg')}})">Slide 3</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/7.jpg')}})">Slide 4</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/11.jpg')}})">Slide 5</div>
+      </div>
+      <div class="swiper-scrollbar"></div>
+    </div>
+  </div>
+
+  <!-- Vertical -->
+  <div class="col-md-6 mb-4">
+    <h6 class="text-muted mt-3">Vertical</h6>
+    <div class="swiper" id="swiper-vertical">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/11.jpg')}})">Slide 1</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/1.jpg')}})">Slide 2</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/5.jpg')}})">Slide 3</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/12.jpg')}})">Slide 4</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/7.jpg')}})">Slide 5</div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+
+  <!-- Multiple slides -->
+  <div class="col-12 mb-4">
+    <h6 class="text-muted mt-3">Multiple slides</h6>
+    <div class="swiper" id="swiper-multiple-slides">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/13.jpg')}})">Slide 1</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/19.jpg')}})">Slide 2</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/18.jpg')}})">Slide 3</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/7.jpg')}})">Slide 4</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/20.jpg')}})">Slide 5</div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+
+  <!-- 3D coverflow effect -->
+  <div class="col-12 mb-4">
+    <h6 class="text-muted mt-3">3D coverflow effect</h6>
+    <div class="swiper" id="swiper-3d-coverflow-effect">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/20.jpg')}})">Slide 1</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/7.jpg')}})">Slide 2</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/13.jpg')}})">Slide 3</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/19.jpg')}})">Slide 4</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/18.jpg')}})">Slide 5</div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+
+  <!-- 3D cube effect -->
+  <div class="col-md-6 mb-4">
+    <h6 class="text-muted mt-3">3D cube effect</h6>
+    <div class="swiper" id="swiper-3d-cube-effect">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/18.jpg')}})">Slide 1</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/20.jpg')}})">Slide 2</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/7.jpg')}})">Slide 3</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/13.jpg')}})">Slide 4</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/19.jpg')}})">Slide 5</div>
+      </div>
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+
+  <!-- 3D flip effect -->
+  <div class="col-md-6 mb-4">
+    <h6 class="text-muted mt-3">3D flip effect</h6>
+    <div class="swiper" id="swiper-3d-flip-effect">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/19.jpg')}})">Slide 1</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/18.jpg')}})">Slide 2</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/20.jpg')}})">Slide 3</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/7.jpg')}})">Slide 4</div>
+        <div class="swiper-slide" style="background-image:url({{asset('assets/img/elements/13.jpg')}})">Slide 5</div>
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next swiper-button-black custom-icon">
+      </div>
+      <div class="swiper-button-prev swiper-button-black custom-icon">
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery effect-->
+  <div class="col-12">
+    <h6 class="text-muted mt-3">Thumbs Gallery</h6>
+    <div id="swiper-gallery">
+      <div class="swiper gallery-top">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide" style="background-image:url({{asset('assets/img/backgrounds/6.jpg')}})">Slide 1</div>
+          <div class="swiper-slide" style="background-image:url({{asset('assets/img/backgrounds/5.jpg')}})">Slide 2</div>
+          <div class="swiper-slide" style="background-image:url({{asset('assets/img/backgrounds/7.jpg')}})">Slide 3</div>
+          <div class="swiper-slide" style="background-image:url({{asset('assets/img/backgrounds/10.jpg')}})">Slide 4</div>
+          <div class="swiper-slide" style="background-image:url({{asset('assets/img/backgrounds/16.jpg')}})">Slide 5</div>
+        </div>
+        <!-- Add Arrows -->
+        <div class="swiper-button-next swiper-button-white"></div>
+        <div class="swiper-button-prev swiper-button-white"></div>
+      </div>
+      <div class="swiper gallery-thumbs">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide" style="background-image:url({{asset('assets/img/backgrounds/6.jpg')}})">Slide 1</div>
+          <div class="swiper-slide" style="background-image:url({{asset('assets/img/backgrounds/5.jpg')}})">Slide 2</div>
+          <div class="swiper-slide" style="background-image:url({{asset('assets/img/backgrounds/7.jpg')}})">Slide 3</div>
+          <div class="swiper-slide" style="background-image:url({{asset('assets/img/backgrounds/10.jpg')}})">Slide 4</div>
+          <div class="swiper-slide" style="background-image:url({{asset('assets/img/backgrounds/16.jpg')}})">Slide 5</div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

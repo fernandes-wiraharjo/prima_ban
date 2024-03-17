@@ -1,4 +1,4 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'List groups - UI elements')
 
@@ -300,4 +300,210 @@
   </div>
 </div>
 
+<div class="card">
+  <h5 class="card-header">Timeline & Notification</h5>
+  <div class="card-body">
+    <div class="row">
+      <!-- Timeline Style -->
+      <div class="col-lg-6 p-4">
+        <small class="text-light fw-medium">Timeline</small>
+        <div class="demo-inline-spacing mt-3">
+          <ul class="list-group list-group-timeline">
+            <li class="list-group-item list-group-timeline-primary">Bear claw cake biscuit</li>
+            <li class="list-group-item list-group-timeline-success">Soufflé pastry pie ice</li>
+            <li class="list-group-item list-group-timeline-warning">Tart tiramisu cake</li>
+            <li class="list-group-item list-group-timeline-info">Dragée tootsie roll</li>
+            <li class="list-group-item list-group-timeline-danger">Bonbon toffee muffin</li>
+          </ul>
+        </div>
+      </div>
+      <!--/ Timeline Style -->
+      <!-- Notification Style -->
+      <div class="col-lg-6 p-4">
+        <small class="text-light fw-medium">Notification</small>
+        <div class="demo-inline-spacing mt-3">
+          <div class="list-group">
+            <a href="javascript:void(0);" class="list-group-item list-group-item-action d-flex justify-content-between">
+              <div class="li-wrapper d-flex justify-content-start align-items-center">
+                <div class="avatar avatar-sm me-3">
+                  <span class="avatar-initial rounded-circle bg-label-success">M</span>
+                </div>
+                <div class="list-content">
+                  <h6 class="mb-1">List group item heading</h6>
+                  <small class="text-muted">Donec id elit non mi porta.</small>
+                </div>
+              </div>
+              <small>3 days ago</small>
+            </a>
+            <a href="javascript:void(0);" class="list-group-item list-group-item-action d-flex justify-content-between">
+              <div class="li-wrapper d-flex justify-content-start align-items-center">
+                <div class="avatar avatar-sm me-3">
+                  <span class="avatar-initial rounded-circle bg-label-danger">B</span>
+                </div>
+                <div class="list-content">
+                  <h6 class="mb-1">List group item heading</h6>
+                  <small class="text-muted">Donec id elit non mi porta.</small>
+                </div>
+              </div>
+              <small>1 day ago</small>
+            </a>
+            <a href="javascript:void(0);" class="list-group-item list-group-item-action d-flex justify-content-between">
+              <div class="li-wrapper d-flex justify-content-start align-items-center">
+                <div class="avatar avatar-sm me-3">
+                  <span class="avatar-initial rounded-circle bg-label-primary">V</span>
+                </div>
+                <div class="list-content">
+                  <h6 class="mb-1">List group item heading</h6>
+                  <small class="text-muted">Donec id elit non mi porta.</small>
+                </div>
+              </div>
+              <small>5 days ago</small>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!--/ Notification Style -->
+    </div>
+  </div>
+  <hr class="m-0">
+  <div class="card-body">
+    <div class="row">
+      <!-- User List Style -->
+      <div class="col-12 col-lg-6 mb-4 mb-xl-0">
+        <small class="text-light fw-medium">User List</small>
+        <div class="demo-inline-spacing mt-3">
+          <div class="list-group">
+            <div class="list-group-item list-group-item-action d-flex align-items-center cursor-pointer">
+              <img src="{{asset('assets/img/avatars/2.png')}}" alt="User Image" class="rounded-circle me-3 w-px-50">
+              <div class="w-100">
+                <div class="d-flex justify-content-between">
+                  <div class="user-info">
+                    <h6 class="mb-1">Danish sesame snaps halvah</h6>
+                    <small>13 minutes</small>
+                    <div class="user-status">
+                      <span class="badge badge-dot bg-success"></span>
+                      <small>Online</small>
+                    </div>
+                  </div>
+                  <div class="add-btn">
+                    <button class="btn btn-primary btn-sm">Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="list-group-item list-group-item-action d-flex align-items-center cursor-pointer">
+              <img src="{{asset('assets/img/avatars/8.png')}}" alt="User Image" class="rounded-circle me-3 w-px-50">
+              <div class="w-100">
+                <div class="d-flex justify-content-between">
+                  <div class="user-info">
+                    <h6 class="mb-1">Cake halvah biscuit cheesecake</h6>
+                    <small class="text-muted">11 minutes</small>
+                    <div class="user-status">
+                      <span class="badge badge-dot bg-warning"></span>
+                      <small>Away</small>
+                    </div>
+                  </div>
+                  <div class="add-btn">
+                    <button class="btn btn-primary btn-sm">Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="list-group-item list-group-item-action d-flex align-items-center cursor-pointer">
+              <img src="{{asset('assets/img/avatars/4.png')}}" alt="User Image" class="rounded-circle me-3 w-px-50">
+              <div class="w-100">
+                <div class="d-flex justify-content-between">
+                  <div class="user-info">
+                    <h6 class="mb-1">Tart cheesecake jujubes caramels</h6>
+                    <small class="text-muted">9 minutes</small>
+                    <div class="user-status">
+                      <span class="badge badge-dot bg-secondary"></span>
+                      <small>Offline</small>
+                    </div>
+                  </div>
+                  <div class="add-btn">
+                    <button class="btn btn-primary btn-sm">Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="list-group-item list-group-item-action d-flex align-items-center cursor-pointer">
+              <img src="{{asset('assets/img/avatars/11.png')}}" alt="User Image" class="rounded-circle me-3 w-px-50">
+              <div class="w-100">
+                <div class="d-flex justify-content-between">
+                  <div class="user-info">
+                    <h6 class="mb-1">Icing sweet gummies</h6>
+                    <small class="text-muted">15 minutes</small>
+                    <div class="user-status">
+                      <span class="badge badge-dot bg-danger"></span>
+                      <small>In Meeting</small>
+                    </div>
+                  </div>
+                  <div class="add-btn">
+                    <button class="btn btn-primary btn-sm">Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--/ User List Style -->
+      <!-- Progress Style -->
+      <div class="col-12 col-lg-6">
+        <small class="text-light fw-medium">Progress</small>
+        <div class="demo-inline-spacing mt-3">
+          <div class="list-group">
+            <a href="javascript:void(0);" class="list-group-item list-group-item-action d-flex align-items-center p-3">
+              <div class="badge bg-primary rounded p-1 me-3"><i class="bx bxl-bootstrap bx-sm text-white"></i></div>
+              <div class="w-100">
+                <h6 class="mb-2">Bootstrap is an open source toolkit</h6>
+                <div class="progress" style="height: 5px;">
+                  <div class="progress-bar bg-primary" role="progressbar" style="width: 95%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </a>
+            <a href="javascript:void(0);" class="list-group-item list-group-item-action d-flex align-items-center p-3">
+              <div class="badge bg-success rounded p-1 me-3"><i class="bx bxl-vuejs bx-sm text-white"></i></div>
+              <div class="w-100">
+                <h6 class="mb-2">Vue.js is the Progressive JavaScript Framework</h6>
+                <div class="progress" style="height: 5px;">
+                  <div class="progress-bar bg-success" role="progressbar" style="width: 85%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </a>
+            <a href="javascript:void(0);" class="list-group-item list-group-item-action d-flex align-items-center p-3">
+              <div class="badge bg-danger rounded p-1 me-3"><i class="bx bxl-angular bx-sm text-white"></i></div>
+              <div class="w-100">
+                <h6 class="mb-2">Angular implements Functional Programming concepts</h6>
+                <div class="progress" style="height: 5px;">
+                  <div class="progress-bar bg-danger" role="progressbar" style="width: 55%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </a>
+            <a href="javascript:void(0);" class="list-group-item list-group-item-action d-flex align-items-center p-3">
+              <div class="badge bg-info rounded p-1 me-3"><i class="bx bxl-react bx-sm text-white"></i></div>
+              <div class="w-100">
+                <h6 class="mb-2">List group item heading</h6>
+                <div class="progress" style="height: 5px;">
+                  <div class="progress-bar bg-info" role="progressbar" style="width: 75%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </a>
+            <a href="javascript:void(0);" class="list-group-item list-group-item-action d-flex align-items-center p-3">
+              <div class="badge bg-warning rounded p-1 me-3"><i class="bx bxl-redux bx-sm text-white"></i></div>
+              <div class="w-100">
+                <h6 class="mb-2">Redux, the most popular framework</h6>
+                <div class="progress" style="height: 5px;">
+                  <div class="progress-bar bg-warning" role="progressbar" style="width: 65%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!--/ Progress Style -->
+    </div>
+  </div>
+</div>
 @endsection

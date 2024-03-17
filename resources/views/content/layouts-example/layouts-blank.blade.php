@@ -1,4 +1,4 @@
-@extends('layouts/blankLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Blank layout - Layouts')
 

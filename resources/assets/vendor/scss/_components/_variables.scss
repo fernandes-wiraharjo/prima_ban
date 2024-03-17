@@ -61,6 +61,56 @@ $menu-dark-menu-bg: rgba(0, 0, 0, 0.06) !default;
 $menu-light-border-color: rgba(0, 0, 0, 0.06) !default;
 $menu-light-menu-bg: rgba(0, 0, 0, 0.05) !default;
 
+// Custom Options
+// *******************************************************************************
+
+$custom-option-padding: 1em !default;
+$custom-option-cursor: pointer !default;
+$custom-option-border-color: $border-color !default;
+$custom-option-border-width: 1px !default;
+$custom-option-image-border-width: 2px !default;
+$custom-option-border-hover-color: $input-border-hover-color !default;
+
+// Switches
+// *******************************************************************************
+
+$switch-font-size: 0.625rem !default;
+$switch-border-radius: 30rem !default;
+
+$switch-width: 2.5rem !default;
+$switch-width-sm: 2rem !default;
+$switch-width-lg: 3.25rem !default;
+
+$switch-height: 1.35rem !default;
+$switch-height-sm: 1.125rem !default;
+$switch-height-lg: 1.75rem !default;
+
+$switch-label-font-size: $font-size-base !default;
+$switch-label-font-size-sm: $font-size-sm !default;
+$switch-label-font-size-lg: $font-size-lg !default;
+
+$switch-label-line-height: 1.4 !default;
+$switch-label-line-height-sm: 1.48 !default;
+$switch-label-line-height-lg: 1.47 !default;
+
+$switch-spacer-x: 0.75rem !default;
+$switch-spacer-y: 0.75rem !default;
+$switch-gutter: 0.5rem !default;
+$switch-inner-spacer: 0.225rem !default;
+
+$switch-square-border-radius: $border-radius !default;
+
+$switch-label-color: $body-color !default;
+$switch-label-disabled-color: $text-muted !default;
+$switch-disabled-opacity: 0.5 !default;
+
+$switch-off-color: $gray-400 !default;
+$switch-off-bg: $gray-600 !default;
+$switch-off-border: $gray-400 !default;
+$switch-holder-bg: $white !default;
+$switch-holder-shadow: 0 0 0 1px rgba($black, 0.04), 0 1px 6px rgba($black, 0.09) !default;
+$switch-focus-box-shadow: $input-btn-focus-box-shadow !default;
+
 // Avatars
 // *******************************************************************************
 
@@ -78,6 +128,34 @@ $avatar-initial-sm: 0.75rem !default;
 $avatar-initial-xs: 0.625rem !default;
 
 $avatar-group-border: $white !default;
+
+// Timeline
+// *******************************************************************************
+$timeline-line-border-styles: (
+  solid: solid,
+  dotted: dotted,
+  dashed: dashed,
+  hidden: none
+) !default;
+
+$timeline-border-color: $border-color !default;
+
+$timeline-indicator-size: 1.5rem !default;
+$timeline-point-size: 0.75rem !default;
+$timeline-point-indicator-color: $primary !default;
+$timeline-end-indicator-font-size: 1.5rem !default;
+$timeline-point-indicator-bg-scale: 88% !default;
+
+$timeline-item-icon-font-size: 0.85rem !default;
+$timeline-item-min-height: 4rem !default;
+$timeline-item-padding-x: 1.5rem !default;
+$timeline-item-padding-y: 1.25rem !default;
+$timeline-item-bg-color: $card-bg !default;
+$timeline-item-border-radius: $border-radius !default;
+
+$timeline-event-time-size: 0.85rem !default;
+$timeline-event-time-color: $text-muted !default;
+$timeline-event-shadow: 0 0.5rem 1rem rgba($gray-200, 0.075) !default;
 
 // Text Divider
 // *******************************************************************************

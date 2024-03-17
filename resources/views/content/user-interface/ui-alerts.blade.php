@@ -1,4 +1,4 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Alerts - UI elements')
 
@@ -93,5 +93,122 @@
     </div>
   </div>
   <!--/ Dismissible Alerts -->
+</div>
+<div class="row">
+  <!-- Alerts with headings -->
+  <div class="col-md mb-4 mb-md-0">
+    <div class="card">
+      <h5 class="card-header">Alerts with Heading</h5>
+      <div class="card-body">
+        <div class="alert alert-primary alert-dismissible" role="alert">
+          <h6 class="alert-heading d-flex align-items-center mb-1">For a watch</h6>
+          <p class="mb-0">Bonbon sweet roll dragée lemon drops tart.</p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
+        <div class="alert alert-secondary alert-dismissible" role="alert">
+          <h6 class="alert-heading d-flex align-items-center mb-1">Alert Heading</h6>
+          <p class="mb-0">Cupcake jelly cookie chocolate bar topping.</p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
+        <div class="alert alert-success alert-dismissible" role="alert">
+          <h6 class="alert-heading d-flex align-items-center mb-1">Well done :)</h6>
+          <p class="mb-0">Halvah cheesecake toffee. Cupcake jelly cookie chocolate.</p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
+        <div class="alert alert-danger alert-dismissible" role="alert">
+          <h6 class="alert-heading d-flex align-items-center mb-1">Error!!</h6>
+          <p class="mb-0">Aww yeah, you successfully read alert message.</p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
+        <div class="alert alert-warning alert-dismissible" role="alert">
+          <h6 class="alert-heading d-flex align-items-center mb-1">Be Aware!!</h6>
+          <p class="mb-0">Gummies wafer candy canes chocolate lemon drops.</p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
+        <div class="alert alert-info alert-dismissible" role="alert">
+          <h6 class="alert-heading d-flex align-items-center mb-1">Alert!!</h6>
+          <p class="mb-0">Eos mutat malis maluisset et, agam ancillae quo te, in vim.</p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
+        <div class="alert alert-dark alert-dismissible mb-0" role="alert">
+          <h6 class="alert-heading d-flex align-items-center mb-1">Be Aware!!</h6>
+          <p class="mb-0">Aldus PageMaker including versions of Lorem Ipsum</p>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Alerts with headings -->
+  <!-- Alerts with Icons -->
+  <div class="col-md">
+    <div class="card">
+      <h5 class="card-header">Alerts with Icons</h5>
+      <div class="card-body">
+        <div class="alert alert-primary d-flex" role="alert">
+          <span class="badge badge-center rounded-pill bg-primary border-label-primary p-3 me-2"><i class="bx bx-command fs-6"></i></span>
+          <div class="d-flex flex-column ps-1">
+            <h6 class="alert-heading d-flex align-items-center mb-1">For a watch</h6>
+            <span>This is a primary solid alert — check it out!</span>
+          </div>
+        </div>
+
+        <div class="alert alert-secondary d-flex" role="alert">
+          <span class="badge badge-center rounded-pill bg-secondary border-label-secondary p-3 me-2"><i class="bx bx-envelope fs-6"></i></span>
+          <div class="d-flex flex-column ps-1">
+            <h6 class="alert-heading d-flex align-items-center mb-1">Alert Heading</h6>
+            <span>This is a secondary solid alert — check it out!</span>
+          </div>
+        </div>
+
+        <div class="alert alert-success d-flex" role="alert">
+          <span class="badge badge-center rounded-pill bg-success border-label-success p-3 me-2"><i class="bx bx-desktop fs-6"></i></span>
+          <div class="d-flex flex-column ps-1">
+            <h6 class="alert-heading d-flex align-items-center mb-1">Well done :)</h6>
+            <span>This is a success solid alert — check it out!</span>
+          </div>
+        </div>
+
+        <div class="alert alert-danger d-flex" role="alert">
+          <span class="badge badge-center rounded-pill bg-danger border-label-danger p-3 me-2"><i class="bx bx-store fs-6"></i></span>
+          <div class="d-flex flex-column ps-1">
+            <h6 class="alert-heading d-flex align-items-center mb-1">Error!!</h6>
+            <span>This is a danger solid alert — check it out!</span>
+          </div>
+        </div>
+
+        <div class="alert alert-warning d-flex" role="alert">
+          <span class="badge badge-center rounded-pill bg-warning border-label-warning p-3 me-2"><i class="bx bx-wallet fs-6"></i></span>
+          <div class="d-flex flex-column ps-1">
+            <h6 class="alert-heading d-flex align-items-center mb-1">Be Aware!!</h6>
+            <span>This is a warning solid alert — check it out!</span>
+          </div>
+        </div>
+
+        <div class="alert alert-info d-flex" role="alert">
+          <span class="badge badge-center rounded-pill bg-info border-label-info p-3 me-2"><i class="bx bx-detail fs-6"></i></span>
+          <div class="d-flex flex-column ps-1">
+            <h6 class="alert-heading d-flex align-items-center mb-1">Alert!!</h6>
+            <span>This is an info solid alert — check it out!</span>
+          </div>
+        </div>
+
+        <div class="alert alert-dark d-flex mb-0" role="alert">
+          <span class="badge badge-center rounded-pill bg-dark border-label-dark p-3 me-2"><i class="bx bx-save fs-6"></i></span>
+          <div class="d-flex flex-column ps-1">
+            <h6 class="alert-heading d-flex align-items-center mb-1">Be Aware!!</h6>
+            <span>This is a dark solid alert — check it out!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--/ Alerts with Icons -->
 </div>
 @endsection

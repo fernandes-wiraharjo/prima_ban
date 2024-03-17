@@ -103,8 +103,17 @@ $clamp-numbers: (
   line-height: 1;
   user-select: none;
 
+  @include rtl-style {
+    float: right;
+  }
+
   & + & {
     margin-left: $ui-stars-spacer;
+
+    @include rtl-style {
+      margin-right: $ui-stars-spacer;
+      margin-left: 0;
+    }
   }
 
   > *,
@@ -116,6 +125,12 @@ $clamp-numbers: (
     font-size: 1em;
     line-height: 1;
     transform: translateX(-50%);
+
+    @include rtl-style {
+      right: $ui-star-size * 0.5;
+      left: auto;
+      transform: translateX(50%);
+    }
   }
 
   > * {
@@ -140,6 +155,10 @@ $clamp-numbers: (
   &.half-filled > *:first-child {
     width: 50%;
     transform: translateX(-100%);
+
+    @include rtl-style {
+      transform: translateX(100%);
+    }
   }
 
   &.filled > *:first-child,
@@ -176,6 +195,10 @@ $clamp-numbers: (
   display: block !important;
   width: 100% !important;
   transform: translateX(-50%) !important;
+
+  @include rtl-style {
+    transform: translateX(50%) !important;
+  }
 }
 
 .ui-stars.hoverable .ui-star:hover ~ .ui-star {

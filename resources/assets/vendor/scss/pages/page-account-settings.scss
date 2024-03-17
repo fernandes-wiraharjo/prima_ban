@@ -10,4 +10,7 @@
   @include app-ltr() {
     right: 0.5rem;
   }
+  @include app-rtl() {
+    left: 0.5rem;
+  }
 }

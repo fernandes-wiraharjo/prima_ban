@@ -1,4 +1,4 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Buttons - UI elements')
 
@@ -37,6 +37,39 @@
           <button type="button" class="btn rounded-pill btn-warning">Warning</button>
           <button type="button" class="btn rounded-pill btn-info">Info</button>
           <button type="button" class="btn rounded-pill btn-dark">Dark</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Label Buttons -->
+
+  <div class="col-12">
+    <div class="card mb-4">
+      <h5 class="card-header">Label Buttons</h5>
+      <div class="card-body">
+        <small class="text-light fw-medium">Default</small>
+        <div class="demo-inline-spacing">
+          <button type="button" class="btn btn-label-primary">Primary</button>
+          <button type="button" class="btn btn-label-secondary">Secondary</button>
+          <button type="button" class="btn btn-label-success">Success</button>
+          <button type="button" class="btn btn-label-danger">Danger</button>
+          <button type="button" class="btn btn-label-warning">Warning</button>
+          <button type="button" class="btn btn-label-info">Info</button>
+          <button type="button" class="btn btn-label-dark">Dark</button>
+        </div>
+      </div>
+      <hr class="m-0" />
+      <div class="card-body">
+        <small class="text-light fw-medium">Rounded</small>
+        <div class="demo-inline-spacing">
+          <button type="button" class="btn rounded-pill btn-label-primary">Primary</button>
+          <button type="button" class="btn rounded-pill btn-label-secondary">Secondary</button>
+          <button type="button" class="btn rounded-pill btn-label-success">Success</button>
+          <button type="button" class="btn rounded-pill btn-label-danger">Danger</button>
+          <button type="button" class="btn rounded-pill btn-label-warning">Warning</button>
+          <button type="button" class="btn rounded-pill btn-label-info">Info</button>
+          <button type="button" class="btn rounded-pill btn-label-dark">Dark</button>
         </div>
       </div>
     </div>
@@ -82,7 +115,7 @@
       <h5 class="card-header">Buttons with Icons</h5>
       <div class="card-body">
         <div class="row gy-3">
-          <div class="col-md-6 col-lg-4">
+          <div class="col-lg-4">
             <small class="text-light fw-medium">Basic</small>
             <div class="demo-inline-spacing">
               <button type="button" class="btn btn-primary">
@@ -97,11 +130,30 @@
                 <span class="tf-icons bx bx-pie-chart-alt me-1"></span>Primary
               </button>
               <button type="button" class="btn rounded-pill btn-secondary">
-                <span class="tf-icons bx bx-bell"></span>&nbsp; Secondary
+                <span class="tf-icons bx bx-bell me-1"></span>Secondary
               </button>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-lg-4">
+            <small class="text-light fw-medium">Label</small>
+            <div class="demo-inline-spacing">
+              <button type="button" class="btn btn-label-primary">
+                <span class="tf-icons bx bx-pie-chart-alt me-1"></span>Primary
+              </button>
+              <button type="button" class="btn btn-label-secondary">
+                <span class="tf-icons bx bx-bell me-1"></span>Secondary
+              </button>
+            </div>
+            <div class="demo-inline-spacing">
+              <button type="button" class="btn rounded-pill btn-label-primary">
+                <span class="tf-icons bx bx-pie-chart-alt me-1"></span>Primary
+              </button>
+              <button type="button" class="btn rounded-pill btn-label-secondary">
+                <span class="tf-icons bx bx-bell me-1"></span>Secondary
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-4">
             <small class="text-light fw-medium">Outline</small>
             <div class="demo-inline-spacing">
               <button type="button" class="btn btn-outline-primary">
@@ -125,7 +177,7 @@
       <hr class="m-0" />
       <div class="card-body">
         <div class="row gy-3">
-          <div class="col-md-6 col-lg-4">
+          <div class="col-lg-4">
             <small class="text-light fw-medium">Basic</small>
             <div class="demo-inline-spacing">
               <button type="button" class="btn btn-icon btn-primary">
@@ -142,7 +194,24 @@
               </button>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-lg-4">
+            <small class="text-light fw-medium">Label</small>
+            <div class="demo-inline-spacing">
+              <button type="button" class="btn btn-icon btn-label-primary">
+                <span class="tf-icons bx bx-pie-chart-alt"></span>
+              </button>
+              <button type="button" class="btn btn-icon btn-label-secondary">
+                <span class="tf-icons bx bx-bell"></span>
+              </button>
+              <button type="button" class="btn rounded-pill btn-icon btn-label-primary">
+                <span class="tf-icons bx bx-pie-chart-alt"></span>
+              </button>
+              <button type="button" class="btn rounded-pill btn-icon btn-label-secondary">
+                <span class="tf-icons bx bx-bell"></span>
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-4">
             <small class="text-light fw-medium">Outline</small>
             <div class="demo-inline-spacing">
               <button type="button" class="btn btn-icon btn-outline-primary">
@@ -156,6 +225,101 @@
               </button>
               <button type="button" class="btn rounded-pill btn-icon btn-outline-secondary">
                 <span class="tf-icons bx bx-bell"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Social Button -->
+
+  <div class="col-12">
+    <div class="card mb-4">
+      <h5 class="card-header">Social Button</h5>
+      <div class="card-body">
+        <div class="row gy-3">
+          <div class="col-lg-4">
+            <small class="text-light fw-medium">Basic</small>
+            <div class="demo-inline-spacing">
+              <button type="button" class="btn btn-facebook"><i class="tf-icons bx bxl-facebook me-1"></i>Facebook</button>
+              <button type="button" class="btn btn-twitter"><i class="tf-icons bx bxl-twitter me-1"></i>Twitter</button>
+            </div>
+            <div class="demo-inline-spacing">
+              <button type="button" class="btn rounded-pill btn-google-plus">
+                <i class="tf-icons bx bxl-google-plus me-1"></i>Google+
+              </button>
+              <button type="button" class="btn rounded-pill btn-instagram">
+                <i class="tf-icons bx bxl-instagram me-1"></i>Instagram
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <small class="text-light fw-medium">Label</small>
+            <div class="demo-inline-spacing">
+              <button type="button" class="btn btn-label-linkedin"><i class="tf-icons bx bxl-linkedin me-1"></i>Linkedin</button>
+              <button type="button" class="btn btn-label-github"><i class="tf-icons bx bxl-github me-1"></i>Github</button>
+            </div>
+            <div class="demo-inline-spacing">
+              <button type="button" class="btn rounded-pill btn-label-pinterest"> <i class="tf-icons bx bxl-pinterest me-1"></i>Pinterest </button>
+              <button type="button" class="btn rounded-pill btn-label-slack"> <i class="tf-icons bx bxl-slack me-1"></i>Slack </button>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <small class="text-light fw-medium">Outline</small>
+            <div class="demo-inline-spacing">
+              <button type="button" class="btn btn-outline-dribbble"> <i class="tf-icons bx bxl-dribbble me-1"></i>Dribbble </button>
+              <button type="button" class="btn btn-outline-reddit"><i class="tf-icons bx bxl-reddit me-1"></i>Reddit</button>
+            </div>
+            <div class="demo-inline-spacing">
+              <button type="button" class="btn rounded-pill btn-outline-youtube"> <i class="tf-icons bx bxl-youtube me-1"></i>Youtube </button>
+              <button type="button" class="btn rounded-pill btn-outline-vimeo"> <i class="tf-icons bx bxl-vimeo me-1"></i>Vimeo </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="m-0" />
+      <div class="card-body">
+        <div class="row gy-3">
+          <div class="col-lg-4">
+            <small class="text-light fw-medium">Basic Icons</small>
+            <div class="demo-inline-spacing">
+              <button type="button" class="btn btn-icon btn-facebook"><i class="tf-icons bx bxl-facebook"></i></button>
+              <button type="button" class="btn btn-icon btn-twitter"><i class="tf-icons bx bxl-twitter"></i></button>
+              <button type="button" class="btn btn-icon rounded-pill btn-google-plus">
+                <i class="tf-icons bx bxl-google-plus"></i>
+              </button>
+              <button type="button" class="btn btn-icon rounded-pill btn-instagram">
+                <i class="tf-icons bx bxl-instagram"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <small class="text-light fw-medium">Label Icons</small>
+            <div class="demo-inline-spacing">
+              <button type="button" class="btn btn-icon btn-label-linkedin"><i class="tf-icons bx bxl-linkedin"></i></button>
+              <button type="button" class="btn btn-icon btn-label-github"><i class="tf-icons bx bxl-github"></i></button>
+              <button type="button" class="btn btn-icon rounded-pill btn-label-pinterest">
+                <i class="tf-icons bx bxl-pinterest"></i>
+              </button>
+              <button type="button" class="btn btn-icon rounded-pill btn-label-slack">
+                <i class="tf-icons bx bxl-slack"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <small class="text-light fw-medium">Outline Icons</small>
+            <div class="demo-inline-spacing">
+              <button type="button" class="btn btn-icon btn-outline-dribbble">
+                <i class="tf-icons bx bxl-dribbble"></i>
+              </button>
+              <button type="button" class="btn btn-icon btn-outline-reddit"><i class="tf-icons bx bxl-reddit"></i></button>
+              <button type="button" class="btn btn-icon rounded-pill btn-outline-youtube">
+                <i class="tf-icons bx bxl-youtube"></i>
+              </button>
+              <button type="button" class="btn btn-icon rounded-pill btn-outline-vimeo">
+                <i class="tf-icons bx bxl-vimeo"></i>
               </button>
             </div>
           </div>
@@ -268,7 +432,7 @@
       <h5 class="card-header">Button Group</h5>
       <div class="card-body">
         <div class="row g-4">
-          <div class="col-md-6">
+          <div class="col-md-6 col-lg-4">
             <small class="text-light fw-medium">Basic</small>
             <div class="mt-3">
               <div class="btn-group" role="group" aria-label="Basic example">
@@ -278,7 +442,17 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-6 col-lg-4">
+            <small class="text-light fw-medium">Label</small>
+            <div class="mt-3">
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-label-secondary">Left</button>
+                <button type="button" class="btn btn-label-secondary">Middle</button>
+                <button type="button" class="btn btn-label-secondary">Right</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4">
             <small class="text-light fw-medium">Outline</small>
             <div class="mt-3">
               <div class="btn-group" role="group" aria-label="Basic example">

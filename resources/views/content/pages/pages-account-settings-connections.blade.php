@@ -1,4 +1,4 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Account settings - Pages')
 
@@ -11,6 +11,8 @@
   <div class="col-md-12">
     <ul class="nav nav-pills flex-column flex-md-row mb-3">
       <li class="nav-item"><a class="nav-link" href="{{url('pages/account-settings-account')}}"><i class="bx bx-user me-1"></i> Account</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{url('pages/account-settings-security')}}"><i class="bx bx-lock-alt me-1"></i> Security</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{url('pages/account-settings-billing')}}"><i class="bx bx-detail me-1"></i> Billing & Plans</a></li>
       <li class="nav-item"><a class="nav-link" href="{{url('pages/account-settings-notifications')}}"><i class="bx bx-bell me-1"></i> Notifications</a></li>
       <li class="nav-item"><a class="nav-link active" href="javascript:void(0);"><i class="bx bx-link-alt me-1"></i> Connections</a></li>
     </ul>
@@ -31,9 +33,18 @@
                   <small class="text-muted">Calendar and contacts</small>
                 </div>
                 <div class="col-3 text-end">
-                  <div class="form-check form-switch">
-                    <input class="form-check-input float-end" type="checkbox" role="switch">
-                  </div>
+                  <label class="switch me-0">
+                    <input type="checkbox" class="switch-input" checked />
+                    <span class="switch-toggle-slider">
+                      <span class="switch-on">
+                        <i class="bx bx-check"></i>
+                      </span>
+                      <span class="switch-off">
+                        <i class="bx bx-x"></i>
+                      </span>
+                    </span>
+                    <span class="switch-label"></span>
+                  </label>
                 </div>
               </div>
             </div>
@@ -47,9 +58,18 @@
                   <small class="text-muted">Communication</small>
                 </div>
                 <div class="col-3 text-end">
-                  <div class="form-check form-switch">
-                    <input class="form-check-input float-end" type="checkbox" role="switch" checked>
-                  </div>
+                  <label class="switch me-0">
+                    <input type="checkbox" class="switch-input" />
+                    <span class="switch-toggle-slider">
+                      <span class="switch-on">
+                        <i class="bx bx-check"></i>
+                      </span>
+                      <span class="switch-off">
+                        <i class="bx bx-x"></i>
+                      </span>
+                    </span>
+                    <span class="switch-label"></span>
+                  </label>
                 </div>
               </div>
             </div>
@@ -63,9 +83,18 @@
                   <small class="text-muted">Manage your Git repositories</small>
                 </div>
                 <div class="col-3 text-end">
-                  <div class="form-check form-switch">
-                    <input class="form-check-input float-end" type="checkbox" role="switch">
-                  </div>
+                  <label class="switch me-0">
+                    <input type="checkbox" class="switch-input" checked />
+                    <span class="switch-toggle-slider">
+                      <span class="switch-on">
+                        <i class="bx bx-check"></i>
+                      </span>
+                      <span class="switch-off">
+                        <i class="bx bx-x"></i>
+                      </span>
+                    </span>
+                    <span class="switch-label"></span>
+                  </label>
                 </div>
               </div>
             </div>
@@ -79,9 +108,18 @@
                   <small class="text-muted">Email marketing service</small>
                 </div>
                 <div class="col-3 text-end">
-                  <div class="form-check form-switch">
-                    <input class="form-check-input float-end" type="checkbox" role="switch" checked>
-                  </div>
+                  <label class="switch me-0">
+                    <input type="checkbox" class="switch-input" checked />
+                    <span class="switch-toggle-slider">
+                      <span class="switch-on">
+                        <i class="bx bx-check"></i>
+                      </span>
+                      <span class="switch-off">
+                        <i class="bx bx-x"></i>
+                      </span>
+                    </span>
+                    <span class="switch-label"></span>
+                  </label>
                 </div>
               </div>
             </div>
@@ -95,9 +133,18 @@
                   <small class="text-muted">Communication</small>
                 </div>
                 <div class="col-3 text-end">
-                  <div class="form-check form-switch">
-                    <input class="form-check-input float-end" type="checkbox" role="switch" checked>
-                  </div>
+                  <label class="switch me-0">
+                    <input type="checkbox" class="switch-input" />
+                    <span class="switch-toggle-slider">
+                      <span class="switch-on">
+                        <i class="bx bx-check"></i>
+                      </span>
+                      <span class="switch-off">
+                        <i class="bx bx-x"></i>
+                      </span>
+                    </span>
+                    <span class="switch-label"></span>
+                  </label>
                 </div>
               </div>
             </div>
@@ -121,7 +168,7 @@
                   <small class="text-muted">Not Connected</small>
                 </div>
                 <div class="col-4 col-sm-5 text-end">
-                  <button type="button" class="btn btn-icon btn-outline-secondary">
+                  <button type="button" class="btn btn-icon btn-label-secondary">
                     <i class='bx bx-link-alt'></i>
                   </button>
                 </div>
@@ -137,7 +184,7 @@
                   <a href="{{config('variables.twitterUrl')}}" target="_blank">{{'@'.config('variables.creatorName')}}</a>
                 </div>
                 <div class="col-4 col-sm-5 text-end">
-                  <button type="button" class="btn btn-icon btn-outline-danger">
+                  <button type="button" class="btn btn-icon btn-label-danger">
                     <i class='bx bx-trash-alt'></i>
                   </button>
                 </div>
@@ -153,7 +200,7 @@
                   <a href="{{config('variables.instagramUrl')}}" target="_blank">{{'@'.config('variables.creatorName')}}</a>
                 </div>
                 <div class="col-4 col-sm-5 text-end">
-                  <button type="button" class="btn btn-icon btn-outline-danger">
+                  <button type="button" class="btn btn-icon btn-label-danger">
                     <i class='bx bx-trash-alt'></i>
                   </button>
                 </div>
@@ -169,7 +216,7 @@
                   <small class="text-muted">Not Connected</small>
                 </div>
                 <div class="col-4 col-sm-5 text-end">
-                  <button type="button" class="btn btn-icon btn-outline-secondary">
+                  <button type="button" class="btn btn-icon btn-label-secondary">
                     <i class='bx bx-link-alt'></i>
                   </button>
                 </div>
@@ -185,7 +232,7 @@
                   <small class="text-muted">Not Connected</small>
                 </div>
                 <div class="col-4 col-sm-5 text-end">
-                  <button type="button" class="btn btn-icon btn-outline-secondary">
+                  <button type="button" class="btn btn-icon btn-label-secondary">
                     <i class='bx bx-link-alt'></i>
                   </button>
                 </div>
@@ -198,4 +245,5 @@
     </div>
   </div>
 </div>
+
 @endsection

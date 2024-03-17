@@ -64,3 +64,16 @@
     }
   }
 }
+
+@mixin template-list-group-timeline-variant($parent, $background) {
+  .list-group {
+    &.list-group-timeline {
+      #{$parent} {
+        &:before {
+          border-color: $background;
+          background-color: $background;
+        }
+      }
+    }
+  }
+}

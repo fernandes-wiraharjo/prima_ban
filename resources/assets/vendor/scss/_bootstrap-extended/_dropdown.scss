@@ -21,6 +21,18 @@
     position: relative;
     top: 0.071em;
   }
+
+  // Dark style
+  @if $dark-style {
+    .list-group-item {
+      border-color: rgba-to-hex($dropdown-divider-bg, $dropdown-bg);
+    }
+  }
+
+  // For RTL
+  @include rtl-style {
+    text-align: right;
+  }
 }
 // Dropdown item line height
 .dropdown-item {
@@ -59,5 +71,39 @@
   .dropstart .dropdown-toggle::before,
   .dropend .dropdown-toggle::after {
     vertical-align: $caret-vertical-align;
+  }
+
+  @include rtl-only {
+    .dropdown-toggle:not(.dropdown-toggle-split)::after {
+      margin-left: 0;
+      margin-right: $caret-spacing;
+    }
+  }
+}
+
+@include rtl-only {
+  // Dropdown menu alignment
+  @each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+      $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+      .dropdown-menu#{$infix}-start {
+        --bs-position: start;
+
+        &[data-bs-popper] {
+          left: auto;
+          right: 0;
+        }
+      }
+
+      .dropdown-menu#{$infix}-end {
+        --bs-position: end;
+
+        &[data-bs-popper] {
+          left: 0;
+          right: auto;
+        }
+      }
+    }
   }
 }

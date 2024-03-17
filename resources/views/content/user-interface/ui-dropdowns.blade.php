@@ -1,6 +1,11 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Dropdowns - UI elements')
+
+@section('vendor-script')
+<script src="{{asset('assets/vendor/js/dropdown-hover.js')}}"></script>
+@endsection
+
 
 @section('content')
 <h4 class="py-3 mb-4">
@@ -94,6 +99,91 @@
     </div>
   </div>
   <!--/ Basic Dropdowns -->
+  <hr class="m-0">
+  <!-- Label Dropdowns -->
+  <div class="card-body">
+    <small class="text-light fw-medium">Label</small>
+    <div class="demo-inline-spacing">
+      <div class="btn-group">
+        <button type="button" class="btn btn-label-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Primary</button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Another action</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Something else here</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Separated link</a></li>
+        </ul>
+      </div>
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-label-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Secondary</button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Another action</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Something else here</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Separated link</a></li>
+        </ul>
+      </div>
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-label-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Success</button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Another action</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Something else here</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Separated link</a></li>
+        </ul>
+      </div>
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-label-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Danger</button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Another action</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Something else here</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Separated link</a></li>
+        </ul>
+      </div>
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-label-warning dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Warning</button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Another action</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Something else here</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Separated link</a></li>
+        </ul>
+      </div>
+
+      <div class="btn-group">
+        <button type="button" class="btn btn-label-info dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Info</button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Another action</a></li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Something else here</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="javascript:void(0);">Separated link</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!--/ Label Dropdowns -->
   <hr class="m-0">
 
   <!-- Outline Dropdowns -->
@@ -307,6 +397,25 @@
         </div>
       </div>
       <!--/ Hidden Arrow Dropdowns -->
+      <!-- Open Dropdown on hover -->
+      <div class="col-lg-3 col-sm-6 col-12">
+        <small class="text-light fw-medium">On Hover</small>
+        <div class="demo-inline-spacing">
+          <div class="btn-group" id="hover-dropdown-demo">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" data-trigger="hover">Hover</button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
+              <li><a class="dropdown-item" href="javascript:void(0);">Another action</a></li>
+              <li><a class="dropdown-item" href="javascript:void(0);">Something else here</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="javascript:void(0);">Separated link</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!--/ Open Dropdown on hover -->
       <!-- Dropdown with icon -->
       <div class="col-lg-3 col-sm-6 col-12">
         <small class="text-light fw-medium">With Icon</small>

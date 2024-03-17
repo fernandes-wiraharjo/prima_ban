@@ -9,6 +9,7 @@ class Blank extends Controller
 {
   public function index()
   {
-    return view('content.layouts-example.layouts-blank');
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('content.layouts-example.layouts-blank', ['pageConfigs' => $pageConfigs]);
   }
 }

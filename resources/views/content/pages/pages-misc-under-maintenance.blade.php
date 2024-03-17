@@ -1,4 +1,9 @@
-@extends('layouts/blankLayout')
+@php
+$customizerHidden = 'customizer-hide';
+$configData = Helper::appClasses();
+@endphp
+
+@extends('layouts/layoutMaster')
 
 @section('title', 'Under Maintenance - Pages')
 
@@ -17,7 +22,7 @@
     </p>
     <a href="{{url('/')}}" class="btn btn-primary">Back to home</a>
     <div class="mt-4">
-      <img src="{{asset('assets/img/illustrations/girl-doing-yoga-light.png')}}" alt="girl-doing-yoga-light" width="500" class="img-fluid">
+      <img src="{{asset('assets/img/illustrations/girl-doing-yoga-'.$configData['style'].'.png')}}" alt="girl-doing-yoga-light" width="500" class="img-fluid" data-app-dark-img="illustrations/girl-doing-yoga-dark.png" data-app-light-img="illustrations/girl-doing-yoga-light.png">
     </div>
   </div>
 </div>

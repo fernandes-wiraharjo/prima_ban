@@ -46,15 +46,6 @@
   }
 }
 
-.table-border-bottom-0 {
-  tr:last-child {
-    td,
-    th {
-      border-bottom-width: 0;
-    }
-  }
-}
-
 // Dark Table icon button
 .table.table-dark .btn.btn-icon {
   color: $table-border-color;

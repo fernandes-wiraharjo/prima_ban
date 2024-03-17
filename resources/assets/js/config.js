@@ -25,5 +25,28 @@ let config = {
     headingColor: '#566a7f',
     textMuted: '#a1acb8',
     borderColor: '#eceef1'
-  }
+  },
+  colors_label: {
+    primary: '#666ee81a',
+    secondary: '#8897aa1a',
+    success: '#28d0941a',
+    info: '#1e9ff21a',
+    warning: '#ff91491a',
+    danger: '#ff49611a',
+    dark: '#181c211a'
+  },
+  colors_dark: {
+    cardColor: '#2b2c40',
+    bodyBg: '#232333',
+    bodyColor: '#a3a4cc',
+    headingColor: '#cbcbe2',
+    textMuted: '#7071a4',
+    borderColor: '#444564'
+  },
+  enableMenuLocalStorage: true // Enable menu state with local storage support
 };
+
+let assetsPath = document.documentElement.getAttribute('data-assets-path'),
+  baseUrl = document.documentElement.getAttribute('data-base-url') + '/',
+  templateName = document.documentElement.getAttribute('data-template'),
+  rtlSupport = true; // set true for rtl support (rtl + ltr), false for ltr only.

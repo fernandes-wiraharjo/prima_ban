@@ -6,6 +6,25 @@ strong {
   font-weight: $font-weight-bold;
 }
 
+// Todo: commenting this style as creating issue on toast select and customizer select in windows
+// @if $dark-style {
+//   select:not([multiple]):not([size]),
+//   select[size='1'] {
+//     option {
+//       color: $black;
+//     }
+//   }
+// }
+
+@include rtl-only {
+  caption {
+    text-align: right;
+  }
+  dd {
+    margin-right: 0;
+  }
+}
+
 a:not([href]) {
   color: inherit;
   text-decoration: none;

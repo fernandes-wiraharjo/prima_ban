@@ -5,8 +5,8 @@
     {{-- active menu method --}}
     @php
       $activeClass = null;
-      $active = 'active open';
-      $currentRouteName = Route::currentRouteName();
+      $active = $configData["layout"] === 'vertical' ? 'active open':'active';
+      $currentRouteName =  Route::currentRouteName();
 
       if ($currentRouteName === $submenu->slug) {
           $activeClass = 'active';

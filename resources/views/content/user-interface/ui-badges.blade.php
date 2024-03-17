@@ -1,4 +1,4 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Badges - UI elements')
 
@@ -81,7 +81,7 @@
       <h5 class="card-header"> Button with Badges</h5>
       <div class="card-body">
         <div class="row gy-3">
-          <div class="col-sm-6">
+          <div class="col-sm-4">
             <small class="text-light fw-medium">Default</small>
             <div class="demo-inline-spacing">
               <button type="button" class="btn btn-primary">
@@ -94,7 +94,20 @@
               </button>
             </div>
           </div>
-          <div class="col-sm-6">
+          <div class="col-sm-4">
+            <small class="text-light fw-medium">Label</small>
+            <div class="demo-inline-spacing">
+              <button type="button" class="btn btn-label-primary">
+                Text
+                <span class="badge bg-white text-primary ms-1">4</span>
+              </button>
+              <button type="button" class="btn btn-label-primary">
+                Text
+                <span class="badge bg-secondary rounded-pill ms-1">4</span>
+              </button>
+            </div>
+          </div>
+          <div class="col-sm-4">
             <small class="text-light fw-medium">Outline</small>
             <div class="demo-inline-spacing">
               <button type="button" class="btn btn-outline-primary">
@@ -164,6 +177,126 @@
               </p>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Badge Circle with Icons -->
+  <div class="col-12">
+    <div class="card mb-4">
+      <h5 class="card-header">Badge Circle & Square With Icon</h5>
+      <div class="card-body">
+        <div class="row gy-3">
+          <div class="col-xl-6">
+            <h6>Basic</h6>
+            <div class="text-light small fw-medium mb-2">Default</div>
+            <div class="demo-inline-spacing">
+              <p>
+                <span class="badge badge-center rounded-pill bg-primary"><i class='bx bx-star'></i></span>
+                <span class="badge badge-center rounded-pill bg-secondary"><i class='bx bx-bell'></i></span>
+                <span class="badge badge-center rounded-pill bg-success"><i class='bx bx-check'></i></span>
+                <span class="badge badge-center rounded-pill bg-danger"><i class='bx bx-dollar'></i></span>
+                <span class="badge badge-center rounded-pill bg-warning"><i class='bx bx-pie-chart-alt'></i></span>
+                <span class="badge badge-center rounded-pill bg-info"><i class='bx bx-trending-up'></i></span>
+              </p>
+              <p>
+                <span class="badge badge-center bg-primary"><i class='bx bx-star'></i></span>
+                <span class="badge badge-center bg-secondary"><i class='bx bx-bell'></i></span>
+                <span class="badge badge-center bg-success"><i class='bx bx-check'></i></span>
+                <span class="badge badge-center bg-danger"><i class='bx bx-dollar'></i></span>
+                <span class="badge badge-center bg-warning"><i class='bx bx-pie-chart-alt'></i></span>
+                <span class="badge badge-center bg-info"><i class='bx bx-trending-up'></i></span>
+              </p>
+            </div>
+          </div>
+          <div class="col-xl-6">
+            <h6>Label</h6>
+            <div class="text-light small fw-medium mb-2">Default</div>
+            <div class="demo-inline-spacing">
+              <p>
+                <span class="badge badge-center rounded-pill bg-label-primary"><i class='bx bx-star'></i></span>
+                <span class="badge badge-center rounded-pill bg-label-secondary"><i class='bx bx-bell'></i></span>
+                <span class="badge badge-center rounded-pill bg-label-success"><i class='bx bx-check'></i></span>
+                <span class="badge badge-center rounded-pill bg-label-danger"><i class='bx bx-dollar'></i></span>
+                <span class="badge badge-center rounded-pill bg-label-warning"><i class='bx bx-pie-chart-alt'></i></span>
+                <span class="badge badge-center rounded-pill bg-label-info"><i class='bx bx-trending-up'></i></span>
+              </p>
+              <p>
+                <span class="badge badge-center bg-label-primary"><i class='bx bx-star'></i></span>
+                <span class="badge badge-center bg-label-secondary"><i class='bx bx-bell'></i></span>
+                <span class="badge badge-center bg-label-success"><i class='bx bx-check'></i></span>
+                <span class="badge badge-center bg-label-danger"><i class='bx bx-dollar'></i></span>
+                <span class="badge badge-center bg-label-warning"><i class='bx bx-pie-chart-alt'></i></span>
+                <span class="badge badge-center bg-label-info"><i class='bx bx-trending-up'></i></span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Notifications -->
+  <div class="col-12">
+    <div class="card mb-4">
+      <h5 class="card-header">Notifications</h5>
+      <div class="card-body demo-inline-spacing">
+        <button type="button" class="btn btn-secondary text-nowrap d-inline-block">
+          Badge
+          <span class="badge bg-primary text-white badge-notifications">12</span>
+        </button>
+        <button type="button" class="btn btn-secondary text-nowrap d-inline-block">
+          Label Badge
+          <span class="badge bg-white text-secondary badge-notifications">12</span>
+        </button>
+        <button type="button" class="btn btn-secondary text-nowrap d-inline-block">
+          Pill
+          <span class="badge rounded-pill bg-info text-white badge-notifications">12</span>
+        </button>
+        <button type="button" class="btn btn-secondary text-nowrap d-inline-block">
+          Dot
+          <span class="badge badge-dot bg-danger badge-notifications"></span>
+        </button>
+        <button type="button" class="btn text-nowrap d-inline-block">
+          <span class="tf-icons bx bx-xs bx-envelope"></span>
+          <span class="badge bg-primary text-white badge-notifications">6</span>
+        </button>
+        <button type="button" class="btn text-nowrap d-inline-block">
+          <span class="tf-icons bx bxl-twitter"></span>
+          <span class="badge rounded-pill bg-info text-white badge-notifications">5</span>
+        </button>
+        <button type="button" class="btn text-nowrap d-inline-block">
+          <span class="tf-icons bx bx-xs bx-bell"></span>
+          <span class="badge rounded-pill bg-danger text-white badge-notifications">10</span>
+        </button>
+        <button type="button" class="btn text-nowrap d-inline-block">
+          <span class="tf-icons bx bxl-facebook-square"></span>
+          <span class="badge rounded-pill bg-danger badge-dot badge-notifications"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Dots -->
+  <div class="col-12">
+    <div class="card">
+      <h5 class="card-header">Dots Style</h5>
+      <div class="card-body d-sm-flex d-block">
+        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+          <span class="badge badge-dot bg-primary me-1"></span> Primary
+        </div>
+        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+          <span class="badge badge-dot bg-secondary me-1"></span> Secondary
+        </div>
+        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+          <span class="badge badge-dot bg-success me-1"></span> Success
+        </div>
+        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+          <span class="badge badge-dot bg-danger me-1"></span> Danger
+        </div>
+        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+          <span class="badge badge-dot bg-warning me-1"></span> Warning
+        </div>
+        <div class="d-flex align-items-center lh-1 me-3 mb-3 mb-sm-0">
+          <span class="badge badge-dot bg-info me-1"></span> Info
         </div>
       </div>
     </div>

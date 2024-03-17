@@ -1,6 +1,14 @@
-@extends('layouts/contentNavbarLayout')
+@php
+  $configData = Helper::appClasses();
+@endphp
+
+@extends('layouts/layoutMaster')
 
 @section('title', 'Modals - UI elements')
+
+@section('vendor-style')
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/animate-css/animate.css')}}">
+@endsection
 
 @section('page-script')
 <script src="{{asset('assets/js/ui-modals.js')}}"></script>
@@ -52,7 +60,7 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                   <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
               </div>
@@ -97,7 +105,7 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                   <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
               </div>
@@ -142,7 +150,7 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                   <button type="button" class="btn btn-primary">Save</button>
                 </div>
               </form>
@@ -274,7 +282,7 @@
                     consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                   <button type="button" class="btn btn-primary">Save changes</button>
                 </div>
               </div>
@@ -317,7 +325,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
               </div>
             </div>
@@ -350,7 +358,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
               </div>
             </div>
@@ -383,7 +391,7 @@
                 </div>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
               </div>
             </div>
@@ -454,7 +462,7 @@
                   consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
               </div>
             </div>
@@ -507,7 +515,7 @@
                   consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary">Save changes</button>
               </div>
             </div>
@@ -562,7 +570,7 @@
                   </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
                   <button type="button" class="btn btn-primary">Save</button>
                 </div>
               </form>
@@ -574,4 +582,536 @@
   </div>
 </div>
 <!--/ Bootstrap modals -->
+
+<!-- Animation -->
+<div class="card mb-4">
+  <h5 class="card-header">Animation</h5>
+  <div class="card-body">
+    <!-- Modal Animation with options -->
+    <small class="text-light fw-medium">Animation Options</small>
+    <div class="d-flex mt-3">
+      <select class="form-select animation-dropdown me-2 w-25" id="animation-dropdown">
+        <optgroup label="Attention Seekers">
+          <option value="animate__fade">fade</option>
+          <option value="animate__bounce">bounce</option>
+          <option value="animate__flash">flash</option>
+          <option value="animate__pulse">pulse</option>
+          <option value="animate__rubberBand">rubberBand</option>
+          <option value="animate__shakeX">shake</option>
+          <option value="animate__swing">swing</option>
+          <option value="animate__tada">tada</option>
+          <option value="animate__wobble">wobble</option>
+          <option value="animate__jello">jello</option>
+          <option value="animate__heartBeat">heartBeat</option>
+        </optgroup>
+
+        <optgroup label="Bouncing Entrances">
+          <option value="animate__bounceIn">bounceIn</option>
+          <option value="animate__bounceInDown">bounceInDown</option>
+          <option value="animate__bounceInLeft">bounceInLeft</option>
+          <option value="animate__bounceInRight">bounceInRight</option>
+          <option value="animate__bounceInUp">bounceInUp</option>
+        </optgroup>
+
+        <optgroup label="Fading Entrances">
+          <option value="animate__fadeIn" selected>fadeIn</option>
+          <option value="animate__fadeInDown">fadeInDown</option>
+          <option value="animate__fadeInDownBig">fadeInDownBig</option>
+          <option value="animate__fadeInLeft">fadeInLeft</option>
+          <option value="animate__fadeInLeftBig">fadeInLeftBig</option>
+          <option value="animate__fadeInRight">fadeInRight</option>
+          <option value="animate__fadeInRightBig">fadeInRightBig</option>
+          <option value="animate__fadeInUp">fadeInUp</option>
+          <option value="animate__fadeInUpBig">fadeInUpBig</option>
+        </optgroup>
+
+        <optgroup label="Flippers">
+          <option value="animate__flip">flip</option>
+          <option value="animate__flipInX">flipInX</option>
+          <option value="animate__flipInY">flipInY</option>
+        </optgroup>
+
+        <optgroup label="Lightspeed">
+          <option value="animate__lightSpeedInRight">lightSpeedIn</option>
+        </optgroup>
+
+        <optgroup label="Rotating Entrances">
+          <option value="animate__rotateIn">rotateIn</option>
+          <option value="animate__rotateInDownLeft">rotateInDownLeft</option>
+          <option value="animate__rotateInDownRight">rotateInDownRight</option>
+          <option value="animate__rotateInUpLeft">rotateInUpLeft</option>
+          <option value="animate__rotateInUpRight">rotateInUpRight</option>
+        </optgroup>
+
+        <optgroup label="Sliding Entrances">
+          <option value="animate__slideInUp">slideInUp</option>
+          <option value="animate__slideInDown">slideInDown</option>
+          <option value="animate__slideInLeft">slideInLeft</option>
+          <option value="animate__slideInRight">slideInRight</option>
+        </optgroup>
+
+        <optgroup label="Zoom Entrances">
+          <option value="animate__zoomIn">zoomIn</option>
+          <option value="animate__zoomInDown">zoomInDown</option>
+          <option value="animate__zoomInLeft">zoomInLeft</option>
+          <option value="animate__zoomInRight">zoomInRight</option>
+          <option value="animate__zoomInUp">zoomInUp</option>
+        </optgroup>
+
+        <optgroup label="Specials">
+          <option value="animate__jackInTheBox">jackInTheBox</option>
+          <option value="animate__rollIn">rollIn</option>
+        </optgroup>
+      </select>
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#animationModal">
+        Launch modal
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade animate__animated fadeIn" id="animationModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel5">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col mb-3">
+                  <label for="nameAnimation" class="form-label">Name</label>
+                  <input type="text" id="nameAnimation" class="form-control" placeholder="Enter Name">
+                </div>
+              </div>
+              <div class="row g-2">
+                <div class="col mb-0">
+                  <label for="emailAnimation" class="form-label">Email</label>
+                  <input type="email" id="emailAnimation" class="form-control" placeholder="xxxx@xxx.xx">
+                </div>
+                <div class="col mb-0">
+                  <label for="dobAnimation" class="form-label">DOB</label>
+                  <input type="date" id="dobAnimation" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/ Animation -->
+
+<!-- Extended Modals -->
+<div class="card">
+  <h5 class="card-header">Extended Modals</h5>
+  <div class="card-body">
+    <div class="row gy-3">
+      <!-- Onboarding modals -->
+      <div class="col-lg-4 col-md-6">
+        <small class="text-light fw-medium">Onboarding Modals</small>
+        <!-- slider modal -->
+        <div class="modal-onboarding modal fade animate__animated" id="onboardingSlideModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content text-center">
+              <div class="modal-header border-0">
+                <a class="text-muted close-label" href="javascript:void(0);" data-bs-dismiss="modal">Skip Intro</a>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+              </div>
+              <div id="modalCarouselControls" class="carousel slide pb-4 mb-2" data-bs-interval="false">
+                <div class="carousel-indicators">
+                  <button type="button" data-bs-target="#modalCarouselControls" data-bs-slide-to="0" class="active" aria-label="Slide 1"></button>
+                  <button type="button" data-bs-target="#modalCarouselControls" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                  <button type="button" data-bs-target="#modalCarouselControls" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <div class="onboarding-media">
+                      <div class="mx-2">
+                        <img src="{{asset('assets/img/illustrations/girl-with-laptop-'.$configData['style'].'.png')}}" alt="girl-with-laptop-light" width="335" class="img-fluid" data-app-dark-img="illustrations/girl-with-laptop-dark.png" data-app-light-img="illustrations/girl-with-laptop-light.png">
+                      </div>
+                    </div>
+                    <div class="onboarding-content">
+                      <h4 class="onboarding-title text-body">Example Request Information</h4>
+                      <!-- <div class="onboarding-info">In this example you can see a form where you can request some
+                      additional information from the customer when they land on the app page.</div> -->
+                      <form>
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <div class="mb-3">
+                              <label for="nameEx" class="form-label">Your Full Name</label>
+                              <input class="form-control" placeholder="Enter your full name..." type="text" value="" tabindex="0" id="nameEx">
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="mb-3">
+                              <label for="roleEx" class="form-label">Your Role</label>
+                              <select class="form-select" tabindex="0" id="roleEx">
+                                <option>Web Developer</option>
+                                <option>Business Owner</option>
+                                <option>Other</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="carousel-item">
+                    <div class="onboarding-media">
+                      <div class="mx-2">
+                        <img src="{{asset('assets/img/illustrations/boy-with-laptop-'.$configData['style'].'.png')}}" alt="boy-with-laptop-light" width="300" class="img-fluid" data-app-dark-img="illustrations/boy-with-laptop-dark.png" data-app-light-img="illustrations/boy-with-laptop-light.png">
+                      </div>
+                    </div>
+                    <div class="onboarding-content">
+                      <h4 class="onboarding-title text-body">Example Request Information</h4>
+                      <div class="onboarding-info">In this example you can see a form where you can request some
+                        additional information from the customer when they land on the app page.</div>
+                      <form>
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <div class="mb-3">
+                              <label for="nameEx1" class="form-label">Your Full Name</label>
+                              <input class="form-control" placeholder="Enter your full name..." type="text" value="" tabindex="0" id="nameEx1">
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="mb-3">
+                              <label for="roleEx1" class="form-label">Your Role</label>
+                              <select class="form-select" tabindex="0" id="roleEx1">
+                                <option>Web Developer</option>
+                                <option>Business Owner</option>
+                                <option>Other</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div class="carousel-item">
+                    <div class="onboarding-media">
+                      <div class="mx-2">
+                        <img src="{{asset('assets/img/illustrations/girl-verify-password-'.$configData['style'].'.png')}}" alt="girl-verify-password-light" width="300" class="img-fluid" data-app-dark-img="illustrations/girl-verify-password-dark.png" data-app-light-img="illustrations/girl-verify-password-light.png">
+                      </div>
+                    </div>
+                    <div class="onboarding-content">
+                      <h4 class="onboarding-title text-body">Example Request Information</h4>
+                      <div class="onboarding-info">In this example you can see a form where you can request some
+                        additional information from the customer when they land on the app page.</div>
+                      <form>
+                        <div class="row">
+                          <div class="col-sm-6">
+                            <div class="mb-3">
+                              <label for="nameEx2" class="form-label">Your Full Name</label>
+                              <input class="form-control" placeholder="Enter your full name..." type="text" value="" tabindex="0" id="nameEx2">
+                            </div>
+                          </div>
+                          <div class="col-sm-6">
+                            <div class="mb-3">
+                              <label for="roleEx2" class="form-label">Your Role</label>
+                              <select class="form-select" tabindex="0" id="roleEx2">
+                                <option>Web Developer</option>
+                                <option>Business Owner</option>
+                                <option>Other</option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                <a class="carousel-control-prev" href="#modalCarouselControls" role="button" data-bs-slide="prev">
+                  <i class="bx bx-chevrons-left lh-1"></i><span>Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#modalCarouselControls" role="button" data-bs-slide="next">
+                  <span>Next</span><i class="bx bx-chevrons-right lh-1"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--/ slider modal -->
+
+        <!-- Form with Image Modal -->
+        <div class="modal-onboarding modal fade animate__animated" id="onboardImageModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content text-center">
+              <div class="modal-header border-0">
+                <a class="text-muted close-label" href="javascript:void(0);" data-bs-dismiss="modal">Skip Intro</a>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+              </div>
+              <div class="modal-body p-0">
+                <div class="onboarding-media">
+                  <div class="mx-2">
+                    <img src="{{asset('assets/img/illustrations/girl-unlock-password-'.$configData['style'].'.png')}}" alt="girl-unlock-password-light" width="335" class="img-fluid" data-app-dark-img="illustrations/girl-unlock-password-dark.png" data-app-light-img="illustrations/girl-unlock-password-light.png">
+                  </div>
+                </div>
+                <div class="onboarding-content mb-0">
+                  <h4 class="onboarding-title text-body">Example Request Information</h4>
+                  <div class="onboarding-info">In this example you can see a form where you can request some additional
+                    information from the customer when they land on the app page.</div>
+                  <form>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="mb-3">
+                          <label for="nameEx3" class="form-label">Your Full Name</label>
+                          <input class="form-control" placeholder="Enter your full name..." type="text" value="" tabindex="0" id="nameEx3">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="mb-3">
+                          <label for="roleEx3" class="form-label">Your Role</label>
+                          <select class="form-select" tabindex="0" id="roleEx3">
+                            <option>Web Developer</option>
+                            <option>Business Owner</option>
+                            <option>Other</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--/ Form with Image Modal -->
+        <div class="demo-inline-spacing">
+          <!-- slider modal -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#onboardingSlideModal">Multistep
+            Slider modal</button>
+          <!--/ slider modal -->
+
+          <!-- Form with Image Modal -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#onboardImageModal">
+            Modal with form
+          </button>
+          <!--/ Form with Image Modal -->
+        </div>
+      </div>
+      <!-- Horizontal Onboarding modals -->
+      <div class="col-lg-4 col-md-6">
+        <small class="text-light fw-medium">Horizontal Onboarding Modals</small>
+        <!-- horizontal slider modal -->
+        <div class="modal-onboarding modal fade animate__animated" id="onboardingHorizontalSlideModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content text-center">
+              <div class="modal-header border-0">
+                <a class="text-muted close-label" href="javascript:void(0);" data-bs-dismiss="modal">Skip Intro</a>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+              </div>
+              <div id="modalHorizontalCarouselControls" class="carousel slide pb-4 mb-2" data-bs-interval="false">
+                <div class="carousel-indicators">
+                  <button type="button" data-bs-target="#modalHorizontalCarouselControls" data-bs-slide-to="0" class="active" aria-label="Slide 1"></button>
+                  <button type="button" data-bs-target="#modalHorizontalCarouselControls" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                  <button type="button" data-bs-target="#modalHorizontalCarouselControls" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                </div>
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <div class="onboarding-horizontal">
+                      <div class="onboarding-media">
+                        <img src="{{asset('assets/img/illustrations/boy-with-rocket-'.$configData['style'].'.png')}}" alt="boy-with-rocket-light" width="273" class="img-fluid" data-app-dark-img="illustrations/boy-with-rocket-dark.png" data-app-light-img="illustrations/boy-with-rocket-light.png">
+                      </div>
+                      <div class="onboarding-content">
+                        <h4 class="onboarding-title text-body">Example Request Information</h4>
+                        <div class="onboarding-info">In this example you can see a form where you can request some
+                          additional information from the customer when they land on the app page.</div>
+                        <form>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="mb-3">
+                                <label for="nameEx4" class="form-label">Your Full Name</label>
+                                <input class="form-control" placeholder="Enter your full name..." type="text" value="" tabindex="0" id="nameEx4">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="mb-3">
+                                <label for="roleEx4" class="form-label">Your Role</label>
+                                <select class="form-select" tabindex="0" id="roleEx4">
+                                  <option>Web Developer</option>
+                                  <option>Business Owner</option>
+                                  <option>Other</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item">
+                    <div class="onboarding-horizontal">
+                      <div class="onboarding-media">
+                        <img src="{{asset('assets/img/illustrations/girl-doing-yoga-'.$configData['style'].'.png')}}" alt="boy-with-rocket-light" width="273" class="img-fluid" data-app-dark-img="illustrations/girl-doing-yoga-dark.png" data-app-light-img="illustrations/girl-doing-yoga-light.png">
+                      </div>
+                      <div class="onboarding-content">
+                        <h4 class="onboarding-title text-body">Example Request Information</h4>
+                        <div class="onboarding-info">In this example you can see a form where you can request some
+                          additional information from the customer when they land on the app page.</div>
+                        <form>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="mb-3">
+                                <label for="nameEx5" class="form-label">Your Full Name</label>
+                                <input class="form-control" placeholder="Enter your full name..." type="text" value="" tabindex="0" id="nameEx5">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="mb-3">
+                                <label for="roleEx5" class="form-label">Your Role</label>
+                                <select class="form-select" tabindex="0" id="roleEx5">
+                                  <option>Web Developer</option>
+                                  <option>Business Owner</option>
+                                  <option>Other</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="carousel-item">
+                    <div class="onboarding-horizontal">
+                      <div class="onboarding-media">
+                        <img src="{{asset('assets/img/illustrations/boy-with-laptop-'.$configData['style'].'.png')}}" alt="boy-with-laptop-light" width="273" class="img-fluid" data-app-dark-img="illustrations/boy-with-laptop-dark.png" data-app-light-img="illustrations/boy-with-laptop-light.png">
+                      </div>
+                      <div class="onboarding-content">
+                        <h4 class="onboarding-title text-body">Example Request Information</h4>
+                        <div class="onboarding-info">In this example you can see a form where you can request some
+                          additional information from the customer when they land on the app page.</div>
+                        <form>
+                          <div class="row">
+                            <div class="col-sm-6">
+                              <div class="mb-3">
+                                <label for="nameEx6" class="form-label">Your Full Name</label>
+                                <input class="form-control" placeholder="Enter your full name..." type="text" value="" tabindex="0" id="nameEx6">
+                              </div>
+                            </div>
+                            <div class="col-sm-6">
+                              <div class="mb-3">
+                                <label for="roleEx6" class="form-label">Your Role</label>
+                                <select class="form-select" tabindex="0" id="roleEx6">
+                                  <option>Web Developer</option>
+                                  <option>Business Owner</option>
+                                  <option>Other</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <a class="carousel-control-prev" href="#modalHorizontalCarouselControls" role="button" data-bs-slide="prev">
+                  <i class="bx bx-chevrons-left lh-1"></i><span>Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#modalHorizontalCarouselControls" role="button" data-bs-slide="next">
+                  <span>Next</span><i class="bx bx-chevrons-right lh-1"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--/ horizontal slider modal -->
+
+        <!-- Form with Image horizontal Modal -->
+        <div class="modal-onboarding modal fade animate__animated" id="onboardHorizontalImageModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content text-center">
+              <div class="modal-header border-0">
+                <a class="text-muted close-label" href="javascript:void(0);" data-bs-dismiss="modal">Skip Intro</a>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+              </div>
+              <div class="modal-body onboarding-horizontal p-0">
+                <div class="onboarding-media">
+                  <img src="{{asset('assets/img/illustrations/boy-verify-email-'.$configData['style'].'.png')}}" alt="boy-verify-email-light" width="273" class="img-fluid" data-app-dark-img="illustrations/boy-verify-email-dark.png" data-app-light-img="illustrations/boy-verify-email-light.png">
+                </div>
+                <div class="onboarding-content mb-0">
+                  <h4 class="onboarding-title text-body">Example Request Information</h4>
+                  <div class="onboarding-info">In this example you can see a form where you can request some additional
+                    information from the customer when they land on the app page.</div>
+                  <form>
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="mb-3">
+                          <label for="nameEx7" class="form-label">Your Full Name</label>
+                          <input class="form-control" placeholder="Enter your full name..." type="text" value="" tabindex="0" id="nameEx7">
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="mb-3">
+                          <label for="roleEx7" class="form-label">Your Role</label>
+                          <select class="form-select" tabindex="0" id="roleEx7">
+                            <option>Web Developer</option>
+                            <option>Business Owner</option>
+                            <option>Other</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="button" class="btn btn-label-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--/ Form with Image horizontal Modal -->
+        <div class="demo-inline-spacing">
+          <!-- horizontal slider modal -->
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#onboardingHorizontalSlideModal">Multistep Slider modal</button>
+
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#onboardHorizontalImageModal">
+            Modal with form
+          </button>
+        </div>
+      </div>
+
+      <!-- Transparent Modal -->
+      <div class="col-lg-4 col-md-6">
+        <small class="text-light fw-medium">Transparent Modal</small>
+        <div class="mt-3">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modals-transparent">Show</button>
+
+          <!-- Modal template -->
+          <div class="modal modal-transparent fade" id="modals-transparent" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <a href="javascript:void(0);" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></a>
+                  <p class="text-white text-large fw-light mb-3">Subscribe to get latest updates</p>
+                  <div class="input-group input-group-lg mb-3">
+                    <input type="text" class="form-control bg-white border-0" placeholder="Your email" aria-describedby="subscribe">
+                    <button class="btn btn-primary" type="button" id="subscribe">Subscribe</button>
+                  </div>
+                  <div class="text-start text-white">We won't share your email address</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--/ Extended Modals -->
 @endsection

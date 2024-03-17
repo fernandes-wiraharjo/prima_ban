@@ -9,6 +9,7 @@ class Fluid extends Controller
 {
   public function index()
   {
-    return view('content.layouts-example.layouts-fluid');
+    $pageConfigs = ['contentLayout' => 'wide'];
+    return view('content.layouts-example.layouts-fluid',['pageConfigs'=> $pageConfigs]);
   }
 }

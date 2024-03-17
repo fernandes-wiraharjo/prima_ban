@@ -1,6 +1,10 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Input groups - Forms')
+
+@section('page-script')
+<script src="{{asset('assets/js/form-input-group.js')}}"></script>
+@endsection
 
 @section('content')
 <h4 class="py-3 mb-4"><span class="text-muted fw-light">Forms /</span> Input groups</h4>
@@ -97,7 +101,7 @@
   <!-- Sizing -->
   <div class="col-md-6">
     <div class="card mb-4">
-      <h5 class="card-header">Sizing</h5>
+      <h5 class="card-header">Sizing & Shape</h5>
       <div class="card-body demo-vertical-spacing demo-only-element">
 
         <div class="input-group input-group-lg">
@@ -111,6 +115,13 @@
         </div>
 
         <div class="input-group input-group-sm">
+          <span class="input-group-text">@</span>
+          <input type="text" class="form-control" placeholder="Username" />
+        </div>
+      </div>
+      <hr class="m-0" />
+      <div class="card-body">
+        <div class="input-group rounded-pill">
           <span class="input-group-text">@</span>
           <input type="text" class="form-control" placeholder="Username" />
         </div>
@@ -182,10 +193,10 @@
 
         <small class="text-light fw-medium d-block">Input Group</small>
 
-        <div class="input-group input-group-merge speech-to-text">
-          <input type="text" class="form-control" placeholder="Say it" aria-describedby="text-to-speech-addon">
-          <span class="input-group-text" id="text-to-speech-addon">
-            <i class='bx bx-microphone cursor-pointer text-to-speech-toggle'></i>
+        <div class="input-group input-group-merge form-send-message">
+          <input type="text" class="form-control message-input" placeholder="Say it" aria-describedby="text-to-speech-addon">
+          <span class="message-actions input-group-text" id="text-to-speech-addon">
+            <i class="bx bx-microphone cursor-pointer speech-to-text"></i>
           </span>
         </div>
 

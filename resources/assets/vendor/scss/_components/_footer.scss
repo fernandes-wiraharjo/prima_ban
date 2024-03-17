@@ -37,3 +37,36 @@
     border-color: $menu-light-border-color;
   }
 }
+
+// Dark footer
+.footer-dark {
+  color: $navbar-dark-color;
+
+  .footer-text {
+    color: $navbar-dark-active-color;
+  }
+
+  .footer-link {
+    color: $navbar-dark-color;
+
+    &:hover,
+    &:focus {
+      color: $navbar-dark-hover-color;
+    }
+
+    &.disabled {
+      color: $navbar-dark-disabled-color !important;
+    }
+  }
+
+  .show > .footer-link,
+  .active > .footer-link,
+  .footer-link.show,
+  .footer-link.active {
+    color: $navbar-dark-active-color;
+  }
+
+  hr {
+    border-color: $menu-dark-border-color;
+  }
+}

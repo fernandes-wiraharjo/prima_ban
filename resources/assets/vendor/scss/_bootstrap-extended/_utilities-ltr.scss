@@ -126,6 +126,20 @@ $utilities: map-merge(
         0: 0
       )
     ),
+    'border-left-dashed': (
+      property: border-left-style,
+      class: border-left-dashed,
+      values: (
+        null: dashed
+      )
+    ),
+    'border-right-dashed': (
+      property: border-right-style,
+      class: border-right-dashed,
+      values: (
+        null: dashed
+      )
+    ),
     // scss-docs-end utils-borders
     // scss-docs-start utils-text
     'text-align':

@@ -1,6 +1,11 @@
+@php
+$configData = Helper::appClasses();
+@endphp
+
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
 
   <!-- ! Hide app brand if navbar-full -->
+  @if(!isset($navbarFull))
   <div class="app-brand demo">
     <a href="{{url('/')}}" class="app-brand-link">
       <!-- <span class="app-brand-logo demo">
@@ -9,10 +14,11 @@
       <span class="app-brand-text demo menu-text fw-bold ms-2">{{config('variables.templateName')}}</span>
     </a>
 
-    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+    <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
       <i class="bx bx-chevron-left bx-sm align-middle"></i>
     </a>
   </div>
+  @endif
 
   <div class="menu-inner-shadow"></div>
 
@@ -60,7 +66,7 @@
         @isset($menu->icon)
         <i class="{{ $menu->icon }}"></i>
         @endisset
-        <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
+        <div class="text-truncate">{{ isset($menu->name) ? __($menu->name) : '' }}</div>
         @isset($menu->badge)
           <div class="badge bg-{{ $menu->badge[0] }} rounded-pill ms-auto">{{ $menu->badge[1] }}</div>
         @endisset

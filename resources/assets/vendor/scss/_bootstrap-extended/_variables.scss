@@ -695,6 +695,9 @@ $card-cap-padding-y: $spacer * 1.5 !default;
 $card-cap-bg: transparent !default;
 $card-bg: $white !default;
 $card-img-overlay-padding: 1.5rem !default;
+$card-transition: all 0.2s ease-in-out !default; // (C)
+$card-border-color-scale: 60% !default; // (C)
+$card-hover-border-scale: 62% !default; // (C)
 
 // * Accordion
 // *******************************************************************************

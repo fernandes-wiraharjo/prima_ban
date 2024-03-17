@@ -1,4 +1,4 @@
-const { EnvironmentPlugin } = require('webpack');
+const { EnvironmentPlugin, IgnorePlugin } = require('webpack');
 const mix = require('laravel-mix');
 const glob = require('glob');
 const path = require('path');
@@ -28,6 +28,14 @@ mix.webpackConfig({
   },
 
   plugins: [
+    new IgnorePlugin({
+      checkResource(resource, context) {
+        return [
+          path.join(__dirname, 'resources/assets/vendor/libs/@form-validation')
+          // Add more paths to ignore as needed
+        ].some(pathToIgnore => resource.startsWith(pathToIgnore));
+      }
+    }),
     new EnvironmentPlugin({
       // Application's public url
       BASE_URL: process.env.ASSET_URL ? `${process.env.ASSET_URL}/` : '/'
@@ -109,6 +117,8 @@ mixAssetsDir('vendor/libs/**/!(_)*.scss', (src, dest) =>
   mix.sass(src, dest.replace(/\.scss$/, '.css'), { sassOptions })
 );
 mixAssetsDir('vendor/libs/**/*.{png,jpg,jpeg,gif}', (src, dest) => mix.copy(src, dest));
+// Copy task for form validation plugin as premium plugin don't have npm package
+mixAssetsDir('vendor/libs/@form-validation/umd', (src, dest) => mix.copyDirectory(src, dest));
 
 // Fonts
 mixAssetsDir('vendor/fonts/*/*', (src, dest) => mix.copy(src, dest));
@@ -124,8 +134,14 @@ mixAssetsDir('vendor/fonts/!(_)*.scss', (src, dest) =>
 
 mixAssetsDir('js/**/*.js', (src, dest) => mix.scripts(src, dest));
 mixAssetsDir('css/**/*.css', (src, dest) => mix.copy(src, dest));
+// laravel working crud app related js
+mix.js('resources/js/laravel-user-management.js', 'public/js/');
 
 mix.copy('node_modules/boxicons/fonts/*', 'public/assets/vendor/fonts/boxicons');
+mix.copy('node_modules/flag-icons/flags/1x1/*', 'public/assets/vendor/fonts/flags/1x1');
+mix.copy('node_modules/flag-icons/flags/4x3/*', 'public/assets/vendor/fonts/flags/4x3');
+mix.copy('node_modules/@fortawesome/fontawesome-free/webfonts/*', 'public/assets/vendor/fonts/fontawesome');
+mix.copy('node_modules/katex/dist/fonts/*', 'public/assets/vendor/libs/quill/fonts');
 
 mix.version();
 

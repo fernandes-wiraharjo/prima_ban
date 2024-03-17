@@ -1,7 +1,10 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
 @section('title', 'Spinners - UI elements')
 
+@section('vendor-style')
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/spinkit/spinkit.css')}}" />
+@endsection
 
 @section('content')
 <h4 class="py-3 mb-4"><span class="text-muted fw-light">UI elements /</span> Spinners</h4>
@@ -130,4 +133,146 @@
 </div>
 <!--/ Size -->
 
+<!-- With Buttons -->
+<div class="card mb-4">
+  <h5 class="card-header">With Buttons</h5>
+  <div class="card-body">
+    <div class="demo-inline-spacing">
+      <button class="btn btn-primary" type="button" disabled>
+        <span class="spinner-border" role="status" aria-hidden="true"></span>
+        <span class="visually-hidden">Loading...</span>
+      </button>
+      <button class="btn btn-primary" type="button" disabled>
+        <span class="spinner-border me-1" role="status" aria-hidden="true"></span>
+        Loading...
+      </button>
+      <button class="btn btn-primary" type="button" disabled>
+        <span class="spinner-grow" role="status" aria-hidden="true"></span>
+        <span class="visually-hidden">Loading...</span>
+      </button>
+      <button class="btn btn-primary" type="button" disabled>
+        <span class="spinner-grow me-1" role="status" aria-hidden="true"></span>
+        Loading...
+      </button>
+    </div>
+  </div>
+</div>
+<!--/ With Buttons -->
+
+<!-- SpinKit -->
+<div class="card">
+  <h5 class="card-header">SpinKit</h5>
+  <div class="card-body demo-vertical-spacing-lg demo-only-element px-5">
+    <div class="row py-sm-4 gy-3 gy-sm-0">
+      <div class="col">
+        <!-- Plane -->
+        <div class="sk-plane sk-primary"></div>
+      </div>
+      <div class="col">
+        <!-- Chase -->
+        <div class="sk-chase sk-primary">
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+          <div class="sk-chase-dot"></div>
+        </div>
+      </div>
+      <div class="col">
+        <!-- Bounce -->
+        <div class="sk-bounce sk-primary">
+          <div class="sk-bounce-dot"></div>
+          <div class="sk-bounce-dot"></div>
+        </div>
+      </div>
+      <div class="col">
+        <!-- Wave -->
+        <div class="sk-wave sk-primary">
+          <div class="sk-wave-rect"></div>
+          <div class="sk-wave-rect"></div>
+          <div class="sk-wave-rect"></div>
+          <div class="sk-wave-rect"></div>
+          <div class="sk-wave-rect"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row py-sm-4 gy-3 gy-sm-0">
+      <div class="col">
+        <!-- Pluse -->
+        <div class="sk-pulse sk-primary"></div>
+      </div>
+      <div class="col">
+        <!-- Swing -->
+        <div class="sk-swing sk-primary">
+          <div class="sk-swing-dot"></div>
+          <div class="sk-swing-dot"></div>
+        </div>
+
+      </div>
+      <div class="col">
+        <!-- Circle -->
+        <div class="sk-circle sk-primary">
+          <div class="sk-circle-dot"></div>
+          <div class="sk-circle-dot"></div>
+          <div class="sk-circle-dot"></div>
+          <div class="sk-circle-dot"></div>
+          <div class="sk-circle-dot"></div>
+          <div class="sk-circle-dot"></div>
+          <div class="sk-circle-dot"></div>
+          <div class="sk-circle-dot"></div>
+          <div class="sk-circle-dot"></div>
+          <div class="sk-circle-dot"></div>
+          <div class="sk-circle-dot"></div>
+          <div class="sk-circle-dot"></div>
+        </div>
+      </div>
+      <div class="col">
+        <!-- Circle Fade -->
+        <div class="sk-circle-fade sk-primary">
+          <div class="sk-circle-fade-dot"></div>
+          <div class="sk-circle-fade-dot"></div>
+          <div class="sk-circle-fade-dot"></div>
+          <div class="sk-circle-fade-dot"></div>
+          <div class="sk-circle-fade-dot"></div>
+          <div class="sk-circle-fade-dot"></div>
+          <div class="sk-circle-fade-dot"></div>
+          <div class="sk-circle-fade-dot"></div>
+          <div class="sk-circle-fade-dot"></div>
+          <div class="sk-circle-fade-dot"></div>
+          <div class="sk-circle-fade-dot"></div>
+          <div class="sk-circle-fade-dot"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row py-sm-4 gy-3 gy-sm-0">
+      <div class="col">
+        <!-- Grid -->
+        <div class="sk-grid sk-primary">
+          <div class="sk-grid-cube"></div>
+          <div class="sk-grid-cube"></div>
+          <div class="sk-grid-cube"></div>
+          <div class="sk-grid-cube"></div>
+          <div class="sk-grid-cube"></div>
+          <div class="sk-grid-cube"></div>
+          <div class="sk-grid-cube"></div>
+          <div class="sk-grid-cube"></div>
+          <div class="sk-grid-cube"></div>
+        </div>
+      </div>
+      <div class="col">
+        <!-- Fold -->
+        <div class="sk-fold sk-primary">
+          <div class="sk-fold-cube"></div>
+          <div class="sk-fold-cube"></div>
+          <div class="sk-fold-cube"></div>
+          <div class="sk-fold-cube"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- SpinKit -->
 @endsection

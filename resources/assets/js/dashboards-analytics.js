@@ -5,12 +5,111 @@
 'use strict';
 
 (function () {
-  let cardColor, headingColor, axisColor, shadeColor, borderColor;
+  let cardColor, headingColor, legendColor, labelColor, shadeColor, borderColor;
 
-  cardColor = config.colors.cardColor;
-  headingColor = config.colors.headingColor;
-  axisColor = config.colors.axisColor;
-  borderColor = config.colors.borderColor;
+  if (isDarkStyle) {
+    cardColor = config.colors_dark.cardColor;
+    headingColor = config.colors_dark.headingColor;
+    legendColor = config.colors_dark.bodyColor;
+    labelColor = config.colors_dark.textMuted;
+    borderColor = config.colors_dark.borderColor;
+  } else {
+    cardColor = config.colors.cardColor;
+    headingColor = config.colors.headingColor;
+    legendColor = config.colors.bodyColor;
+    labelColor = config.colors.textMuted;
+    borderColor = config.colors.borderColor;
+  }
+
+  // Order Area Chart
+  // --------------------------------------------------------------------
+  const orderAreaChartEl = document.querySelector('#orderChart'),
+    orderAreaChartConfig = {
+      chart: {
+        height: 80,
+        type: 'area',
+        toolbar: {
+          show: false
+        },
+        sparkline: {
+          enabled: true
+        }
+      },
+      markers: {
+        size: 6,
+        colors: 'transparent',
+        strokeColors: 'transparent',
+        strokeWidth: 4,
+        discrete: [
+          {
+            fillColor: config.colors.white,
+            seriesIndex: 0,
+            dataPointIndex: 6,
+            strokeColor: config.colors.success,
+            strokeWidth: 2,
+            size: 6,
+            radius: 8
+          }
+        ],
+        hover: {
+          size: 7
+        }
+      },
+      grid: {
+        show: false,
+        padding: {
+          right: 8
+        }
+      },
+      colors: [config.colors.success],
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: shadeColor,
+          shadeIntensity: 0.8,
+          opacityFrom: 0.8,
+          opacityTo: 0.25,
+          stops: [0, 85, 100]
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        width: 2,
+        curve: 'smooth'
+      },
+      series: [
+        {
+          data: [180, 175, 275, 140, 205, 190, 295]
+        }
+      ],
+      xaxis: {
+        show: false,
+        lines: {
+          show: false
+        },
+        labels: {
+          show: false
+        },
+        stroke: {
+          width: 0
+        },
+        axisBorder: {
+          show: false
+        }
+      },
+      yaxis: {
+        stroke: {
+          width: 0
+        },
+        show: false
+      }
+    };
+  if (typeof orderAreaChartEl !== undefined && orderAreaChartEl !== null) {
+    const orderAreaChart = new ApexCharts(orderAreaChartEl, orderAreaChartConfig);
+    orderAreaChart.render();
+  }
 
   // Total Revenue Report Chart - Bar Chart
   // --------------------------------------------------------------------
@@ -62,7 +161,7 @@
           offsetX: -3
         },
         labels: {
-          colors: axisColor
+          colors: legendColor
         },
         itemMargin: {
           horizontal: 10
@@ -82,7 +181,7 @@
         labels: {
           style: {
             fontSize: '13px',
-            colors: axisColor
+            colors: labelColor
           }
         },
         axisTicks: {
@@ -96,7 +195,7 @@
         labels: {
           style: {
             fontSize: '13px',
-            colors: axisColor
+            colors: labelColor
           }
         }
       },
@@ -300,7 +399,7 @@
           dataLabels: {
             name: {
               offsetY: 15,
-              color: headingColor,
+              color: legendColor,
               fontSize: '15px',
               fontWeight: '500',
               fontFamily: 'Public Sans'
@@ -353,6 +452,82 @@
   if (typeof growthChartEl !== undefined && growthChartEl !== null) {
     const growthChart = new ApexCharts(growthChartEl, growthChartOptions);
     growthChart.render();
+  }
+
+  // Revenue Bar Chart
+  // --------------------------------------------------------------------
+  const revenueBarChartEl = document.querySelector('#revenueChart'),
+    revenueBarChartConfig = {
+      chart: {
+        height: 80,
+        type: 'bar',
+        toolbar: {
+          show: false
+        }
+      },
+      plotOptions: {
+        bar: {
+          barHeight: '80%',
+          columnWidth: '75%',
+          startingShape: 'rounded',
+          endingShape: 'rounded',
+          borderRadius: 2,
+          distributed: true
+        }
+      },
+      grid: {
+        show: false,
+        padding: {
+          top: -20,
+          bottom: -12,
+          left: -10,
+          right: 0
+        }
+      },
+      colors: [
+        config.colors_label.primary,
+        config.colors_label.primary,
+        config.colors_label.primary,
+        config.colors_label.primary,
+        config.colors.primary,
+        config.colors_label.primary,
+        config.colors_label.primary
+      ],
+      dataLabels: {
+        enabled: false
+      },
+      series: [
+        {
+          data: [40, 95, 60, 45, 90, 50, 75]
+        }
+      ],
+      legend: {
+        show: false
+      },
+      xaxis: {
+        categories: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+        axisBorder: {
+          show: false
+        },
+        axisTicks: {
+          show: false
+        },
+        labels: {
+          style: {
+            colors: labelColor,
+            fontSize: '13px'
+          }
+        }
+      },
+      yaxis: {
+        labels: {
+          show: false
+        }
+      }
+    };
+  if (typeof revenueBarChartEl !== undefined && revenueBarChartEl !== null) {
+    const revenueBarChart = new ApexCharts(revenueBarChartEl, revenueBarChartConfig);
+    revenueBarChart.render();
   }
 
   // Profit Report Line Chart
@@ -480,7 +655,7 @@
               total: {
                 show: true,
                 fontSize: '0.8125rem',
-                color: axisColor,
+                color: legendColor,
                 label: 'Weekly',
                 formatter: function (w) {
                   return '38%';
@@ -577,7 +752,7 @@
           show: true,
           style: {
             fontSize: '13px',
-            colors: axisColor
+            colors: labelColor
           }
         }
       },

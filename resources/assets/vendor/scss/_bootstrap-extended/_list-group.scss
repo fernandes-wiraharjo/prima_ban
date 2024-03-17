@@ -5,6 +5,7 @@
 @each $color, $value in $theme-colors {
   @if $color != primary and $color != light {
     @include template-list-group-item-variant('.list-group-item-#{$color}', $value);
+    @include template-list-group-timeline-variant('.list-group-timeline-#{$color}', $value);
   }
 }
 
@@ -53,6 +54,132 @@
     h6,
     .h6 {
       color: $list-group-active-color;
+    }
+  }
+}
+
+// RTL
+// *******************************************************************************
+
+@include rtl-only {
+  .list-group {
+    padding-right: 0;
+
+    // Timeline RTL List group
+    &.list-group-timeline {
+      &:before {
+        left: auto;
+        right: 0.2rem;
+      }
+      .list-group-item {
+        padding-right: 1.25rem;
+        &:before {
+          left: auto;
+          right: 0;
+        }
+      }
+    }
+    // List group horizontal RTL style
+
+    &.list-group-horizontal {
+      .list-group-item {
+        &:first-child {
+          border-radius: 0.25rem;
+          border-top-left-radius: 0;
+          border-bottom-left-radius: 0;
+        }
+        &:last-child {
+          border-radius: 0.25rem;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 0;
+          border-left-width: 1px;
+        }
+      }
+    }
+    @include media-breakpoint-up(sm) {
+      &.list-group-horizontal-sm {
+        .list-group-item {
+          &:first-child {
+            border-radius: 0.25rem;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
+          &:last-child {
+            border-radius: 0.25rem;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-left-width: 1px;
+          }
+        }
+      }
+    }
+    @include media-breakpoint-up(md) {
+      &.list-group-horizontal-md {
+        .list-group-item {
+          &:first-child {
+            border-radius: 0.25rem;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
+          &:last-child {
+            border-radius: 0.25rem;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-left-width: 1px;
+          }
+        }
+      }
+    }
+    @include media-breakpoint-up(lg) {
+      &.list-group-horizontal-lg {
+        .list-group-item {
+          &:first-child {
+            border-radius: 0.25rem;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
+          &:last-child {
+            border-radius: 0.25rem;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-left-width: 1px;
+          }
+        }
+      }
+    }
+    @include media-breakpoint-up(xl) {
+      &.list-group-horizontal-xl {
+        .list-group-item {
+          &:first-child {
+            border-radius: 0.25rem;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
+          &:last-child {
+            border-radius: 0.25rem;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-left-width: 1px;
+          }
+        }
+      }
+    }
+    @include media-breakpoint-up(xxl) {
+      &.list-group-horizontal-xxl {
+        .list-group-item {
+          &:first-child {
+            border-radius: 0.25rem;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
+          &:last-child {
+            border-radius: 0.25rem;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            border-left-width: 1px;
+          }
+        }
+      }
     }
   }
 }

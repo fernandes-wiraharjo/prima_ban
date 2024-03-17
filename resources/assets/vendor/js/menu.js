@@ -1,12 +1,16 @@
 const TRANSITION_EVENTS = ['transitionend', 'webkitTransitionEnd', 'oTransitionEnd']
 // const TRANSITION_PROPERTIES = ['transition', 'MozTransition', 'webkitTransition', 'WebkitTransition', 'OTransition']
+const DELTA = 5
 
 class Menu {
   constructor(el, config = {}, _PS = null) {
     this._el = el
+    this._horizontal = config.orientation === 'horizontal'
     this._animate = config.animate !== false
     this._accordion = config.accordion !== false
+    this._showDropdownOnHover = Boolean(config.showDropdownOnHover)
     this._closeChildren = Boolean(config.closeChildren)
+    this._rtl = document.documentElement.getAttribute('dir') === 'rtl' || document.body.getAttribute('dir') === 'rtl'
 
     this._onOpen = config.onOpen || (() => {})
     this._onOpened = config.onOpened || (() => {})
@@ -18,21 +22,57 @@ class Menu {
     this._menuBgClass = null
 
     el.classList.add('menu')
-    el.classList[this._animate ? 'remove' : 'add']('menu-no-animation') // check
+    el.classList[this._animate ? 'remove' : 'add']('menu-no-animation')
 
-    el.classList.add('menu-vertical')
+    if (!this._horizontal) {
+      el.classList.add('menu-vertical')
+      el.classList.remove('menu-horizontal')
 
-    const PerfectScrollbarLib = _PS || window.PerfectScrollbar
+      const PerfectScrollbarLib = _PS || window.PerfectScrollbar
 
-    if (PerfectScrollbarLib) {
-      this._scrollbar = new PerfectScrollbarLib(el.querySelector('.menu-inner'), {
-        suppressScrollX: true,
-        wheelPropagation: !Menu._hasClass('layout-menu-fixed layout-menu-fixed-offcanvas')
-      })
+      if (PerfectScrollbarLib) {
+        this._scrollbar = new PerfectScrollbarLib(el.querySelector('.menu-inner'), {
+          suppressScrollX: true,
+          wheelPropagation: !Menu._hasClass('layout-menu-fixed layout-menu-fixed-offcanvas')
+        })
 
-      window.Helpers.menuPsScroll = this._scrollbar
+        window.Helpers.menuPsScroll = this._scrollbar
+      } else {
+        el.querySelector('.menu-inner').classList.add('overflow-auto')
+      }
     } else {
-      el.querySelector('.menu-inner').classList.add('overflow-auto')
+      el.classList.add('menu-horizontal')
+      el.classList.remove('menu-vertical')
+
+      this._inner = el.querySelector('.menu-inner')
+      const container = this._inner.parentNode
+
+      this._prevBtn = el.querySelector('.menu-horizontal-prev')
+      if (!this._prevBtn) {
+        this._prevBtn = document.createElement('a')
+        this._prevBtn.href = '#'
+        this._prevBtn.className = 'menu-horizontal-prev'
+        container.appendChild(this._prevBtn)
+      }
+
+      this._wrapper = el.querySelector('.menu-horizontal-wrapper')
+      if (!this._wrapper) {
+        this._wrapper = document.createElement('div')
+        this._wrapper.className = 'menu-horizontal-wrapper'
+        this._wrapper.appendChild(this._inner)
+        container.appendChild(this._wrapper)
+      }
+
+      this._nextBtn = el.querySelector('.menu-horizontal-next')
+      if (!this._nextBtn) {
+        this._nextBtn = document.createElement('a')
+        this._nextBtn.href = '#'
+        this._nextBtn.className = 'menu-horizontal-next'
+        container.appendChild(this._nextBtn)
+      }
+
+      this._innerPosition = 0
+      this.update()
     }
 
     // Add data attribute for bg color class of menu
@@ -44,6 +84,9 @@ class Menu {
       }
     }
     el.setAttribute('data-bg-class', this._menuBgClass)
+
+    // Switch to vertical menu on small screen for horizontal menu layout on page load
+    if (this._horizontal && window.innerWidth < window.Helpers.LAYOUT_BREAKPOINT) this.switchMenu('vertical')
 
     this._bindEvents()
 
@@ -74,7 +117,8 @@ class Menu {
         }
       }
     }
-    if (window.Helpers.isMobileDevice) this._el.addEventListener('click', this._evntElClick)
+    if ((!this._showDropdownOnHover && this._horizontal) || !this._horizontal || window.Helpers.isMobileDevice)
+      this._el.addEventListener('click', this._evntElClick)
 
     this._evntWindowResize = () => {
       this.update()
@@ -87,6 +131,112 @@ class Menu {
       if (!this._horizontal && !horizontalMenuTemplate) this.manageScroll()
     }
     window.addEventListener('resize', this._evntWindowResize)
+
+    if (this._horizontal) {
+      this._evntPrevBtnClick = e => {
+        e.preventDefault()
+        if (this._prevBtn.classList.contains('disabled')) return
+        this._slide('prev')
+      }
+      this._prevBtn.addEventListener('click', this._evntPrevBtnClick)
+
+      this._evntNextBtnClick = e => {
+        e.preventDefault()
+        if (this._nextBtn.classList.contains('disabled')) return
+        this._slide('next')
+      }
+      this._nextBtn.addEventListener('click', this._evntNextBtnClick)
+
+      this._evntBodyClick = e => {
+        if (!this._inner.contains(e.target) && this._el.querySelectorAll('.menu-inner > .menu-item.open').length)
+          this.closeAll()
+      }
+      document.body.addEventListener('click', this._evntBodyClick)
+
+      if (this._showDropdownOnHover) {
+        /** ***********************************************
+         * Horizontal Menu Mouse Over Event
+         * ? e.target !== e.currentTarget condition to disable mouseover event on whole menu navbar
+         * ? !e.target.parentNode.classList.contains('open') to disable mouseover events on icon, text and dropdown arrow
+         */
+        this._evntElMouseOver = e => {
+          if (e.target !== e.currentTarget && !e.target.parentNode.classList.contains('open')) {
+            const toggleLink = e.target.classList.contains('menu-toggle') ? e.target : null
+
+            if (toggleLink) {
+              e.preventDefault()
+
+              if (toggleLink.getAttribute('data-hover') !== 'true') {
+                this.toggle(toggleLink)
+              }
+            }
+          }
+          e.stopPropagation()
+        }
+        if (this._horizontal && window.screen.width > window.Helpers.LAYOUT_BREAKPOINT) {
+          this._el.addEventListener('mouseover', this._evntElMouseOver)
+        }
+
+        /** ***********************************************
+         * Horizontal Menu Mouse Out Event
+         * ? e.target !== e.currentTarget condition to disable mouseout event on whole menu navbar
+         * ? mouseOutEl.parentNode.classList.contains('open') to check if the mouseout element has open class or not
+         * ? !mouseOutEl.classList.contains('menu-toggle') to check if mouseout was from single menu item and not from the one which has submenu
+         * ? !mouseOverEl.parentNode.classList.contains('menu-link') to disable mouseout event for icon, text and dropdown arrow
+         */
+        this._evntElMouseOut = e => {
+          const mainEl = e.currentTarget
+          const mouseOutEl = e.target
+          const mouseOverEl = e.toElement || e.relatedTarget
+
+          // Find absolute parent of any menu item from which mouseout event triggered
+          if (mouseOutEl.closest('ul') && mouseOutEl.closest('ul').classList.contains('menu-inner')) {
+            this._topParent = mouseOutEl
+          }
+
+          if (
+            mouseOutEl !== mainEl &&
+            (mouseOutEl.parentNode.classList.contains('open') || !mouseOutEl.classList.contains('menu-toggle')) &&
+            mouseOverEl &&
+            mouseOverEl.parentNode &&
+            !mouseOverEl.parentNode.classList.contains('menu-link')
+          ) {
+            // When mouse goes totally out of menu items, check mouse over element to confirm it's not the child of menu, once confirmed close the menu
+            if (this._topParent && !Menu.childOf(mouseOverEl, this._topParent.parentNode)) {
+              const toggleLink = this._topParent.classList.contains('menu-toggle') ? this._topParent : null
+
+              if (toggleLink) {
+                e.preventDefault()
+
+                if (toggleLink.getAttribute('data-hover') !== 'true') {
+                  this.toggle(toggleLink)
+                  this._topParent = null
+                }
+              }
+            }
+
+            // When mouse enter the sub menu, check if it's child of the initially mouse overed menu item(Actual Parent),
+            // if it's the parent do not close the sub menu else close the sub menu
+            if (Menu.childOf(mouseOverEl, mouseOutEl.parentNode)) {
+              return
+            }
+            const toggleLink = mouseOutEl.classList.contains('menu-toggle') ? mouseOutEl : null
+
+            if (toggleLink) {
+              e.preventDefault()
+
+              if (toggleLink.getAttribute('data-hover') !== 'true') {
+                this.toggle(toggleLink)
+              }
+            }
+          }
+          e.stopPropagation()
+        }
+        if (this._horizontal && window.screen.width > window.Helpers.LAYOUT_BREAKPOINT) {
+          this._el.addEventListener('mouseout', this._evntElMouseOut)
+        }
+      }
+    }
   }
 
   static childOf(/* child node */ c, /* parent node */ p) {
@@ -211,6 +361,7 @@ class Menu {
             window.requestAnimationFrame(() => this._toggleAnimation(true, item, false))
             if (this._accordion) this._closeOther(item, closeChildren)
           } else if (this._animate) {
+            this._toggleDropdown(true, item, closeChildren)
             // eslint-disable-next-line no-unused-expressions
             this._onOpened && this._onOpened(this, item, toggleLink, Menu._findMenu(item))
           } else {
@@ -220,6 +371,7 @@ class Menu {
             if (this._accordion) this._closeOther(item, closeChildren)
           }
         } else {
+          this._toggleDropdown(true, item, closeChildren)
           // eslint-disable-next-line no-unused-expressions
           this._onOpened && this._onOpened(this, item, toggleLink, Menu._findMenu(item))
         }
@@ -250,6 +402,7 @@ class Menu {
             this._onClosed && this._onClosed(this, item, toggleLink, Menu._findMenu(item))
           }
         } else {
+          this._toggleDropdown(false, item, closeChildren)
           // eslint-disable-next-line no-unused-expressions
           this._onClosed && this._onClosed(this, item, toggleLink, Menu._findMenu(item))
         }
@@ -271,6 +424,139 @@ class Menu {
 
     if (item.classList.contains('open')) this.close(item, closeChildren)
     else this.open(item, closeChildren)
+  }
+
+  _toggleDropdown(show, item, closeChildren) {
+    const menu = Menu._findMenu(item)
+    const actualItem = item
+    let subMenuItem = false
+
+    if (show) {
+      if (Menu._findParent(item, 'menu-sub', false)) {
+        subMenuItem = true
+        item = this._topParent ? this._topParent.parentNode : item
+      }
+
+      const wrapperWidth = Math.round(this._wrapper.getBoundingClientRect().width)
+      const position = this._innerPosition
+      const itemOffset = this._getItemOffset(item)
+      const itemWidth = Math.round(item.getBoundingClientRect().width)
+
+      if (itemOffset - DELTA <= -1 * position) {
+        this._innerPosition = -1 * itemOffset
+      } else if (itemOffset + position + itemWidth + DELTA >= wrapperWidth) {
+        if (itemWidth > wrapperWidth) {
+          this._innerPosition = -1 * itemOffset
+        } else {
+          this._innerPosition = -1 * (itemOffset + itemWidth - wrapperWidth)
+        }
+      }
+
+      actualItem.classList.add('open')
+
+      const menuWidth = Math.round(menu.getBoundingClientRect().width)
+
+      if (subMenuItem) {
+        if (
+          itemOffset + this._innerPosition + menuWidth * 2 > wrapperWidth &&
+          menuWidth < wrapperWidth &&
+          menuWidth >= itemWidth
+        ) {
+          menu.style.left = [this._rtl ? '100%' : '-100%']
+        }
+      } else if (
+        itemOffset + this._innerPosition + menuWidth > wrapperWidth &&
+        menuWidth < wrapperWidth &&
+        menuWidth > itemWidth
+      ) {
+        menu.style[this._rtl ? 'marginRight' : 'marginLeft'] = `-${menuWidth - itemWidth}px`
+      }
+
+      this._closeOther(actualItem, closeChildren)
+      this._updateSlider()
+    } else {
+      const toggle = Menu._findChild(item, ['menu-toggle'])
+
+      // eslint-disable-next-line no-unused-expressions
+      toggle.length && toggle[0].removeAttribute('data-hover', 'true')
+      item.classList.remove('open')
+      menu.style[this._rtl ? 'marginRight' : 'marginLeft'] = null
+
+      if (closeChildren) {
+        const opened = menu.querySelectorAll('.menu-item.open')
+
+        for (let i = 0, l = opened.length; i < l; i++) opened[i].classList.remove('open')
+      }
+    }
+  }
+
+  _slide(direction) {
+    const wrapperWidth = Math.round(this._wrapper.getBoundingClientRect().width)
+    const innerWidth = this._innerWidth
+    let newPosition
+
+    if (direction === 'next') {
+      newPosition = this._getSlideNextPos()
+
+      if (innerWidth + newPosition < wrapperWidth) {
+        newPosition = wrapperWidth - innerWidth
+      }
+    } else {
+      newPosition = this._getSlidePrevPos()
+
+      if (newPosition > 0) newPosition = 0
+    }
+
+    this._innerPosition = newPosition
+    this.update()
+  }
+
+  _getSlideNextPos() {
+    const wrapperWidth = Math.round(this._wrapper.getBoundingClientRect().width)
+    const position = this._innerPosition
+    let curItem = this._inner.childNodes[0]
+    let left = 0
+
+    while (curItem) {
+      if (curItem.tagName) {
+        const curItemWidth = Math.round(curItem.getBoundingClientRect().width)
+
+        if (left + position - DELTA <= wrapperWidth && left + position + curItemWidth + DELTA >= wrapperWidth) {
+          if (curItemWidth > wrapperWidth && left === -1 * position) left += curItemWidth
+          break
+        }
+
+        left += curItemWidth
+      }
+
+      curItem = curItem.nextSibling
+    }
+
+    return -1 * left
+  }
+
+  _getSlidePrevPos() {
+    const wrapperWidth = Math.round(this._wrapper.getBoundingClientRect().width)
+    const position = this._innerPosition
+    let curItem = this._inner.childNodes[0]
+    let left = 0
+
+    while (curItem) {
+      if (curItem.tagName) {
+        const curItemWidth = Math.round(curItem.getBoundingClientRect().width)
+
+        if (left - DELTA <= -1 * position && left + curItemWidth + DELTA >= -1 * position) {
+          if (curItemWidth <= wrapperWidth) left = left + curItemWidth - wrapperWidth
+          break
+        }
+
+        left += curItemWidth
+      }
+
+      curItem = curItem.nextSibling
+    }
+
+    return -1 * left
   }
 
   static _getItem(el, toggle) {
@@ -363,7 +649,7 @@ class Menu {
       item.style.overflow = null
       item.style.height = null
 
-      this.update()
+      if (!this._horizontal) this.update()
     }
 
     if (open) {
@@ -433,6 +719,27 @@ class Menu {
     }
 
     return left
+  }
+
+  _updateSlider(wrapperWidth = null, innerWidth = null, position = null) {
+    const _wrapperWidth = wrapperWidth !== null ? wrapperWidth : Math.round(this._wrapper.getBoundingClientRect().width)
+    const _innerWidth = innerWidth !== null ? innerWidth : this._innerWidth
+    const _position = position !== null ? position : this._innerPosition
+
+    if (_innerWidth < _wrapperWidth || window.innerWidth < window.Helpers.LAYOUT_BREAKPOINT) {
+      this._prevBtn.classList.add('d-none')
+      this._nextBtn.classList.add('d-none')
+    } else {
+      this._prevBtn.classList.remove('d-none')
+      this._nextBtn.classList.remove('d-none')
+    }
+    if (_innerWidth > _wrapperWidth && window.innerWidth > window.Helpers.LAYOUT_BREAKPOINT) {
+      if (_position === 0) this._prevBtn.classList.add('disabled')
+      else this._prevBtn.classList.remove('disabled')
+
+      if (_innerWidth + _position <= _wrapperWidth) this._nextBtn.classList.add('disabled')
+      else this._nextBtn.classList.remove('disabled')
+    }
   }
 
   static _promisify(fn, ...args) {
@@ -505,8 +812,24 @@ class Menu {
   }
 
   update() {
-    if (this._scrollbar) {
-      this._scrollbar.update()
+    if (!this._horizontal) {
+      if (this._scrollbar) {
+        this._scrollbar.update()
+      }
+    } else {
+      this.closeAll()
+
+      const wrapperWidth = Math.round(this._wrapper.getBoundingClientRect().width)
+      const innerWidth = this._innerWidth
+      let position = this._innerPosition
+
+      if (wrapperWidth - position > innerWidth) {
+        position = wrapperWidth - innerWidth
+        if (position > 0) position = 0
+        this._innerPosition = position
+      }
+
+      this._updateSlider(wrapperWidth, innerWidth, position)
     }
   }
 
@@ -527,10 +850,83 @@ class Menu {
           suppressScrollX: true,
           wheelPropagation: false
         })
+        // window.Helpers.menuPsScroll = menuScroll
         this._scrollbar = menuScroll
       }
       menuInner.classList.remove('overflow-auto')
     }
+  }
+
+  switchMenu(menu) {
+    // Unbind Events
+    this._unbindEvents()
+
+    // const html = document.documentElement
+    const navbar = document.querySelector('nav.layout-navbar')
+    const navbarCollapse = document.querySelector('#navbar-collapse')
+    /* const fullNavbar = document.querySelector('.layout-navbar-full')
+    const contentNavbar = document.querySelector('.layout-content-navbar')
+    const contentWrapper = document.querySelector('.content-wrapper') */
+    const asideMenuWrapper = document.querySelector('#layout-menu div')
+    const asideMenu = document.querySelector('#layout-menu')
+    const horzMenuClasses = ['layout-menu-horizontal', 'menu', 'menu-horizontal', 'container-fluid', 'flex-grow-0']
+    const vertMenuClasses = ['layout-menu', 'menu', 'menu-vertical']
+    const horzMenuWrapper = document.querySelector('.menu-horizontal-wrapper')
+    const menuInner = document.querySelector('.menu-inner')
+    const brand = document.querySelector('.app-brand')
+    const menuToggler = document.querySelector('.layout-menu-toggle')
+    const activeMenuItems = document.querySelectorAll('.menu-inner .active')
+    /* const layoutPage = document.querySelector('.layout-page')
+    const layoutContainer = document.querySelector('.layout-container')
+    const content = document.querySelector('.container-fluid') */
+
+    // const { PerfectScrollbar } = window
+
+    if (menu === 'vertical') {
+      this._horizontal = false
+      asideMenuWrapper.insertBefore(brand, horzMenuWrapper)
+      asideMenuWrapper.insertBefore(menuInner, horzMenuWrapper)
+      asideMenuWrapper.classList.add('flex-column', 'p-0')
+      asideMenu.classList.remove(...asideMenu.classList)
+      asideMenu.classList.add(...vertMenuClasses, this._menuBgClass)
+      brand.classList.remove('d-none', 'd-lg-flex')
+      menuToggler.classList.remove('d-none')
+      // if (PerfectScrollbar !== undefined) {
+      //   this._psScroll = new PerfectScrollbar(document.querySelector('.menu-inner'), {
+      //     suppressScrollX: true,
+      //     wheelPropagation: !Menu._hasClass('layout-menu-fixed layout-menu-fixed-offcanvas')
+      //   })
+      // }
+
+      menuInner.classList.add('overflow-auto')
+
+      // Add open class to active items
+      for (let i = 0; i < activeMenuItems.length - 1; ++i) {
+        activeMenuItems[i].classList.add('open')
+      }
+    } else {
+      this._horizontal = true
+      navbar.children[0].insertBefore(brand, navbarCollapse)
+      brand.classList.add('d-none', 'd-lg-flex')
+      horzMenuWrapper.appendChild(menuInner)
+      asideMenuWrapper.classList.remove('flex-column', 'p-0')
+      asideMenu.classList.remove(...asideMenu.classList)
+      asideMenu.classList.add(...horzMenuClasses, this._menuBgClass)
+      menuToggler.classList.add('d-none')
+      menuInner.classList.remove('overflow-auto')
+
+      // if (PerfectScrollbar !== undefined && this._psScroll !== null) {
+      //   this._psScroll.destroy()
+      //   this._psScroll = null
+      // }
+
+      // Remove open class from active items
+      for (let i = 0; i < activeMenuItems.length; ++i) {
+        activeMenuItems[i].classList.remove('open')
+      }
+    }
+
+    this._bindEvents()
   }
 
   destroy() {
@@ -568,9 +964,12 @@ class Menu {
     delete this._el.menuInstance
 
     this._el = null
+    this._horizontal = null
     this._animate = null
     this._accordion = null
+    this._showDropdownOnHover = null
     this._closeChildren = null
+    this._rtl = null
     this._onOpen = null
     this._onOpened = null
     this._onClose = null

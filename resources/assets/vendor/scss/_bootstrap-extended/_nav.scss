@@ -166,6 +166,17 @@
           border-left: 1px solid $nav-tabs-border-color;
         }
       }
+      @include rtl-style {
+        &:first-child .nav-link {
+          border-top-right-radius: $border-radius;
+        }
+        &:last-child .nav-link {
+          border-top-left-radius: $border-radius;
+        }
+        &:not(:first-child) .nav-link {
+          border-right: 1px solid $nav-tabs-border-color;
+        }
+      }
     }
     .nav-link {
       &.active {
@@ -183,6 +194,11 @@
   > div > .nav .nav-item {
     margin-left: -1px;
     margin-bottom: 0;
+
+    @include rtl-style {
+      margin-left: 0;
+      margin-right: -1px;
+    }
   }
   .nav-link {
     text-align: right;
@@ -205,11 +221,22 @@
           border-bottom-right-radius: $border-radius;
         }
       }
+      @include rtl-style {
+        &:first-child .nav-link {
+          border-top-left-radius: $border-radius;
+        }
+        &:last-child .nav-link {
+          border-bottom-left-radius: $border-radius;
+        }
+      }
     }
     .nav-link {
       &.active {
         @include ltr-style {
           box-shadow: 5px 4px 6px 0 rgba($black, 0.12);
+        }
+        @include rtl-style {
+          box-shadow: -5px 4px 6px 0 rgba($black, 0.12);
         }
       }
     }
@@ -242,6 +269,17 @@
           border-left: 1px solid $nav-tabs-border-color;
         }
       }
+      @include rtl-style {
+        &:first-child .nav-link {
+          border-bottom-right-radius: $border-radius;
+        }
+        &:last-child .nav-link {
+          border-bottom-left-radius: $border-radius;
+        }
+        &:not(:first-child) .nav-link {
+          border-right: 1px solid $nav-tabs-border-color;
+        }
+      }
     }
     .nav-link {
       &.active {
@@ -257,6 +295,10 @@
   > div > .nav .nav-item {
     margin-right: -1px;
     margin-bottom: 0;
+    @include rtl-style {
+      margin-right: 0;
+      margin-left: -1px;
+    }
   }
   .nav-link {
     text-align: left;
@@ -278,11 +320,22 @@
           border-bottom-left-radius: $border-radius;
         }
       }
+      @include rtl-style {
+        &:first-child .nav-link {
+          border-top-right-radius: $border-radius;
+        }
+        &:last-child .nav-link {
+          border-bottom-right-radius: $border-radius;
+        }
+      }
     }
     .nav-link {
       &.active {
         @include ltr-style {
           box-shadow: -5px 2px 6px 0 rgba($black, 0.12);
+        }
+        @include rtl-style {
+          box-shadow: 5px 2px 6px 0 rgba($black, 0.12);
         }
       }
     }
@@ -308,10 +361,16 @@
   @include ltr-style {
     @include border-top-end-radius($border-radius);
   }
+  @include rtl-style {
+    @include border-top-start-radius($border-radius);
+  }
 }
 
 .nav-align-right :not(.nav-pills) ~ .tab-content {
   @include border-radius($border-radius 0 0 $border-radius);
+  @include rtl-style {
+    @include border-radius(0 $border-radius $border-radius $border-radius);
+  }
 }
 
 .nav-align-bottom :not(.nav-pills) ~ .tab-content {
@@ -320,8 +379,34 @@
 
 .nav-align-left :not(.nav-pills) ~ .tab-content {
   @include border-radius(0 $border-radius $border-radius 0);
+  @include rtl-style {
+    @include border-radius($border-radius 0 0 $border-radius);
+  }
+  @include rtl-style {
+    @include border-bottom-start-radius($border-radius);
+  }
 }
 
 .nav-align-left > .tab-content {
   @include border-radius(0 $border-radius $border-radius $border-radius);
+  @include rtl-style {
+    @include border-radius($border-radius 0 $border-radius $border-radius);
+  }
+}
+
+// RTL
+@include rtl-only {
+  .nav {
+    padding-right: 0;
+  }
+  .nav-align-left {
+    .nav-link {
+      text-align: right;
+    }
+  }
+  .nav-align-right {
+    .nav-link {
+      text-align: left;
+    }
+  }
 }
