@@ -36,9 +36,6 @@
         <tr>
           <th></th>
           <th>User</th>
-          <th>Role</th>
-          <th>Plan</th>
-          <th>Billing</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>

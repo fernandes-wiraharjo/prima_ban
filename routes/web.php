@@ -161,10 +161,11 @@ use App\Http\Controllers\maps\Leaflet;
 
 // Main Page Route
 Route::middleware(['auth'])->group(function () {
-  Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
+  // Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
+  Route::get('/', [UserList::class, 'index'])->name('master-user');
 
   //masters
-  Route::get('/master/user', [UserList::class, 'get'])->name('master-user');
+  Route::get('/master/user', [UserList::class, 'index'])->name('master-user');
 });
 
 // Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
