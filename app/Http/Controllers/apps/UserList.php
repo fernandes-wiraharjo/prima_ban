@@ -18,10 +18,51 @@ class UserList extends Controller
     return view('content.masters.master-user-list');
   }
 
-  public function get()
+  public function get(Request $request)
   {
-    $users = User::all();
+    $query = User::query();
 
-    return response()->json($users);
+    $sortableColumns = [
+      0 => '',
+      1 => 'username',
+      2 => 'is_active',
+    ];
+
+    // Retrieve the column index and direction from the request
+    $sortColumnIndex = $request->input('order.0.column');
+    $sortDirection = $request->input('order.0.dir');
+
+    // Determine the column name based on the column index
+    if (isset($sortableColumns[$sortColumnIndex])) {
+      $sortColumn = $sortableColumns[$sortColumnIndex];
+    } else {
+      // Default sorting column if invalid or not provided
+      $sortColumn = 'username'; // Default to 'username' or any other preferred column
+    }
+
+    // Apply search filtering
+    if ($request->has('search') && !empty($request->search['value'])) {
+      $query->where('username', 'like', '%' . $request->search['value'] . '%');
+    }
+
+    // Get total records count (before filtering)
+    $totalRecords = $query->count();
+
+    // Apply pagination
+    $users = $query
+      ->offset($request->input('start'))
+      ->limit($request->input('length'))
+      ->orderBy($sortColumn, $sortDirection)
+      ->get();
+
+    // Prepare response data
+    $responseData = [
+      'draw' => $request->input('draw'),
+      'recordsTotal' => $totalRecords,
+      'recordsFiltered' => $totalRecords, // Currently, we are not filtering records on server-side
+      'data' => $users,
+    ];
+
+    return response()->json($responseData);
   }
 }
