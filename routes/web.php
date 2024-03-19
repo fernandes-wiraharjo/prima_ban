@@ -162,6 +162,9 @@ use App\Http\Controllers\maps\Leaflet;
 // Main Page Route
 Route::middleware(['auth'])->group(function () {
   Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');
+
+  //masters
+  Route::get('/master/user', [UserList::class, 'get'])->name('master-user');
 });
 
 // Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');

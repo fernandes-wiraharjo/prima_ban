@@ -13,6 +13,7 @@ return new class extends Migration {
     Schema::create('uoms', function (Blueprint $table) {
       $table->id();
       $table->string('code', 10);
+      $table->boolean('is_active')->default(true);
       $table->unsignedBigInteger('created_by')->nullable();
       $table->unsignedBigInteger('updated_by')->nullable();
       $table->timestamps();

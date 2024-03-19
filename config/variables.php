@@ -1,8 +1,8 @@
 <?php
 // Variables
 return [
-  'creatorName' => 'ThemeSelection',
-  'creatorUrl' => 'https://themeselection.com',
+  'creatorName' => 'Fernandes Wiraharjo',
+  'creatorUrl' => 'https://fernandesdev.com',
   'templateName' => 'Prima Ban',
   'templateSuffix' => 'Bootstrap 5 HTML Admin Template - Pro',
   'templateVersion' => '2.2.0',

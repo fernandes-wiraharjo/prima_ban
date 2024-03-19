@@ -17,6 +17,7 @@ return new class extends Migration {
       $table->string('phone_no', 30);
       $table->string('pic_name', 50);
       $table->string('bank_account_no', 20);
+      $table->boolean('is_active')->default(true);
       $table->unsignedBigInteger('created_by')->nullable();
       $table->unsignedBigInteger('updated_by')->nullable();
       $table->timestamps();

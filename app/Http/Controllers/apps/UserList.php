@@ -11,4 +11,9 @@ class UserList extends Controller
   {
     return view('content.apps.app-user-list');
   }
+
+  public function get()
+  {
+    return view('content.masters.master-user-list');
+  }
 }

@@ -13,6 +13,7 @@ return new class extends Migration {
     Schema::create('stock_histories', function (Blueprint $table) {
       $table->id();
       $table->unsignedBigInteger('id_product_detail');
+      $table->unsignedBigInteger('id_transaction');
       $table->enum('movement_type', ['inbound', 'outbound']);
       $table->smallInteger('quantity');
       $table->smallInteger('stock_before');

@@ -140,7 +140,13 @@
       ]
     },
     {
-      "menuHeader": "Apps & Pages"
+      "menuHeader": "masters"
+    },
+    {
+      "url": "master/user",
+      "name": "Users",
+      "icon": "menu-icon tf-icons bx bx-user",
+      "slug": "master-user"
     },
     {
       "url": "app/email",
