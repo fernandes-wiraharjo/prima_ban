@@ -40,13 +40,16 @@ class UserList extends Controller
       $sortColumn = 'username'; // Default to 'username' or any other preferred column
     }
 
+    // Get total records count (before filtering)
+    $totalRecords = $query->count();
+
     // Apply search filtering
     if ($request->has('search') && !empty($request->search['value'])) {
       $query->where('username', 'like', '%' . $request->search['value'] . '%');
     }
 
-    // Get total records count (before filtering)
-    $totalRecords = $query->count();
+    // Get total filter records count
+    $totalFilters = $query->count();
 
     // Apply pagination
     $users = $query
@@ -59,7 +62,7 @@ class UserList extends Controller
     $responseData = [
       'draw' => $request->input('draw'),
       'recordsTotal' => $totalRecords,
-      'recordsFiltered' => $totalRecords, // Currently, we are not filtering records on server-side
+      'recordsFiltered' => $totalFilters,
       'data' => $users,
     ];
 
