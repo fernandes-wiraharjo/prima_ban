@@ -5,6 +5,7 @@ namespace App\Http\Controllers\apps;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 
 class UserList extends Controller
 {
@@ -67,5 +68,25 @@ class UserList extends Controller
     ];
 
     return response()->json($responseData);
+  }
+
+  public function add(Request $request)
+  {
+    // Validate the request
+    $validatedData = $request->validate([
+      'username' => 'required|unique:users|max:50',
+      'password' => 'required',
+      'is_active' => 'required|in:1,2',
+    ]);
+
+    // Create a new user instance
+    $user = new User();
+    $user->username = $validatedData['username'];
+    $user->password = bcrypt($validatedData['password']); // Hash the password
+    $user->is_active = $validatedData['is_active'];
+    $user->save();
+
+    // Redirect or respond with success message
+    return Redirect::back()->with('success', 'User created successfully.');
   }
 }
