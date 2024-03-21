@@ -25,6 +25,7 @@ use App\Http\Controllers\front_pages\HelpCenterArticle;
 use App\Http\Controllers\apps\Email;
 use App\Http\Controllers\apps\Chat;
 use App\Http\Controllers\apps\Calendar;
+use App\Http\Controllers\apps\CustomerController;
 use App\Http\Controllers\apps\Kanban;
 use App\Http\Controllers\apps\EcommerceDashboard;
 use App\Http\Controllers\apps\EcommerceProductList;
@@ -165,7 +166,27 @@ Route::middleware(['auth'])->group(function () {
   Route::get('/', [UserList::class, 'index'])->name('master-user');
 
   //masters
-  Route::get('/master/user', [UserList::class, 'index'])->name('master-user');
+  Route::prefix('master')->group(function () {
+    //users
+    Route::prefix('user')->group(function () {
+      Route::get('/', [UserList::class, 'index'])->name('master-user');
+      Route::get('/get', [UserList::class, 'get'])->name('get-user');
+      Route::get('/{id}', [UserList::class, 'getById'])->name('get-user-by-id');
+      Route::post('/add', [UserList::class, 'add'])->name('add-user');
+      Route::put('/{id}', [UserList::class, 'edit'])->name('edit-user');
+      Route::delete('/{id}', [UserList::class, 'delete'])->name('delete-user');
+    });
+
+    //customers
+    Route::prefix('customer')->group(function () {
+      Route::get('/', [CustomerController::class, 'index'])->name('master-customer');
+      Route::get('/get', [CustomerController::class, 'get'])->name('get-customer');
+      Route::get('/{id}', [CustomerController::class, 'getById'])->name('get-customer-by-id');
+      Route::post('/add', [CustomerController::class, 'add'])->name('add-customer');
+      Route::put('/{id}', [CustomerController::class, 'edit'])->name('edit-customer');
+      Route::delete('/{id}', [CustomerController::class, 'delete'])->name('delete-customer');
+    });
+  });
 });
 
 // Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');

@@ -23,7 +23,7 @@
 @endsection
 
 @section('page-script')
-<script src="{{asset('assets/js/master-user-list.js')}}"></script>
+<script src="{{asset('assets/js/master-customer-list.js')}}"></script>
 @endsection
 
 @section('content')
@@ -55,11 +55,15 @@
 
 <div class="card">
   <div class="card-datatable table-responsive">
-    <table class="datatables-users table border-top">
+    <table class="datatables-customers table border-top">
       <thead>
         <tr>
           <th></th>
-          <th>User</th>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Phone No</th>
+          <th>Pic Name</th>
+          <th>Bank Account No</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
@@ -67,21 +71,33 @@
     </table>
   </div>
   <!-- Offcanvas to add new user -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddUser" aria-labelledby="offcanvasAddUserLabel">
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddCustomer" aria-labelledby="offcanvasAddCustomerLabel">
     <div class="offcanvas-header">
-      <h5 id="offcanvasAddUserLabel" class="offcanvas-title">Add User</h5>
+      <h5 id="offcanvasAddCustomerLabel" class="offcanvas-title">Add Customer</h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">
-      <form class="add-new-user pt-0" id="addNewUserForm" onsubmit="return false" action="{{ route('add-user') }}" method="POST">
+      <form class="add-new-customer pt-0" id="addNewCustomerForm" onsubmit="return false" action="{{ route('add-customer') }}" method="POST">
         @csrf
         <div class="mb-3">
-          <label class="form-label" for="add-user-username">Username</label>
-          <input type="text" class="form-control" id="add-user-username" placeholder="username" name="username" aria-label="username" />
+          <label class="form-label" for="add-customer-name">Name</label>
+          <input type="text" class="form-control" id="add-customer-username" placeholder="name" name="name" aria-label="name" />
         </div>
         <div class="mb-3">
-          <label class="form-label" for="add-user-password">Password</label>
-          <input type="text" id="add-user-password" class="form-control" placeholder="password" aria-label="password" name="password" />
+          <label class="form-label" for="add-customer-phone">Phone No</label>
+          <input type="text" class="form-control" id="add-customer-phone" placeholder="phone no" name="phone_no" aria-label="phone_no" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="add-customer-pic">Pic Name</label>
+          <input type="text" class="form-control" id="add-customer-pic" placeholder="pic name" name="pic_name" aria-label="pic_name" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="add-customer-bank-account-no">Bank Account No</label>
+          <input type="text" class="form-control" id="add-customer-bank-account-no" placeholder="bank account no" name="bank_account_no" aria-label="bank_account_no" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="add-customer-address">Address</label>
+          <textarea row="3" id="add-customer-address" class="form-control" placeholder="address" aria-label="address" name="address"></textarea>
         </div>
         <div class="mb-3">
           <label class="form-label d-block">Status</label>
@@ -103,36 +119,48 @@
   </div>
 
   <!-- edit form -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEditUser" aria-labelledby="offcanvasEditUserLabel">
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEditCustomer" aria-labelledby="offcanvasEditCustomerLabel">
     <div class="offcanvas-header">
-        <h5 id="offcanvasEditUserLabel" class="offcanvas-title">Edit User</h5>
+        <h5 id="offcanvasEditCustomerLabel" class="offcanvas-title">Edit Customer</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">
-        <form class="edit-user-form pt-0" id="editUserForm" onsubmit="return false" action="{{ route('edit-user', ['id' => 0]) }}" method="POST">
+        <form class="edit-customer-form pt-0" id="editCustomerForm" onsubmit="return false" action="{{ route('edit-customer', ['id' => 0]) }}" method="POST">
         @method('PUT')
         @csrf
-            <input type="hidden" id="edit-user-id" name="user_id">
+            <input type="hidden" id="edit-customer-id" name="customer_id">
             <div class="mb-3">
-                <label class="form-label" for="edit-user-username">Username</label>
-                <input type="text" class="form-control" id="edit-user-username" placeholder="username" name="username" aria-label="username" />
+              <label class="form-label" for="edit-customer-name">Name</label>
+              <input type="text" class="form-control" id="edit-customer-name" placeholder="name" name="name" aria-label="name" />
             </div>
             <div class="mb-3">
-                <label class="form-label" for="edit-user-password">Password</label>
-                <input type="text" id="edit-user-password" class="form-control" placeholder="leave it blank if you dont want to change..." aria-label="password" name="password" />
+              <label class="form-label" for="edit-customer-phone">Phone No</label>
+              <input type="text" class="form-control" id="edit-customer-phone" placeholder="phone no" name="phone_no" aria-label="phone_no" />
             </div>
             <div class="mb-3">
-                <label class="form-label d-block">Status</label>
-                <small>
-                    <div class="form-check form-check-inline mt-3">
-                        <input class="form-check-input" type="radio" name="is_active" id="edit-status_1" value="1" checked />
-                        <label class="form-check-label" for="edit-status_1">ACTIVE</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="is_active" id="edit-status_0" value="0" />
-                        <label class="form-check-label" for="edit-status_0">INACTIVE</label>
-                    </div>
-                </small>
+              <label class="form-label" for="edit-customer-pic">Pic Name</label>
+              <input type="text" class="form-control" id="edit-customer-pic" placeholder="pic name" name="pic_name" aria-label="pic_name" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="edit-customer-bank-account-no">Bank Account No</label>
+              <input type="text" class="form-control" id="edit-customer-bank-account-no" placeholder="bank account no" name="bank_account_no" aria-label="bank_account_no" />
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="edit-customer-address">Address</label>
+              <textarea row="3" id="edit-customer-address" class="form-control" placeholder="address" aria-label="address" name="address"></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="form-label d-block">Status</label>
+              <small>
+                <div class="form-check form-check-inline mt-3">
+                  <input class="form-check-input" type="radio" name="is_active" id="edit-status_1" value="1" checked />
+                  <label class="form-check-label" for="edit-status_1">ACTIVE</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="is_active" id="edit-status_0" value="0" />
+                  <label class="form-check-label" for="edit-status_0">INACTIVE</label>
+                </div>
+              </small>
             </div>
             <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</button>
             <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>

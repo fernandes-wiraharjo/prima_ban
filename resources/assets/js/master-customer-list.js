@@ -19,37 +19,31 @@ $(function () {
   }
 
   // Variable declaration for table
-  var dt_user_table = $('.datatables-users'),
-    select2 = $('.select2'),
-    userView = baseUrl + 'app/user/view/account',
+  var dt_customer_table = $('.datatables-customers'),
     statusObj = {
-      1: { title: 'Active', class: 'bg-label-success' },
-      0: { title: 'Inactive', class: 'bg-label-secondary' }
+      0: { title: 'Inactive', class: 'bg-label-secondary' },
+      1: { title: 'Active', class: 'bg-label-success' }
     },
     token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-  if (select2.length) {
-    var $this = select2;
-    $this.wrap('<div class="position-relative"></div>').select2({
-      placeholder: 'Select Country',
-      dropdownParent: $this.parent()
-    });
-  }
-
-  // Users datatable
-  if (dt_user_table.length) {
-    var dt_user = dt_user_table.DataTable({
+  // Customers datatable
+  if (dt_customer_table.length) {
+    var dt_customer = dt_customer_table.DataTable({
       processing: true,
       serverSide: true,
       ajax: {
-        url: '/master/user/get',
+        url: '/master/customer/get',
         type: 'GET',
         dataSrc: 'data' // Specify the property containing the data array in the JSON response
       },
       columns: [
         // columns according to JSON
         { data: '' },
-        { data: 'username' },
+        { data: 'name' },
+        { data: 'address' },
+        { data: 'phone_no' },
+        { data: 'pic_name' },
+        { data: 'bank_account_no' },
         { data: 'is_active' },
         { data: 'action' }
       ],
@@ -66,11 +60,11 @@ $(function () {
           }
         },
         {
-          // User full name and email
+          // Customer Name
           targets: 1,
           responsivePriority: 4,
           render: function (data, type, full, meta) {
-            var $name = full['username'];
+            var $name = full['name'];
             // Creates full output for row
             var $row_output =
               '<div class="d-flex justify-content-start align-items-center user-name">' +
@@ -82,8 +76,8 @@ $(function () {
           }
         },
         {
-          // User Status
-          targets: 2,
+          // Customer Status
+          targets: 6,
           render: function (data, type, full, meta) {
             var $status = full['is_active'];
 
@@ -97,20 +91,18 @@ $(function () {
           searchable: false,
           orderable: false,
           render: function (data, type, full, meta) {
-            var $name = full['username'];
             var $id = full['id'];
+            var $name = full['name'];
             return (
               '<div class="d-inline-block text-nowrap">' +
               '<button class="btn btn-sm btn-icon edit-record" data-id="' +
               $id +
               '"><i class="bx bx-edit"></i></button>' +
-              ($name === 'admin'
-                ? ''
-                : '<button class="btn btn-sm btn-icon delete-record" data-id="' +
-                  $id +
-                  '" data-name="' +
-                  $name +
-                  '"><i class="bx bx-trash"></i></button>') +
+              '<button class="btn btn-sm btn-icon delete-record" data-id="' +
+              $id +
+              '" data-name="' +
+              $name +
+              '"><i class="bx bx-trash"></i></button>' +
               '</div>'
             );
           }
@@ -134,11 +126,11 @@ $(function () {
       // Buttons with Dropdown
       buttons: [
         {
-          text: '<i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Add New User</span>',
+          text: '<i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Add New Customer</span>',
           className: 'add-new btn btn-primary mx-3',
           attr: {
             'data-bs-toggle': 'offcanvas',
-            'data-bs-target': '#offcanvasAddUser'
+            'data-bs-target': '#offcanvasAddCustomer'
           }
         }
       ],
@@ -148,7 +140,7 @@ $(function () {
           display: $.fn.dataTable.Responsive.display.modal({
             header: function (row) {
               var data = row.data();
-              return 'Details of ' + data['username'];
+              return 'Details of ' + data['name'];
             }
           }),
           type: 'column',
@@ -180,26 +172,29 @@ $(function () {
   }
 
   // Add event listener for edit button
-  dt_user_table.on('click', '.edit-record', function () {
-    var userId = $(this).data('id');
-    // Retrieve user data via AJAX and populate the form fields
+  dt_customer_table.on('click', '.edit-record', function () {
+    var customerId = $(this).data('id');
+    // Retrieve customer data via AJAX and populate the form fields
     $.ajax({
-      url: '/master/user/' + userId,
+      url: '/master/customer/' + customerId,
       type: 'GET',
       headers: {
         'X-CSRF-TOKEN': token
       },
       success: function (response) {
-        // Populate the form fields with user data
-        $('#edit-user-id').val(response.id);
-        $('#editUserForm').attr('action', '/master/user/' + response.id);
-        $('#edit-user-username').val(response.username);
-        $('#edit-user-password').val(response.password);
+        // Populate the form fields with customer data
+        $('#edit-customer-id').val(response.id);
+        $('#editCustomerForm').attr('action', '/master/customer/' + response.id);
+        $('#edit-customer-name').val(response.name);
+        $('#edit-customer-address').val(response.address);
+        $('#edit-customer-phone').val(response.phone_no);
+        $('#edit-customer-pic').val(response.pic_name);
+        $('#edit-customer-bank-account-no').val(response.bank_account_no);
         $('#edit-status_' + response.is_active).prop('checked', true);
 
         // Show the edit user offcanvas
-        var editUserOffcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasEditUser'));
-        editUserOffcanvas.show();
+        var editCustomerOffcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasEditCustomer'));
+        editCustomerOffcanvas.show();
       },
       error: function (xhr, status, error) {
         // Handle error
@@ -209,14 +204,14 @@ $(function () {
   });
 
   // Delete Record
-  $('.datatables-users tbody').on('click', '.delete-record', function () {
+  $('.datatables-customers tbody').on('click', '.delete-record', function () {
     // dt_user.row($(this).parents('tr')).remove().draw();
-    var userId = $(this).data('id');
+    var customerId = $(this).data('id');
     var name = $(this).data('name');
-    if (confirm('Are you sure you want to delete user ' + name + ' ?')) {
+    if (confirm('Are you sure you want to delete customer ' + name + ' ?')) {
       // Send AJAX request to delete user
       $.ajax({
-        url: '/master/user/' + userId,
+        url: '/master/customer/' + customerId,
         type: 'DELETE',
         headers: {
           'X-CSRF-TOKEN': token
@@ -225,7 +220,7 @@ $(function () {
           // Handle success
           alert(response.message);
           // Refresh datatable
-          dt_user.ajax.reload();
+          dt_customer.ajax.reload();
         },
         error: function (xhr, status, error) {
           // Handle error
@@ -245,34 +240,44 @@ $(function () {
 
 // Validation & Phone mask
 (function () {
-  const phoneMaskList = document.querySelectorAll('.phone-mask'),
-    addNewUserForm = document.getElementById('addNewUserForm'),
-    editUserForm = document.getElementById('editUserForm');
+  const addNewCustomerForm = document.getElementById('addNewCustomerForm'),
+    editCustomerForm = document.getElementById('editCustomerForm');
 
-  // Phone Number
-  if (phoneMaskList) {
-    phoneMaskList.forEach(function (phoneMask) {
-      new Cleave(phoneMask, {
-        phone: true,
-        phoneRegionCode: 'US'
-      });
-    });
-  }
-
-  // Add New User Form Validation
-  const fv = FormValidation.formValidation(addNewUserForm, {
+  // Add New Customer Form Validation
+  const fv = FormValidation.formValidation(addNewCustomerForm, {
     fields: {
-      username: {
+      name: {
         validators: {
           notEmpty: {
-            message: 'Please enter username '
+            message: 'Please enter name'
           }
         }
       },
-      password: {
+      phone_no: {
         validators: {
           notEmpty: {
-            message: 'Please enter password'
+            message: 'Please enter phone no'
+          }
+        }
+      },
+      pic_name: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter pic name'
+          }
+        }
+      },
+      bank_account_no: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter bank account number'
+          }
+        }
+      },
+      address: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter address'
           }
         }
       }
@@ -295,12 +300,40 @@ $(function () {
   });
 
   // Edit User Form Validation
-  const fvEdit = FormValidation.formValidation(editUserForm, {
+  const fvEdit = FormValidation.formValidation(editCustomerForm, {
     fields: {
-      username: {
+      name: {
         validators: {
           notEmpty: {
-            message: 'Please enter username '
+            message: 'Please enter name'
+          }
+        }
+      },
+      phone_no: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter phone no'
+          }
+        }
+      },
+      pic_name: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter pic name'
+          }
+        }
+      },
+      bank_account_no: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter bank account number'
+          }
+        }
+      },
+      address: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter address'
           }
         }
       }

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\apps;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 
 class UserList extends Controller
 {
@@ -72,21 +74,72 @@ class UserList extends Controller
 
   public function add(Request $request)
   {
-    // Validate the request
+    try {
+      // Validate the request
+      $validatedData = $request->validate([
+        'username' => 'required|unique:users|max:50',
+        'password' => 'required',
+        'is_active' => 'required|in:0,1',
+      ]);
+
+      // Create a new user instance
+      $user = new User();
+      $user->username = $validatedData['username'];
+      $user->password = bcrypt($validatedData['password']); // Hash the password
+      $user->is_active = $validatedData['is_active'];
+      $user->created_by = Auth::id();
+      $user->save();
+
+      // Redirect or respond with success message
+      return Redirect::back()->with('success', 'User created successfully.');
+    } catch (ValidationException $e) {
+      // Validation failed, redirect back with errors
+      return Redirect::back()
+        ->withErrors($e->validator->errors())
+        ->withInput();
+    } catch (\Exception $e) {
+      // Other exceptions (e.g., database errors)
+      return Redirect::back()->with('othererror', 'An error occurred while creating the user.');
+    }
+  }
+
+  public function getById($id)
+  {
+    $user = User::findOrFail($id);
+    return response()->json($user);
+  }
+
+  public function edit(Request $request, $id)
+  {
     $validatedData = $request->validate([
-      'username' => 'required|unique:users|max:50',
-      'password' => 'required',
-      'is_active' => 'required|in:1,2',
+      'username' => 'required|unique:users,username,' . $id . '|max:50',
+      'password' => 'nullable', // You may adjust validation rules as needed
+      'is_active' => 'required|in:0,1',
     ]);
 
-    // Create a new user instance
-    $user = new User();
+    $user = User::findOrFail($id);
     $user->username = $validatedData['username'];
-    $user->password = bcrypt($validatedData['password']); // Hash the password
+    if ($request->has('password') && $validatedData['password'] != '') {
+      $user->password = bcrypt($validatedData['password']);
+    }
     $user->is_active = $validatedData['is_active'];
+    $user->updated_by = Auth::id();
     $user->save();
 
-    // Redirect or respond with success message
-    return Redirect::back()->with('success', 'User created successfully.');
+    return redirect()
+      ->route('master-user')
+      ->with('success', 'User updated successfully.');
+  }
+
+  public function delete($id)
+  {
+    // Find the user by ID
+    $user = User::findOrFail($id);
+
+    // Delete the user
+    $user->delete();
+
+    // Return a response indicating success
+    return response()->json(['message' => 'User deleted successfully'], 200);
   }
 }

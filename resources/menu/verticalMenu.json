@@ -8,6 +8,12 @@
       "name": "Users",
       "icon": "menu-icon tf-icons bx bx-user",
       "slug": "master-user"
+    },
+    {
+      "url": "master/customer",
+      "name": "Customers",
+      "icon": "menu-icon tf-icons bx bx-store",
+      "slug": "master-customer"
     }
   ]
 }
