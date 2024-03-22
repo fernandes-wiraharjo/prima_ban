@@ -20,6 +20,12 @@
       "name": "Suppliers",
       "icon": "menu-icon tf-icons bx bx-package",
       "slug": "master-supplier"
+    },
+    {
+      "url": "master/brand",
+      "name": "Brands",
+      "icon": "menu-icon tf-icons bx bx-sitemap",
+      "slug": "master-brand"
     }
   ]
 }

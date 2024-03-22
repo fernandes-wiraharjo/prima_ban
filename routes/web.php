@@ -22,6 +22,7 @@ use App\Http\Controllers\front_pages\Payment;
 use App\Http\Controllers\front_pages\Checkout;
 use App\Http\Controllers\front_pages\HelpCenter;
 use App\Http\Controllers\front_pages\HelpCenterArticle;
+use App\Http\Controllers\apps\BrandController;
 use App\Http\Controllers\apps\Email;
 use App\Http\Controllers\apps\Chat;
 use App\Http\Controllers\apps\Calendar;
@@ -196,6 +197,16 @@ Route::middleware(['auth'])->group(function () {
       Route::post('/add', [SupplierController::class, 'add'])->name('add-supplier');
       Route::put('/{id}', [SupplierController::class, 'edit'])->name('edit-supplier');
       Route::delete('/{id}', [SupplierController::class, 'delete'])->name('delete-supplier');
+    });
+
+    //brands
+    Route::prefix('brand')->group(function () {
+      Route::get('/', [BrandController::class, 'index'])->name('master-brand');
+      Route::get('/get', [BrandController::class, 'get'])->name('get-brand');
+      Route::get('/{id}', [BrandController::class, 'getById'])->name('get-brand-by-id');
+      Route::post('/add', [BrandController::class, 'add'])->name('add-brand');
+      Route::put('/{id}', [BrandController::class, 'edit'])->name('edit-brand');
+      Route::delete('/{id}', [BrandController::class, 'delete'])->name('delete-brand');
     });
   });
 });
