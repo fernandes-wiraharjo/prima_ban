@@ -2,28 +2,23 @@
 
 namespace App\Http\Controllers\apps;
 
-use App\Models\Customer;
+use App\Models\Supplier;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 
-class CustomerController extends Controller
+class SupplierController extends Controller
 {
-  // public function index()
-  // {
-  //   return view('content.apps.app-user-list');
-  // }
-
   public function index()
   {
-    return view('content.masters.master-customer-list');
+    return view('content.masters.master-supplier-list');
   }
 
   public function get(Request $request)
   {
-    $query = Customer::query();
+    $query = Supplier::query();
 
     $sortableColumns = [
       0 => '',
@@ -64,7 +59,7 @@ class CustomerController extends Controller
     $totalFilters = $query->count();
 
     // Apply pagination
-    $customers = $query
+    $suppliers = $query
       ->offset($request->input('start'))
       ->limit($request->input('length'))
       ->orderBy($sortColumn, $sortDirection)
@@ -75,7 +70,7 @@ class CustomerController extends Controller
       'draw' => $request->input('draw'),
       'recordsTotal' => $totalRecords,
       'recordsFiltered' => $totalFilters,
-      'data' => $customers,
+      'data' => $suppliers,
     ];
 
     return response()->json($responseData);
@@ -94,19 +89,19 @@ class CustomerController extends Controller
         'is_active' => 'required|in:0,1',
       ]);
 
-      // Create a new customer instance
-      $customer = new Customer();
-      $customer->name = $validatedData['name'];
-      $customer->address = $validatedData['address'];
-      $customer->phone_no = $validatedData['phone_no'];
-      $customer->pic_name = $validatedData['pic_name'];
-      $customer->bank_account_no = $validatedData['bank_account_no'];
-      $customer->is_active = $validatedData['is_active'];
-      $customer->created_by = Auth::id();
-      $customer->save();
+      // Create a new supplier instance
+      $supplier = new Supplier();
+      $supplier->name = $validatedData['name'];
+      $supplier->address = $validatedData['address'];
+      $supplier->phone_no = $validatedData['phone_no'];
+      $supplier->pic_name = $validatedData['pic_name'];
+      $supplier->bank_account_no = $validatedData['bank_account_no'];
+      $supplier->is_active = $validatedData['is_active'];
+      $supplier->created_by = Auth::id();
+      $supplier->save();
 
       // Redirect or respond with success message
-      return Redirect::back()->with('success', 'Customer created successfully.');
+      return Redirect::back()->with('success', 'Supplier created successfully.');
     } catch (ValidationException $e) {
       // Validation failed, redirect back with errors
       return Redirect::back()
@@ -114,14 +109,14 @@ class CustomerController extends Controller
         ->withInput();
     } catch (\Exception $e) {
       // Other exceptions (e.g., database errors)
-      return Redirect::back()->with('othererror', 'An error occurred while creating the customer.');
+      return Redirect::back()->with('othererror', 'An error occurred while creating the supplier.');
     }
   }
 
   public function getById($id)
   {
-    $customer = Customer::findOrFail($id);
-    return response()->json($customer);
+    $supplier = Supplier::findOrFail($id);
+    return response()->json($supplier);
   }
 
   public function edit(Request $request, $id)
@@ -135,31 +130,31 @@ class CustomerController extends Controller
       'is_active' => 'required|in:0,1',
     ]);
 
-    $customer = Customer::findOrFail($id);
-    $customer->name = $validatedData['name'];
-    $customer->name = $validatedData['name'];
-    $customer->address = $validatedData['address'];
-    $customer->phone_no = $validatedData['phone_no'];
-    $customer->pic_name = $validatedData['pic_name'];
-    $customer->bank_account_no = $validatedData['bank_account_no'];
-    $customer->is_active = $validatedData['is_active'];
-    $customer->updated_by = Auth::id();
-    $customer->save();
+    $supplier = Supplier::findOrFail($id);
+    $supplier->name = $validatedData['name'];
+    $supplier->name = $validatedData['name'];
+    $supplier->address = $validatedData['address'];
+    $supplier->phone_no = $validatedData['phone_no'];
+    $supplier->pic_name = $validatedData['pic_name'];
+    $supplier->bank_account_no = $validatedData['bank_account_no'];
+    $supplier->is_active = $validatedData['is_active'];
+    $supplier->updated_by = Auth::id();
+    $supplier->save();
 
     return redirect()
-      ->route('master-customer')
-      ->with('success', 'Customer updated successfully.');
+      ->route('master-supplier')
+      ->with('success', 'Supplier updated successfully.');
   }
 
   public function delete($id)
   {
-    // Find the customer by ID
-    $customer = Customer::findOrFail($id);
+    // Find the Supplier by ID
+    $supplier = Supplier::findOrFail($id);
 
-    // Delete the customer
-    $customer->delete();
+    // Delete the supplier
+    $supplier->delete();
 
     // Return a response indicating success
-    return response()->json(['message' => 'Customer deleted successfully'], 200);
+    return response()->json(['message' => 'Supplier deleted successfully'], 200);
   }
 }

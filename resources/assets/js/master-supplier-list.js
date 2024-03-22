@@ -19,7 +19,7 @@ $(function () {
   }
 
   // Variable declaration for table
-  var dt_customer_table = $('.datatables-customers'),
+  var dt_supplier_table = $('.datatables-suppliers'),
     statusObj = {
       0: { title: 'Inactive', class: 'bg-label-secondary' },
       1: { title: 'Active', class: 'bg-label-success' }
@@ -27,12 +27,12 @@ $(function () {
     token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
   // Customers datatable
-  if (dt_customer_table.length) {
-    var dt_customer = dt_customer_table.DataTable({
+  if (dt_supplier_table.length) {
+    var dt_supplier = dt_supplier_table.DataTable({
       processing: true,
       serverSide: true,
       ajax: {
-        url: '/master/customer/get',
+        url: '/master/supplier/get',
         type: 'GET',
         dataSrc: 'data' // Specify the property containing the data array in the JSON response
       },
@@ -126,11 +126,11 @@ $(function () {
       // Buttons with Dropdown
       buttons: [
         {
-          text: '<i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Add New Customer</span>',
+          text: '<i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Add New Supplier</span>',
           className: 'add-new btn btn-primary mx-3',
           attr: {
             'data-bs-toggle': 'offcanvas',
-            'data-bs-target': '#offcanvasAddCustomer'
+            'data-bs-target': '#offcanvasAddSupplier'
           }
         }
       ],
@@ -172,29 +172,29 @@ $(function () {
   }
 
   // Add event listener for edit button
-  dt_customer_table.on('click', '.edit-record', function () {
-    var customerId = $(this).data('id');
+  dt_supplier_table.on('click', '.edit-record', function () {
+    var supplierId = $(this).data('id');
     // Retrieve customer data via AJAX and populate the form fields
     $.ajax({
-      url: '/master/customer/' + customerId,
+      url: '/master/supplier/' + supplierId,
       type: 'GET',
       headers: {
         'X-CSRF-TOKEN': token
       },
       success: function (response) {
         // Populate the form fields with customer data
-        $('#edit-customer-id').val(response.id);
-        $('#editCustomerForm').attr('action', '/master/customer/' + response.id);
-        $('#edit-customer-name').val(response.name);
-        $('#edit-customer-address').val(response.address);
-        $('#edit-customer-phone').val(response.phone_no);
-        $('#edit-customer-pic').val(response.pic_name);
-        $('#edit-customer-bank-account-no').val(response.bank_account_no);
+        $('#edit-supplier-id').val(response.id);
+        $('#editSupplierForm').attr('action', '/master/supplier/' + response.id);
+        $('#edit-supplier-name').val(response.name);
+        $('#edit-supplier-address').val(response.address);
+        $('#edit-supplier-phone').val(response.phone_no);
+        $('#edit-supplier-pic').val(response.pic_name);
+        $('#edit-supplier-bank-account-no').val(response.bank_account_no);
         $('#edit-status_' + response.is_active).prop('checked', true);
 
-        // Show the edit customer offcanvas
-        var editCustomerOffcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasEditCustomer'));
-        editCustomerOffcanvas.show();
+        // Show the edit supplier offcanvas
+        var editSupplierOffcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasEditSupplier'));
+        editSupplierOffcanvas.show();
       },
       error: function (xhr, status, error) {
         // Handle error
@@ -204,14 +204,14 @@ $(function () {
   });
 
   // Delete Record
-  $('.datatables-customers tbody').on('click', '.delete-record', function () {
+  $('.datatables-suppliers tbody').on('click', '.delete-record', function () {
     // dt_user.row($(this).parents('tr')).remove().draw();
-    var customerId = $(this).data('id');
+    var supplierId = $(this).data('id');
     var name = $(this).data('name');
-    if (confirm('Are you sure you want to delete customer ' + name + ' ?')) {
-      // Send AJAX request to delete customer
+    if (confirm('Are you sure you want to delete supplier ' + name + ' ?')) {
+      // Send AJAX request to delete supplier
       $.ajax({
-        url: '/master/customer/' + customerId,
+        url: '/master/supplier/' + supplierId,
         type: 'DELETE',
         headers: {
           'X-CSRF-TOKEN': token
@@ -220,7 +220,7 @@ $(function () {
           // Handle success
           alert(response.message);
           // Refresh datatable
-          dt_customer.ajax.reload();
+          dt_supplier.ajax.reload();
         },
         error: function (xhr, status, error) {
           // Handle error
@@ -240,11 +240,11 @@ $(function () {
 
 // Validation
 (function () {
-  const addNewCustomerForm = document.getElementById('addNewCustomerForm'),
-    editCustomerForm = document.getElementById('editCustomerForm');
+  const addNewSupplierForm = document.getElementById('addNewSupplierForm'),
+    editSupplierForm = document.getElementById('editSupplierForm');
 
-  // Add New Customer Form Validation
-  const fv = FormValidation.formValidation(addNewCustomerForm, {
+  // Add New Supplier Form Validation
+  const fv = FormValidation.formValidation(addNewSupplierForm, {
     fields: {
       name: {
         validators: {
@@ -300,7 +300,7 @@ $(function () {
   });
 
   // Edit User Form Validation
-  const fvEdit = FormValidation.formValidation(editCustomerForm, {
+  const fvEdit = FormValidation.formValidation(editSupplierForm, {
     fields: {
       name: {
         validators: {

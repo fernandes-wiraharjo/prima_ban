@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Customer Page')
+@section('title', 'Supplier Page')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}">
@@ -23,7 +23,7 @@
 @endsection
 
 @section('page-script')
-<script src="{{asset('assets/js/master-customer-list.js')}}"></script>
+<script src="{{asset('assets/js/master-supplier-list.js')}}"></script>
 @endsection
 
 @section('content')
@@ -55,7 +55,7 @@
 
 <div class="card">
   <div class="card-datatable table-responsive">
-    <table class="datatables-customers table border-top">
+    <table class="datatables-suppliers table border-top">
       <thead>
         <tr>
           <th></th>
@@ -71,43 +71,43 @@
     </table>
   </div>
   <!-- Offcanvas to add new user -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddCustomer" aria-labelledby="offcanvasAddCustomerLabel">
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddSupplier" aria-labelledby="offcanvasAddSupplierLabel">
     <div class="offcanvas-header">
-      <h5 id="offcanvasAddCustomerLabel" class="offcanvas-title">Add Customer</h5>
+      <h5 id="offcanvasAddSupplierLabel" class="offcanvas-title">Add Supplier</h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">
-      <form class="add-new-customer pt-0" id="addNewCustomerForm" onsubmit="return false" action="{{ route('add-customer') }}" method="POST">
+      <form class="add-new-supplier pt-0" id="addNewSupplierForm" onsubmit="return false" action="{{ route('add-supplier') }}" method="POST">
         @csrf
         <div class="mb-3">
-          <label class="form-label" for="add-customer-name">Name</label>
-          <input type="text" class="form-control" id="add-customer-username" placeholder="name" name="name" aria-label="name" />
+          <label class="form-label" for="add-supplier-name">Name</label>
+          <input type="text" class="form-control" id="add-supplier-username" placeholder="name" name="name" aria-label="name" />
         </div>
         <div class="mb-3">
-          <label class="form-label" for="add-customer-phone">Phone No</label>
-          <input type="text" class="form-control" id="add-customer-phone" placeholder="phone no" name="phone_no" aria-label="phone_no" />
+          <label class="form-label" for="add-supplier-phone">Phone No</label>
+          <input type="text" class="form-control" id="add-supplier-phone" placeholder="phone no" name="phone_no" aria-label="phone_no" />
         </div>
         <div class="mb-3">
-          <label class="form-label" for="add-customer-pic">Pic Name</label>
-          <input type="text" class="form-control" id="add-customer-pic" placeholder="pic name" name="pic_name" aria-label="pic_name" />
+          <label class="form-label" for="add-supplier-pic">Pic Name</label>
+          <input type="text" class="form-control" id="add-supplier-pic" placeholder="pic name" name="pic_name" aria-label="pic_name" />
         </div>
         <div class="mb-3">
-          <label class="form-label" for="add-customer-bank-account-no">Bank Account No</label>
-          <input type="text" class="form-control" id="add-customer-bank-account-no" placeholder="bank account no" name="bank_account_no" aria-label="bank_account_no" />
+          <label class="form-label" for="add-supplier-bank-account-no">Bank Account No</label>
+          <input type="text" class="form-control" id="add-supplier-bank-account-no" placeholder="bank account no" name="bank_account_no" aria-label="bank_account_no" />
         </div>
         <div class="mb-3">
-          <label class="form-label" for="add-customer-address">Address</label>
-          <textarea row="3" id="add-customer-address" class="form-control" placeholder="address" aria-label="address" name="address"></textarea>
+          <label class="form-label" for="add-supplier-address">Address</label>
+          <textarea row="3" id="add-supplier-address" class="form-control" placeholder="address" aria-label="address" name="address"></textarea>
         </div>
         <div class="mb-3">
           <label class="form-label d-block">Status</label>
           <small>
             <div class="form-check form-check-inline mt-3">
-              <input class="form-check-input" type="radio" name="is_active" id="status_active" value="1" checked />
+              <input class="form-check-input" type="radio" name="is_active" id="status_1" value="1" checked />
               <label class="form-check-label" for="status_active">ACTIVE</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="is_active" id="status_inactive" value="0" />
+              <input class="form-check-input" type="radio" name="is_active" id="status_0" value="0" />
               <label class="form-check-label" for="status_inactive">INACTIVE</label>
             </div>
           </small>
@@ -119,35 +119,35 @@
   </div>
 
   <!-- edit form -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEditCustomer" aria-labelledby="offcanvasEditCustomerLabel">
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEditSupplier" aria-labelledby="offcanvasEditSupplierLabel">
     <div class="offcanvas-header">
-        <h5 id="offcanvasEditCustomerLabel" class="offcanvas-title">Edit Customer</h5>
+        <h5 id="offcanvasEditSupplierLabel" class="offcanvas-title">Edit Supplier</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">
-        <form class="edit-customer-form pt-0" id="editCustomerForm" onsubmit="return false" action="{{ route('edit-customer', ['id' => 0]) }}" method="POST">
+        <form class="edit-supplier-form pt-0" id="editSupplierForm" onsubmit="return false" action="{{ route('edit-supplier', ['id' => 0]) }}" method="POST">
         @method('PUT')
         @csrf
-            <input type="hidden" id="edit-customer-id" name="customer_id">
+            <input type="hidden" id="edit-supplier-id" name="supplier_id">
             <div class="mb-3">
-              <label class="form-label" for="edit-customer-name">Name</label>
-              <input type="text" class="form-control" id="edit-customer-name" placeholder="name" name="name" aria-label="name" />
+              <label class="form-label" for="edit-supplier-name">Name</label>
+              <input type="text" class="form-control" id="edit-supplier-name" placeholder="name" name="name" aria-label="name" />
             </div>
             <div class="mb-3">
-              <label class="form-label" for="edit-customer-phone">Phone No</label>
-              <input type="text" class="form-control" id="edit-customer-phone" placeholder="phone no" name="phone_no" aria-label="phone_no" />
+              <label class="form-label" for="edit-supplier-phone">Phone No</label>
+              <input type="text" class="form-control" id="edit-supplier-phone" placeholder="phone no" name="phone_no" aria-label="phone_no" />
             </div>
             <div class="mb-3">
-              <label class="form-label" for="edit-customer-pic">Pic Name</label>
-              <input type="text" class="form-control" id="edit-customer-pic" placeholder="pic name" name="pic_name" aria-label="pic_name" />
+              <label class="form-label" for="edit-supplier-pic">Pic Name</label>
+              <input type="text" class="form-control" id="edit-supplier-pic" placeholder="pic name" name="pic_name" aria-label="pic_name" />
             </div>
             <div class="mb-3">
-              <label class="form-label" for="edit-customer-bank-account-no">Bank Account No</label>
-              <input type="text" class="form-control" id="edit-customer-bank-account-no" placeholder="bank account no" name="bank_account_no" aria-label="bank_account_no" />
+              <label class="form-label" for="edit-supplier-bank-account-no">Bank Account No</label>
+              <input type="text" class="form-control" id="edit-supplier-bank-account-no" placeholder="bank account no" name="bank_account_no" aria-label="bank_account_no" />
             </div>
             <div class="mb-3">
-              <label class="form-label" for="edit-customer-address">Address</label>
-              <textarea row="3" id="edit-customer-address" class="form-control" placeholder="address" aria-label="address" name="address"></textarea>
+              <label class="form-label" for="edit-supplier-address">Address</label>
+              <textarea row="3" id="edit-supplier-address" class="form-control" placeholder="address" aria-label="address" name="address"></textarea>
             </div>
             <div class="mb-3">
               <label class="form-label d-block">Status</label>

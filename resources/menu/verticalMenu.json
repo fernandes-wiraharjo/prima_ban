@@ -14,6 +14,12 @@
       "name": "Customers",
       "icon": "menu-icon tf-icons bx bx-store",
       "slug": "master-customer"
+    },
+    {
+      "url": "master/supplier",
+      "name": "Suppliers",
+      "icon": "menu-icon tf-icons bx bx-package",
+      "slug": "master-supplier"
     }
   ]
 }

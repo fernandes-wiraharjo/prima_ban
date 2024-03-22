@@ -56,6 +56,7 @@ use App\Http\Controllers\apps\InvoicePreview;
 use App\Http\Controllers\apps\InvoicePrint;
 use App\Http\Controllers\apps\InvoiceEdit;
 use App\Http\Controllers\apps\InvoiceAdd;
+use App\Http\Controllers\apps\SupplierController;
 use App\Http\Controllers\apps\UserList;
 use App\Http\Controllers\apps\UserViewAccount;
 use App\Http\Controllers\apps\UserViewSecurity;
@@ -185,6 +186,16 @@ Route::middleware(['auth'])->group(function () {
       Route::post('/add', [CustomerController::class, 'add'])->name('add-customer');
       Route::put('/{id}', [CustomerController::class, 'edit'])->name('edit-customer');
       Route::delete('/{id}', [CustomerController::class, 'delete'])->name('delete-customer');
+    });
+
+    //suppliers
+    Route::prefix('supplier')->group(function () {
+      Route::get('/', [SupplierController::class, 'index'])->name('master-supplier');
+      Route::get('/get', [SupplierController::class, 'get'])->name('get-supplier');
+      Route::get('/{id}', [SupplierController::class, 'getById'])->name('get-supplier-by-id');
+      Route::post('/add', [SupplierController::class, 'add'])->name('add-supplier');
+      Route::put('/{id}', [SupplierController::class, 'edit'])->name('edit-supplier');
+      Route::delete('/{id}', [SupplierController::class, 'delete'])->name('delete-supplier');
     });
   });
 });
