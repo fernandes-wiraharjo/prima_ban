@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers\apps;
 
-use App\Models\UOM;
+use App\Models\Size;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 
-class UOMController extends Controller
+class SizeController extends Controller
 {
   public function index()
   {
-    return view('content.masters.master-uom-list');
+    return view('content.masters.master-size-list');
   }
 
   public function get(Request $request)
   {
-    $query = UOM::query();
+    $query = Size::query();
 
     $sortableColumns = [
       0 => '',
@@ -75,19 +75,19 @@ class UOMController extends Controller
     try {
       // Validate the request
       $validatedData = $request->validate([
-        'code' => 'required|max:10',
+        'code' => 'required|max:50',
         'is_active' => 'required|in:0,1',
       ]);
 
       // Create a new brand instance
-      $data = new UOM();
+      $data = new Size();
       $data->code = $validatedData['code'];
       $data->is_active = $validatedData['is_active'];
       $data->created_by = Auth::id();
       $data->save();
 
       // Redirect or respond with success message
-      return Redirect::back()->with('success', 'UOM created successfully.');
+      return Redirect::back()->with('success', 'Size created successfully.');
     } catch (ValidationException $e) {
       // Validation failed, redirect back with errors
       return Redirect::back()
@@ -95,43 +95,43 @@ class UOMController extends Controller
         ->withInput();
     } catch (\Exception $e) {
       // Other exceptions (e.g., database errors)
-      return Redirect::back()->with('othererror', 'An error occurred while creating the UOM.');
+      return Redirect::back()->with('othererror', 'An error occurred while creating the size.');
     }
   }
 
   public function getById($id)
   {
-    $data = UOM::findOrFail($id);
+    $data = Size::findOrFail($id);
     return response()->json($data);
   }
 
   public function edit(Request $request, $id)
   {
     $validatedData = $request->validate([
-      'code' => 'required|max:10',
+      'code' => 'required|max:50',
       'is_active' => 'required|in:0,1',
     ]);
 
-    $data = UOM::findOrFail($id);
+    $data = Size::findOrFail($id);
     $data->code = $validatedData['code'];
     $data->is_active = $validatedData['is_active'];
     $data->updated_by = Auth::id();
     $data->save();
 
     return redirect()
-      ->route('master-uom')
-      ->with('success', 'UOM updated successfully.');
+      ->route('master-size')
+      ->with('success', 'Size updated successfully.');
   }
 
   public function delete($id)
   {
     // Find the data by ID
-    $data = UOM::findOrFail($id);
+    $data = Size::findOrFail($id);
 
     // Delete the data
     $data->delete();
 
     // Return a response indicating success
-    return response()->json(['message' => 'UOM deleted successfully'], 200);
+    return response()->json(['message' => 'Size deleted successfully'], 200);
   }
 }

@@ -58,6 +58,7 @@ use App\Http\Controllers\apps\InvoicePrint;
 use App\Http\Controllers\apps\InvoiceEdit;
 use App\Http\Controllers\apps\InvoiceAdd;
 use App\Http\Controllers\apps\PatternController;
+use App\Http\Controllers\apps\SizeController;
 use App\Http\Controllers\apps\SupplierController;
 use App\Http\Controllers\apps\UserList;
 use App\Http\Controllers\apps\UserViewAccount;
@@ -229,6 +230,16 @@ Route::middleware(['auth'])->group(function () {
       Route::post('/add', [UOMController::class, 'add'])->name('add-uom');
       Route::put('/{id}', [UOMController::class, 'edit'])->name('edit-uom');
       Route::delete('/{id}', [UOMController::class, 'delete'])->name('delete-uom');
+    });
+
+    //size
+    Route::prefix('size')->group(function () {
+      Route::get('/', [SizeController::class, 'index'])->name('master-size');
+      Route::get('/get', [SizeController::class, 'get'])->name('get-size');
+      Route::get('/{id}', [SizeController::class, 'getById'])->name('get-size-by-id');
+      Route::post('/add', [SizeController::class, 'add'])->name('add-size');
+      Route::put('/{id}', [SizeController::class, 'edit'])->name('edit-size');
+      Route::delete('/{id}', [SizeController::class, 'delete'])->name('delete-size');
     });
   });
 });

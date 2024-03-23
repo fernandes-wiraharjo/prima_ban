@@ -35,9 +35,15 @@
     },
     {
       "url": "master/uom",
-      "name": "UOM",
+      "name": "UOMs",
       "icon": "menu-icon tf-icons bx bx-network-chart",
       "slug": "master-uom"
+    },
+    {
+      "url": "master/size",
+      "name": "Sizes",
+      "icon": "menu-icon tf-icons bx bx-shape-circle",
+      "slug": "master-size"
     }
   ]
 }
