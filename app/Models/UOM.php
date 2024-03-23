@@ -9,6 +9,8 @@ class UOM extends Model
 {
   use HasFactory;
 
+  protected $table = 'uoms';
+
   protected $fillable = ['code', 'is_active', 'created_by', 'updated_by'];
 
   // Define any relationships here, e.g., createdBy, updatedBy

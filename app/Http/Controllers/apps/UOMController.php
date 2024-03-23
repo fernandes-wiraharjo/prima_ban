@@ -113,7 +113,7 @@ class UOMController extends Controller
     ]);
 
     $data = UOM::findOrFail($id);
-    $data->name = $validatedData['code'];
+    $data->code = $validatedData['code'];
     $data->is_active = $validatedData['is_active'];
     $data->updated_by = Auth::id();
     $data->save();
