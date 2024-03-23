@@ -81,7 +81,7 @@
         @csrf
         <div class="mb-3">
           <label class="form-label" for="add-supplier-name">Name</label>
-          <input type="text" class="form-control" id="add-supplier-username" placeholder="name" name="name" aria-label="name" />
+          <input type="text" class="form-control" id="add-supplier-name" placeholder="name" name="name" aria-label="name" />
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-supplier-phone">Phone No</label>
@@ -103,11 +103,11 @@
           <label class="form-label d-block">Status</label>
           <small>
             <div class="form-check form-check-inline mt-3">
-              <input class="form-check-input" type="radio" name="is_active" id="status_1" value="1" checked />
+              <input class="form-check-input" type="radio" name="is_active" id="status_active" value="1" checked />
               <label class="form-check-label" for="status_active">ACTIVE</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="is_active" id="status_0" value="0" />
+              <input class="form-check-input" type="radio" name="is_active" id="status_inactive" value="0" />
               <label class="form-check-label" for="status_inactive">INACTIVE</label>
             </div>
           </small>

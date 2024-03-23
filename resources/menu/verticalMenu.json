@@ -26,6 +26,18 @@
       "name": "Brands",
       "icon": "menu-icon tf-icons bx bx-sitemap",
       "slug": "master-brand"
+    },
+    {
+      "url": "master/pattern",
+      "name": "Patterns",
+      "icon": "menu-icon tf-icons bx bx-stats",
+      "slug": "master-pattern"
+    },
+    {
+      "url": "master/uom",
+      "name": "UOM",
+      "icon": "menu-icon tf-icons bx bx-network-chart",
+      "slug": "master-uom"
     }
   ]
 }

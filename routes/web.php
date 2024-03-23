@@ -219,6 +219,16 @@ Route::middleware(['auth'])->group(function () {
       Route::put('/{id}', [PatternController::class, 'edit'])->name('edit-pattern');
       Route::delete('/{id}', [PatternController::class, 'delete'])->name('delete-pattern');
     });
+
+    //uom
+    Route::prefix('uom')->group(function () {
+      Route::get('/', [UOMController::class, 'index'])->name('master-uom');
+      Route::get('/get', [UOMController::class, 'get'])->name('get-uom');
+      Route::get('/{id}', [UOMController::class, 'getById'])->name('get-uom-by-id');
+      Route::post('/add', [UOMController::class, 'add'])->name('add-uom');
+      Route::put('/{id}', [UOMController::class, 'edit'])->name('edit-uom');
+      Route::delete('/{id}', [UOMController::class, 'delete'])->name('delete-uom');
+    });
   });
 });
 

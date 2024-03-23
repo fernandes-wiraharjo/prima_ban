@@ -2,32 +2,28 @@
 
 namespace App\Http\Controllers\apps;
 
-use App\Models\Brand;
-use App\Models\Pattern;
+use App\Models\UOM;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 
-class PatternController extends Controller
+class UOMController extends Controller
 {
   public function index()
   {
-    $brands = Brand::where('is_active', true)->pluck('name', 'id');
-    return view('content.masters.master-pattern-list', ['brands' => $brands]);
+    return view('content.masters.master-uom-list');
   }
 
   public function get(Request $request)
   {
-    $query = Pattern::leftJoin('brands', 'patterns.id_brand', '=', 'brands.id') // Join brands table
-      ->select('patterns.*', 'brands.name as brand_name');
+    $query = UOM::query();
 
     $sortableColumns = [
       0 => '',
-      1 => 'brand_name',
-      2 => 'name',
-      3 => 'is_active',
+      1 => 'code',
+      2 => 'is_active',
     ];
 
     // Retrieve the column index and direction from the request
@@ -39,7 +35,7 @@ class PatternController extends Controller
       $sortColumn = $sortableColumns[$sortColumnIndex];
     } else {
       // Default sorting column if invalid or not provided
-      $sortColumn = 'brand_name'; // Default to 'username' or any other preferred column
+      $sortColumn = 'code'; // Default to 'username' or any other preferred column
     }
 
     // Get total records count (before filtering)
@@ -49,7 +45,7 @@ class PatternController extends Controller
     if ($request->has('search') && !empty($request->search['value'])) {
       $searchValue = '%' . $request->search['value'] . '%';
       $query->where(function ($query) use ($searchValue) {
-        $query->where('patterns.name', 'like', $searchValue)->orWhere('brands.name', 'like', $searchValue);
+        $query->where('code', 'like', $searchValue);
       });
     }
 
@@ -57,7 +53,7 @@ class PatternController extends Controller
     $totalFilters = $query->count();
 
     // Apply pagination
-    $patterns = $query
+    $data = $query
       ->offset($request->input('start'))
       ->limit($request->input('length'))
       ->orderBy($sortColumn, $sortDirection)
@@ -68,7 +64,7 @@ class PatternController extends Controller
       'draw' => $request->input('draw'),
       'recordsTotal' => $totalRecords,
       'recordsFiltered' => $totalFilters,
-      'data' => $patterns,
+      'data' => $data,
     ];
 
     return response()->json($responseData);
@@ -79,21 +75,19 @@ class PatternController extends Controller
     try {
       // Validate the request
       $validatedData = $request->validate([
-        'id_brand' => 'required|exists:brands,id',
-        'name' => 'required|max:50',
+        'code' => 'required|max:10',
         'is_active' => 'required|in:0,1',
       ]);
 
-      // Create a new data instance
-      $data = new Pattern();
-      $data->id_brand = $validatedData['id_brand'];
-      $data->name = $validatedData['name'];
+      // Create a new brand instance
+      $data = new UOM();
+      $data->code = $validatedData['code'];
       $data->is_active = $validatedData['is_active'];
       $data->created_by = Auth::id();
       $data->save();
 
       // Redirect or respond with success message
-      return Redirect::back()->with('success', 'Pattern created successfully.');
+      return Redirect::back()->with('success', 'UOM created successfully.');
     } catch (ValidationException $e) {
       // Validation failed, redirect back with errors
       return Redirect::back()
@@ -101,45 +95,43 @@ class PatternController extends Controller
         ->withInput();
     } catch (\Exception $e) {
       // Other exceptions (e.g., database errors)
-      return Redirect::back()->with('othererror', 'An error occurred while creating the pattern.');
+      return Redirect::back()->with('othererror', 'An error occurred while creating the uom.');
     }
   }
 
   public function getById($id)
   {
-    $pattern = Pattern::findOrFail($id);
-    return response()->json($pattern);
+    $data = UOM::findOrFail($id);
+    return response()->json($data);
   }
 
   public function edit(Request $request, $id)
   {
     $validatedData = $request->validate([
-      'id_brand' => 'required|exists:brands,id',
-      'name' => 'required|max:50',
+      'code' => 'required|max:10',
       'is_active' => 'required|in:0,1',
     ]);
 
-    $data = Pattern::findOrFail($id);
-    $data->id_brand = $validatedData['id_brand'];
-    $data->name = $validatedData['name'];
+    $data = UOM::findOrFail($id);
+    $data->name = $validatedData['code'];
     $data->is_active = $validatedData['is_active'];
     $data->updated_by = Auth::id();
     $data->save();
 
     return redirect()
-      ->route('master-pattern')
-      ->with('success', 'Pattern updated successfully.');
+      ->route('master-uom')
+      ->with('success', 'uom updated successfully.');
   }
 
   public function delete($id)
   {
     // Find the data by ID
-    $pattern = Pattern::findOrFail($id);
+    $data = UOM::findOrFail($id);
 
     // Delete the brand
-    $pattern->delete();
+    $data->delete();
 
     // Return a response indicating success
-    return response()->json(['message' => 'Pattern deleted successfully'], 200);
+    return response()->json(['message' => 'UOM deleted successfully'], 200);
   }
 }

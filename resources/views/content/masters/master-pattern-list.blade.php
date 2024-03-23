@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Customer Page')
+@section('title', 'Pattern Page')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}">
@@ -23,7 +23,7 @@
 @endsection
 
 @section('page-script')
-<script src="{{asset('assets/js/master-customer-list.js')}}"></script>
+<script src="{{asset('assets/js/master-pattern-list.js')}}"></script>
 @endsection
 
 @section('content')
@@ -55,49 +55,39 @@
 
 <div class="card">
   <div class="card-datatable table-responsive">
-    <table class="datatables-customers table border-top">
+    <table class="datatables-patterns table border-top">
       <thead>
         <tr>
           <th></th>
+          <th>Brand</th>
           <th>Name</th>
-          <th>Address</th>
-          <th>Phone No</th>
-          <th>Pic Name</th>
-          <th>Bank Account No</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
     </table>
   </div>
-  <!-- Offcanvas to add new user -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddCustomer" aria-labelledby="offcanvasAddCustomerLabel">
+  <!-- Offcanvas to add new -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAdd" aria-labelledby="offcanvasAddLabel">
     <div class="offcanvas-header">
-      <h5 id="offcanvasAddCustomerLabel" class="offcanvas-title">Add Customer</h5>
+      <h5 id="offcanvasAddLabel" class="offcanvas-title">Add Pattern</h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">
-      <form class="add-new-customer pt-0" id="addNewCustomerForm" onsubmit="return false" action="{{ route('add-customer') }}" method="POST">
+      <form class="add-new pt-0" id="addNewForm" onsubmit="return false" action="{{ route('add-pattern') }}" method="POST">
         @csrf
         <div class="mb-3">
-          <label class="form-label" for="add-customer-name">Name</label>
-          <input type="text" class="form-control" id="add-customer-name" placeholder="name" name="name" aria-label="name" />
+          <label class="form-label" for="brand">Brand</label>
+          <select id="brand" name="id_brand" class="select2 form-select">
+            <option value="">Select</option>
+            @foreach($brands as $id => $name)
+              <option value="{{ $id }}">{{ $name }}</option>
+            @endforeach
+          </select>
         </div>
         <div class="mb-3">
-          <label class="form-label" for="add-customer-phone">Phone No</label>
-          <input type="text" class="form-control" id="add-customer-phone" placeholder="phone no" name="phone_no" aria-label="phone_no" />
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-customer-pic">Pic Name</label>
-          <input type="text" class="form-control" id="add-customer-pic" placeholder="pic name" name="pic_name" aria-label="pic_name" />
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-customer-bank-account-no">Bank Account No</label>
-          <input type="text" class="form-control" id="add-customer-bank-account-no" placeholder="bank account no" name="bank_account_no" aria-label="bank_account_no" />
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-customer-address">Address</label>
-          <textarea row="3" id="add-customer-address" class="form-control" placeholder="address" aria-label="address" name="address"></textarea>
+          <label class="form-label" for="add-name">Name</label>
+          <input type="text" class="form-control" id="add-name" placeholder="name" name="name" aria-label="name" />
         </div>
         <div class="mb-3">
           <label class="form-label d-block">Status</label>
@@ -112,6 +102,7 @@
             </div>
           </small>
         </div>
+        <br><br><br><br><br><br><br>
         <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</button>
         <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
       </form>
@@ -119,35 +110,28 @@
   </div>
 
   <!-- edit form -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEditCustomer" aria-labelledby="offcanvasEditCustomerLabel">
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEdit" aria-labelledby="offcanvasEditLabel">
     <div class="offcanvas-header">
-        <h5 id="offcanvasEditCustomerLabel" class="offcanvas-title">Edit Customer</h5>
+        <h5 id="offcanvasEditLabel" class="offcanvas-title">Edit Pattern</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">
-        <form class="edit-customer-form pt-0" id="editCustomerForm" onsubmit="return false" action="{{ route('edit-customer', ['id' => 0]) }}" method="POST">
+        <form class="edit-form pt-0" id="editForm" onsubmit="return false" action="{{ route('edit-pattern', ['id' => 0]) }}" method="POST">
         @method('PUT')
         @csrf
-            <input type="hidden" id="edit-customer-id" name="customer_id">
+            <input type="hidden" id="edit-id" name="id">
             <div class="mb-3">
-              <label class="form-label" for="edit-customer-name">Name</label>
-              <input type="text" class="form-control" id="edit-customer-name" placeholder="name" name="name" aria-label="name" />
+              <label class="form-label" for="edit-brand">Brand</label>
+              <select id="edit-brand" name="id_brand" class="select2 form-select">
+                <option value="">Select</option>
+                @foreach($brands as $id => $name)
+                  <option value="{{ $id }}">{{ $name }}</option>
+                @endforeach
+              </select>
             </div>
             <div class="mb-3">
-              <label class="form-label" for="edit-customer-phone">Phone No</label>
-              <input type="text" class="form-control" id="edit-customer-phone" placeholder="phone no" name="phone_no" aria-label="phone_no" />
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="edit-customer-pic">Pic Name</label>
-              <input type="text" class="form-control" id="edit-customer-pic" placeholder="pic name" name="pic_name" aria-label="pic_name" />
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="edit-customer-bank-account-no">Bank Account No</label>
-              <input type="text" class="form-control" id="edit-customer-bank-account-no" placeholder="bank account no" name="bank_account_no" aria-label="bank_account_no" />
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="edit-customer-address">Address</label>
-              <textarea row="3" id="edit-customer-address" class="form-control" placeholder="address" aria-label="address" name="address"></textarea>
+              <label class="form-label" for="edit-name">Name</label>
+              <input type="text" class="form-control" id="edit-name" placeholder="name" name="name" aria-label="name" />
             </div>
             <div class="mb-3">
               <label class="form-label d-block">Status</label>
@@ -162,6 +146,7 @@
                 </div>
               </small>
             </div>
+            <br><br><br><br><br><br><br>
             <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</button>
             <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
         </form>
