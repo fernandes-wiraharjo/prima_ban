@@ -26,7 +26,7 @@ $(function () {
     },
     token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-  // Customers datatable
+  // Brands datatable
   if (dt_brand_table.length) {
     var dt_brand = dt_brand_table.DataTable({
       processing: true,
@@ -72,8 +72,8 @@ $(function () {
           }
         },
         {
-          // Customer Status
-          targets: 6,
+          // Brand Status
+          targets: 2,
           render: function (data, type, full, meta) {
             var $status = full['is_active'];
 
@@ -263,7 +263,7 @@ $(function () {
     }
   });
 
-  // Edit User Form Validation
+  // Edit Form Validation
   const fvEdit = FormValidation.formValidation(editBrandForm, {
     fields: {
       name: {

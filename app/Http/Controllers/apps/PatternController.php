@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\apps;
 
-use App\Models\Brand;
+use App\Models\Pattern;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,17 +13,18 @@ class BrandController extends Controller
 {
   public function index()
   {
-    return view('content.masters.master-brand-list');
+    return view('content.masters.master-pattern-list');
   }
 
   public function get(Request $request)
   {
-    $query = Brand::query();
+    $query = Pattern::query();
 
     $sortableColumns = [
       0 => '',
-      1 => 'name',
-      2 => 'is_active',
+      1 => 'brands.name',
+      2 => 'patterns.name',
+      3 => 'patterns.is_active',
     ];
 
     // Retrieve the column index and direction from the request
@@ -35,7 +36,7 @@ class BrandController extends Controller
       $sortColumn = $sortableColumns[$sortColumnIndex];
     } else {
       // Default sorting column if invalid or not provided
-      $sortColumn = 'name'; // Default to 'username' or any other preferred column
+      $sortColumn = 'brands.name'; // Default to 'username' or any other preferred column
     }
 
     // Get total records count (before filtering)
@@ -45,7 +46,9 @@ class BrandController extends Controller
     if ($request->has('search') && !empty($request->search['value'])) {
       $searchValue = '%' . $request->search['value'] . '%';
       $query->where(function ($query) use ($searchValue) {
-        $query->where('name', 'like', $searchValue);
+        $query->where('name', 'like', $searchValue)->orWhereHas('brand', function ($query) use ($searchValue) {
+          $query->where('name', 'like', $searchValue);
+        });
       });
     }
 
@@ -53,18 +56,17 @@ class BrandController extends Controller
     $totalFilters = $query->count();
 
     // Apply pagination
-    $brands = $query
-      ->offset($request->input('start'))
-      ->limit($request->input('length'))
+    $patterns = $query
+      ->with('brand') // Eager load the related Brand model
       ->orderBy($sortColumn, $sortDirection)
-      ->get();
+      ->paginate($request->input('length'));
 
     // Prepare response data
     $responseData = [
       'draw' => $request->input('draw'),
       'recordsTotal' => $totalRecords,
       'recordsFiltered' => $totalFilters,
-      'data' => $brands,
+      'data' => $patterns->items(),
     ];
 
     return response()->json($responseData);

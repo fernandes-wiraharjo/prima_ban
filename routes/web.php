@@ -57,6 +57,7 @@ use App\Http\Controllers\apps\InvoicePreview;
 use App\Http\Controllers\apps\InvoicePrint;
 use App\Http\Controllers\apps\InvoiceEdit;
 use App\Http\Controllers\apps\InvoiceAdd;
+use App\Http\Controllers\apps\PatternController;
 use App\Http\Controllers\apps\SupplierController;
 use App\Http\Controllers\apps\UserList;
 use App\Http\Controllers\apps\UserViewAccount;
@@ -207,6 +208,16 @@ Route::middleware(['auth'])->group(function () {
       Route::post('/add', [BrandController::class, 'add'])->name('add-brand');
       Route::put('/{id}', [BrandController::class, 'edit'])->name('edit-brand');
       Route::delete('/{id}', [BrandController::class, 'delete'])->name('delete-brand');
+    });
+
+    //patterns
+    Route::prefix('pattern')->group(function () {
+      Route::get('/', [PatternController::class, 'index'])->name('master-pattern');
+      Route::get('/get', [PatternController::class, 'get'])->name('get-pattern');
+      Route::get('/{id}', [PatternController::class, 'getById'])->name('get-pattern-by-id');
+      Route::post('/add', [PatternController::class, 'add'])->name('add-pattern');
+      Route::put('/{id}', [PatternController::class, 'edit'])->name('edit-pattern');
+      Route::delete('/{id}', [PatternController::class, 'delete'])->name('delete-pattern');
     });
   });
 });
