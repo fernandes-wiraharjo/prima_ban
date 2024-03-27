@@ -58,6 +58,7 @@ use App\Http\Controllers\apps\InvoicePrint;
 use App\Http\Controllers\apps\InvoiceEdit;
 use App\Http\Controllers\apps\InvoiceAdd;
 use App\Http\Controllers\apps\PatternController;
+use App\Http\Controllers\apps\ProductController;
 use App\Http\Controllers\apps\SizeController;
 use App\Http\Controllers\apps\SupplierController;
 use App\Http\Controllers\apps\UserList;
@@ -240,6 +241,16 @@ Route::middleware(['auth'])->group(function () {
       Route::post('/add', [SizeController::class, 'add'])->name('add-size');
       Route::put('/{id}', [SizeController::class, 'edit'])->name('edit-size');
       Route::delete('/{id}', [SizeController::class, 'delete'])->name('delete-size');
+    });
+
+    //product
+    Route::prefix('product')->group(function () {
+      Route::get('/', [ProductController::class, 'index'])->name('master-product');
+      Route::get('/get', [ProductController::class, 'get'])->name('get-product');
+      Route::get('/{id}', [ProductController::class, 'getById'])->name('get-product-by-id');
+      Route::post('/add', [ProductController::class, 'add'])->name('add-product');
+      Route::put('/{id}', [ProductController::class, 'edit'])->name('edit-product');
+      Route::delete('/{id}', [ProductController::class, 'delete'])->name('delete-product');
     });
   });
 });
