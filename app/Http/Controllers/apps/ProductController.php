@@ -4,6 +4,7 @@ namespace App\Http\Controllers\apps;
 
 use App\Models\Brand;
 use App\Models\UOM;
+use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,17 +15,17 @@ class ProductController extends Controller
 {
   public function index()
   {
-    $brands = Brand::where('is_active', true)->pluck('id', 'name');
-    $uoms = UOM::where('is_active', true)->pluck('id', 'code');
+    $brands = Brand::where('is_active', true)->pluck('name', 'id');
+    $uoms = UOM::where('is_active', true)->pluck('code', 'id');
     return view('content.masters.master-product-list', ['brands' => $brands, 'uoms' => $uoms]);
   }
 
   public function get(Request $request)
   {
-    $query = Pattern::leftJoin('brands', 'products.id_brand', '=', 'brands.id')
+    $query = Product::leftJoin('brands', 'products.id_brand', '=', 'brands.id')
       ->leftJoin('patterns', 'products.id_pattern', '=', 'patterns.id')
       ->leftJoin('uoms', 'products.id_uom', '=', 'uoms.id')
-      ->select('products.*', 'brands.name as brand_name', 'patterns.name as pattern_name', 'uoms.name as uom_name');
+      ->select('products.*', 'brands.name as brand_name', 'patterns.name as pattern_name', 'uoms.code as uom_name');
 
     $sortableColumns = [
       0 => '',
@@ -58,7 +59,7 @@ class ProductController extends Controller
           ->where('products.name', 'like', $searchValue)
           ->orWhere('brands.name', 'like', $searchValue)
           ->orWhere('patterns.name', 'like', $searchValue)
-          ->orWhere('uoms.name', 'like', $searchValue);
+          ->orWhere('uoms.code', 'like', $searchValue);
       });
     }
 
@@ -98,13 +99,15 @@ class ProductController extends Controller
       // Create a new data instance
       $data = new Product();
       $data->id_brand = $validatedData['id_brand'];
+      $data->id_pattern = $validatedData['id_pattern'];
+      $data->id_uom = $validatedData['id_uom'];
       $data->name = $validatedData['name'];
       $data->is_active = $validatedData['is_active'];
       $data->created_by = Auth::id();
       $data->save();
 
       // Redirect or respond with success message
-      return Redirect::back()->with('success', 'Pattern created successfully.');
+      return Redirect::back()->with('success', 'Product created successfully.');
     } catch (ValidationException $e) {
       // Validation failed, redirect back with errors
       return Redirect::back()
@@ -112,45 +115,49 @@ class ProductController extends Controller
         ->withInput();
     } catch (\Exception $e) {
       // Other exceptions (e.g., database errors)
-      return Redirect::back()->with('othererror', 'An error occurred while creating the pattern.');
+      return Redirect::back()->with('othererror', 'An error occurred while creating the product.');
     }
   }
 
   public function getById($id)
   {
-    $pattern = Pattern::findOrFail($id);
-    return response()->json($pattern);
+    $product = Product::findOrFail($id);
+    return response()->json($product);
   }
 
   public function edit(Request $request, $id)
   {
     $validatedData = $request->validate([
       'id_brand' => 'required|exists:brands,id',
+      'id_pattern' => 'required|exists:patterns,id',
+      'id_uom' => 'required|exists:uoms,id',
       'name' => 'required|max:50',
       'is_active' => 'required|in:0,1',
     ]);
 
-    $data = Pattern::findOrFail($id);
+    $data = Product::findOrFail($id);
     $data->id_brand = $validatedData['id_brand'];
+    $data->id_pattern = $validatedData['id_pattern'];
+    $data->id_uom = $validatedData['id_uom'];
     $data->name = $validatedData['name'];
     $data->is_active = $validatedData['is_active'];
     $data->updated_by = Auth::id();
     $data->save();
 
     return redirect()
-      ->route('master-pattern')
-      ->with('success', 'Pattern updated successfully.');
+      ->route('master-product')
+      ->with('success', 'Product updated successfully.');
   }
 
   public function delete($id)
   {
     // Find the data by ID
-    $pattern = Pattern::findOrFail($id);
+    $product = Product::findOrFail($id);
 
-    // Delete the brand
-    $pattern->delete();
+    // Delete the data
+    $product->delete();
 
     // Return a response indicating success
-    return response()->json(['message' => 'Pattern deleted successfully'], 200);
+    return response()->json(['message' => 'Product deleted successfully'], 200);
   }
 }

@@ -44,6 +44,12 @@
       "name": "Sizes",
       "icon": "menu-icon tf-icons bx bx-shape-circle",
       "slug": "master-size"
+    },
+    {
+      "url": "master/product",
+      "name": "Products",
+      "icon": "menu-icon tf-icons bx bx-color",
+      "slug": "master-product"
     }
   ]
 }

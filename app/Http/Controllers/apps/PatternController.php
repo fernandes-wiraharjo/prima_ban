@@ -111,6 +111,13 @@ class PatternController extends Controller
     return response()->json($pattern);
   }
 
+  public function getByBrandId($id)
+  {
+    $brand = Brand::findOrFail($id);
+    $patterns = $brand->patterns;
+    return response()->json($patterns);
+  }
+
   public function edit(Request $request, $id)
   {
     $validatedData = $request->validate([
