@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\apps;
 
 use App\Models\Brand;
+use App\Models\DeliveryOrder;
+use App\Models\Purchase;
+use App\Models\Sale;
+use App\Models\StockHistory;
 use App\Models\Product;
 use App\Models\ProductDetail;
 use App\Models\Size;
@@ -304,6 +308,26 @@ class ProductController extends Controller
 
   public function deleteProductDetail($id)
   {
+    $relatedDO = DeliveryOrder::where('id_product_detail', $id)->exists();
+    if ($relatedDO) {
+      return response()->json(['message' => 'Cannot delete product detail as it has associated delivery order.'], 200);
+    }
+
+    $relatedPurchase = Purchase::where('id_product_detail', $id)->exists();
+    if ($relatedPurchase) {
+      return response()->json(['message' => 'Cannot delete product detail as it has associated purchase.'], 200);
+    }
+
+    $relatedSale = Sale::where('id_product_detail', $id)->exists();
+    if ($relatedSale) {
+      return response()->json(['message' => 'Cannot delete product detail as it has associated sale.'], 200);
+    }
+
+    $relatedStockHistory = StockHistory::where('id_product_detail', $id)->exists();
+    if ($relatedStockHistory) {
+      return response()->json(['message' => 'Cannot delete product detail as it has associated stock history.'], 200);
+    }
+
     // Find the data by ID
     $productDetail = ProductDetail::findOrFail($id);
 

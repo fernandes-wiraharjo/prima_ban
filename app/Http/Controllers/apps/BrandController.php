@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\apps;
 
 use App\Models\Brand;
+use App\Models\Product;
+use App\Models\Pattern;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -125,6 +127,16 @@ class BrandController extends Controller
 
   public function delete($id)
   {
+    $relatedProduct = Product::where('id_brand', $id)->exists();
+    if ($relatedProduct) {
+      return response()->json(['message' => 'Cannot delete brand as it has associated product.'], 200);
+    }
+
+    $relatedPattern = Pattern::where('id_brand', $id)->exists();
+    if ($relatedPattern) {
+      return response()->json(['message' => 'Cannot delete brand as it has associated pattern.'], 200);
+    }
+
     // Find the Brand by ID
     $brand = Brand::findOrFail($id);
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\apps;
 
 use App\Models\Brand;
 use App\Models\Pattern;
+use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -140,6 +141,11 @@ class PatternController extends Controller
 
   public function delete($id)
   {
+    $relatedProduct = Product::where('id_pattern', $id)->exists();
+    if ($relatedProduct) {
+      return response()->json(['message' => 'Cannot delete pattern as it has associated product.'], 200);
+    }
+
     // Find the data by ID
     $pattern = Pattern::findOrFail($id);
 

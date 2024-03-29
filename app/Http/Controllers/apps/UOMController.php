@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\apps;
 
+use App\Models\Product;
 use App\Models\UOM;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -125,6 +126,11 @@ class UOMController extends Controller
 
   public function delete($id)
   {
+    $relatedProduct = Product::where('id_uom', $id)->exists();
+    if ($relatedProduct) {
+      return response()->json(['message' => 'Cannot delete uom as it has associated product.'], 200);
+    }
+
     // Find the data by ID
     $data = UOM::findOrFail($id);
 

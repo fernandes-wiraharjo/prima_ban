@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\apps;
 
+use App\Models\ProductDetail;
 use App\Models\Size;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -125,6 +126,11 @@ class SizeController extends Controller
 
   public function delete($id)
   {
+    $relatedProductDetail = ProductDetail::where('id_size', $id)->exists();
+    if ($relatedProductDetail) {
+      return response()->json(['message' => 'Cannot delete size as it has associated product detail.'], 200);
+    }
+
     // Find the data by ID
     $data = Size::findOrFail($id);
 

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\apps;
 
+use App\Models\DeliveryOrder;
+use App\Models\Purchase;
 use App\Models\Supplier;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -148,6 +150,16 @@ class SupplierController extends Controller
 
   public function delete($id)
   {
+    $relatedDO = DeliveryOrder::where('id_supplier', $id)->exists();
+    if ($relatedDO) {
+      return response()->json(['message' => 'Cannot delete supplier as it has associated delivery order.'], 200);
+    }
+
+    $relatedPurchase = Purchase::where('id_supplier', $id)->exists();
+    if ($relatedPurchase) {
+      return response()->json(['message' => 'Cannot delete supplier as it has associated purchase.'], 200);
+    }
+
     // Find the Supplier by ID
     $supplier = Supplier::findOrFail($id);
 
