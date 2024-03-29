@@ -22,6 +22,8 @@ return new class extends Migration {
       $table->unsignedBigInteger('updated_by')->nullable();
       $table->timestamps();
 
+      $table->unique(['id_product', 'id_size']);
+
       // Define foreign key constraints
       $table
         ->foreign('id_product')

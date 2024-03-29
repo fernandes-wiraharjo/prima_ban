@@ -252,6 +252,12 @@ Route::middleware(['auth'])->group(function () {
       Route::post('/add', [ProductController::class, 'add'])->name('add-product');
       Route::put('/{id}', [ProductController::class, 'edit'])->name('edit-product');
       Route::delete('/{id}', [ProductController::class, 'delete'])->name('delete-product');
+      Route::get('/{id}/{name}/detail', [ProductController::class, 'indexDetail'])->name('master-product-detail');
+      Route::get('/{id}/get-detail', [ProductController::class, 'getDetail'])->name('get-product-detail');
+      Route::get('/detail/{id}', [ProductController::class, 'getDetailById'])->name('get-product-detail-by-id');
+      Route::post('/detail/add', [ProductController::class, 'addProductDetail'])->name('add-product-detail');
+      Route::put('/detail/{id}', [ProductController::class, 'editProductDetail'])->name('edit-product-detail');
+      Route::delete('/detail/{id}', [ProductController::class, 'deleteProductDetail'])->name('delete-product-detail');
     });
   });
 });

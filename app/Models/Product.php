@@ -27,6 +27,11 @@ class Product extends Model
     return $this->belongsTo(UOM::class, 'id_uom');
   }
 
+  public function productDetail()
+  {
+    return $this->hasMany(ProductDetail::class, 'id_product');
+  }
+
   public function createdByUser()
   {
     return $this->belongsTo(User::class, 'created_by');

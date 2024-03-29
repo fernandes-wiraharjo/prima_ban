@@ -1,10 +1,14 @@
 'use strict';
 
-function redirectToProductDetail(button) {
-  var idProduct = button.getAttribute('data-id');
-  var productName = button.getAttribute('data-name');
-  var url = '/master/product/' + idProduct + '/' + productName + '/detail';
-  window.location.href = url;
+function formatNumber(input) {
+  // Remove non-numeric characters
+  var value = input.value.replace(/\D/g, '');
+
+  // Format with thousand separators
+  var formattedValue = Number(value).toLocaleString('id-ID', { minimumFractionDigits: 0 });
+
+  // Update input value
+  input.value = formattedValue;
 }
 
 // Datatable (jquery)
@@ -22,41 +26,20 @@ $(function () {
   }
 
   // Variable declaration for table
-  var dt_table = $('.datatables-products'),
-    selectBrand = $('.selectBrand'),
-    selectPattern = $('.selectPattern'),
-    selectUOM = $('.selectUOM'),
+  var dt_table = $('.datatables-product-details'),
+    select2 = $('.select2'),
     statusObj = {
       0: { title: 'Inactive', class: 'bg-label-secondary' },
       1: { title: 'Active', class: 'bg-label-success' }
     },
+    idProduct = document.getElementById('id-product').value,
     token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-  if (selectBrand.length) {
-    selectBrand.each(function () {
+  if (select2.length) {
+    select2.each(function () {
       var $this = $(this);
       $this.wrap('<div class="position-relative"></div>').select2({
-        placeholder: 'Select Brand',
-        dropdownParent: $this.parent()
-      });
-    });
-  }
-
-  if (selectPattern.length) {
-    selectPattern.each(function () {
-      var $this = $(this);
-      $this.wrap('<div class="position-relative"></div>').select2({
-        placeholder: 'Select Pattern',
-        dropdownParent: $this.parent()
-      });
-    });
-  }
-
-  if (selectUOM.length) {
-    selectUOM.each(function () {
-      var $this = $(this);
-      $this.wrap('<div class="position-relative"></div>').select2({
-        placeholder: 'Select UOM',
+        placeholder: 'Select Size',
         dropdownParent: $this.parent()
       });
     });
@@ -68,17 +51,16 @@ $(function () {
       processing: true,
       serverSide: true,
       ajax: {
-        url: '/master/product/get',
+        url: '/master/product/' + idProduct + '/get-detail',
         type: 'GET',
         dataSrc: 'data' // Specify the property containing the data array in the JSON response
       },
       columns: [
         // columns according to JSON
         { data: '' },
-        { data: 'name' },
-        { data: 'brand_name' },
-        { data: 'pattern_name' },
-        { data: 'uom_name' },
+        { data: 'size_name' },
+        { data: 'price' },
+        { data: 'quantity' },
         { data: 'is_active' },
         { data: 'action' }
       ],
@@ -99,20 +81,36 @@ $(function () {
           targets: 1,
           responsivePriority: 4,
           render: function (data, type, full, meta) {
-            var $name = full['name'];
+            var $sizeName = full['size_name'];
             // Creates full output for row
             var $row_output =
               '<div class="d-flex justify-content-start align-items-center name">' +
               '<div class="d-flex flex-column">' +
-              $name +
+              $sizeName +
               '</div>' +
               '</div>';
             return $row_output;
           }
         },
         {
+          // Price
+          targets: 2,
+          render: function (data, type, full, meta) {
+            // Format quantity as thousands
+            return 'Rp' + Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
+          }
+        },
+        {
+          // Quantity
+          targets: 3,
+          render: function (data, type, full, meta) {
+            // Format quantity as thousands
+            return Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
+          }
+        },
+        {
           // Status
-          targets: 5,
+          targets: 4,
           render: function (data, type, full, meta) {
             var $status = full['is_active'];
 
@@ -127,7 +125,7 @@ $(function () {
           orderable: false,
           render: function (data, type, full, meta) {
             var $id = full['id'];
-            var $name = full['name'];
+            var $sizeName = full['size_name'];
             return (
               '<div class="d-inline-block text-nowrap">' +
               '<button class="btn btn-sm btn-icon edit-record" data-id="' +
@@ -135,14 +133,9 @@ $(function () {
               '"><i class="bx bx-edit"></i></button>' +
               '<button class="btn btn-sm btn-icon delete-record" data-id="' +
               $id +
-              '" data-name="' +
-              $name +
+              '" data-sizename="' +
+              $sizeName +
               '"><i class="bx bx-trash"></i></button>' +
-              '<button class="btn btn-sm btn-icon" data-id="' +
-              $id +
-              '" data-name="' +
-              $name +
-              '" onclick="redirectToProductDetail(this)" title="View Product Details"><i class="bx bx-list-ul"></i></button>' +
               '</div>'
             );
           }
@@ -166,7 +159,7 @@ $(function () {
       // Buttons with Dropdown
       buttons: [
         {
-          text: '<i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Add New Product</span>',
+          text: '<i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Add Product Detail</span>',
           className: 'add-new btn btn-primary mx-3',
           attr: {
             'data-bs-toggle': 'offcanvas',
@@ -180,7 +173,7 @@ $(function () {
           display: $.fn.dataTable.Responsive.display.modal({
             header: function (row) {
               var data = row.data();
-              return 'Details of ' + data['name'];
+              return 'Details of ' + data['size_name'];
             }
           }),
           type: 'column',
@@ -211,45 +204,23 @@ $(function () {
     });
   }
 
-  function setPatternByBrand(brandId, patternId) {
-    if (brandId) {
-      $.ajax({
-        url: '/master/pattern/brand/' + brandId,
-        type: 'GET',
-        dataType: 'json',
-        success: function (data) {
-          $('#edit-pattern').empty();
-          $.each(data, function (key, value) {
-            $('#edit-pattern').append('<option value="' + value.id + '">' + value.name + '</option>');
-          });
-
-          $('#edit-pattern').val(patternId).trigger('change');
-        }
-      });
-    } else {
-      $('#edit-pattern').empty();
-    }
-  }
-
   // Add event listener for edit button
   dt.on('click', '.edit-record', function () {
     var id = $(this).data('id');
     // Retrieve customer data via AJAX and populate the form fields
     $.ajax({
-      url: '/master/product/' + id,
+      url: '/master/product/detail/' + id,
       type: 'GET',
       headers: {
         'X-CSRF-TOKEN': token
       },
       success: function (response) {
-        // Populate the form fields with customer data
+        // Populate the form fields with related data
         $('#edit-id').val(response.id);
-        $('#editForm').attr('action', '/master/product/' + response.id);
-        $('#edit-brand').val(response.id_brand).trigger('change');
-        setPatternByBrand(response.id_brand, response.id_pattern);
-        // $('#edit-pattern').val(response.id_pattern).trigger('change');
-        $('#edit-uom').val(response.id_uom).trigger('change');
-        $('#edit-name').val(response.name);
+        $('#editForm').attr('action', '/master/product/detail/' + response.id);
+        $('#edit-size').val(response.id_size).trigger('change');
+        $('#edit-price').val(Number(response.price).toLocaleString('id-ID', { minimumFractionDigits: 0 }));
+        $('#edit-quantity').val(Number(response.quantity).toLocaleString('id-ID', { minimumFractionDigits: 0 }));
         $('#edit-status_' + response.is_active).prop('checked', true);
 
         // Show the edit brand offcanvas
@@ -264,14 +235,14 @@ $(function () {
   });
 
   // Delete Record
-  $('.datatables-products tbody').on('click', '.delete-record', function () {
+  $('.datatables-product-details tbody').on('click', '.delete-record', function () {
     // dt_user.row($(this).parents('tr')).remove().draw();
     var id = $(this).data('id');
-    var name = $(this).data('name');
-    if (confirm('Are you sure you want to delete product ' + name + ' ?')) {
+    var sizeName = $(this).data('sizename');
+    if (confirm('Are you sure you want to delete size ' + sizeName + ' ?')) {
       // Send AJAX request to delete
       $.ajax({
-        url: '/master/product/' + id,
+        url: '/master/product/detail/' + id,
         type: 'DELETE',
         headers: {
           'X-CSRF-TOKEN': token
@@ -306,31 +277,24 @@ $(function () {
   // Add New Form Validation
   const fv = FormValidation.formValidation(addNewForm, {
     fields: {
-      name: {
+      price: {
         validators: {
           notEmpty: {
-            message: 'Please enter name'
+            message: 'Please enter price'
           }
         }
       },
-      id_brand: {
+      quantity: {
         validators: {
           notEmpty: {
-            message: 'Please select a brand'
+            message: 'Please enter quantity'
           }
         }
       },
-      id_pattern: {
+      id_size: {
         validators: {
           notEmpty: {
-            message: 'Please select a pattern'
-          }
-        }
-      },
-      id_uom: {
-        validators: {
-          notEmpty: {
-            message: 'Please select a uom'
+            message: 'Please select a size'
           }
         }
       }
@@ -355,31 +319,24 @@ $(function () {
   // Edit Form Validation
   const fvEdit = FormValidation.formValidation(editForm, {
     fields: {
-      name: {
+      price: {
         validators: {
           notEmpty: {
-            message: 'Please enter name'
+            message: 'Please enter price'
           }
         }
       },
-      id_brand: {
+      quantity: {
         validators: {
           notEmpty: {
-            message: 'Please select a brand'
+            message: 'Please enter quantity'
           }
         }
       },
-      id_pattern: {
+      id_size: {
         validators: {
           notEmpty: {
-            message: 'Please select a pattern'
-          }
-        }
-      },
-      id_uom: {
-        validators: {
-          notEmpty: {
-            message: 'Please select a uom'
+            message: 'Please select a size'
           }
         }
       }
@@ -398,45 +355,6 @@ $(function () {
       // Submit the form when all fields are valid
       defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
       autoFocus: new FormValidation.plugins.AutoFocus()
-    }
-  });
-
-  //slBrand onchange
-  $('#brand').on('change', function () {
-    var brandId = $(this).val();
-    if (brandId) {
-      $.ajax({
-        url: '/master/pattern/brand/' + brandId,
-        type: 'GET',
-        dataType: 'json',
-        success: function (data) {
-          $('#pattern').empty();
-          $.each(data, function (key, value) {
-            $('#pattern').append('<option value="' + value.id + '">' + value.name + '</option>');
-          });
-        }
-      });
-    } else {
-      $('#pattern').empty();
-    }
-  });
-
-  $('#edit-brand').on('change', function () {
-    var brandId = $(this).val();
-    if (brandId) {
-      $.ajax({
-        url: '/master/pattern/brand/' + brandId,
-        type: 'GET',
-        dataType: 'json',
-        success: function (data) {
-          $('#edit-pattern').empty();
-          $.each(data, function (key, value) {
-            $('#edit-pattern').append('<option value="' + value.id + '">' + value.name + '</option>');
-          });
-        }
-      });
-    } else {
-      $('#edit-pattern').empty();
     }
   });
 })();
