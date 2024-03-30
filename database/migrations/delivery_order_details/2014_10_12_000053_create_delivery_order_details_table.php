@@ -10,29 +10,25 @@ return new class extends Migration {
    */
   public function up(): void
   {
-    Schema::create('delivery_orders', function (Blueprint $table) {
+    Schema::create('delivery_order_details', function (Blueprint $table) {
       $table->id();
-      // $table->string('do_number', 20)->unique();
-      // $table->unsignedBigInteger('id_product_detail');
-      $table->unsignedBigInteger('id_supplier');
-      $table->date('date');
-      // $table->smallInteger('quantity');
-      // $table->decimal('price', 10, 2);
-      // $table->decimal('total_price', 10, 2);
+      $table->unsignedBigInteger('id_delivery_order');
+      $table->unsignedBigInteger('id_product_detail');
+      $table->smallInteger('quantity');
       $table->unsignedBigInteger('created_by')->nullable();
       $table->unsignedBigInteger('updated_by')->nullable();
       $table->timestamps();
 
       // Define foreign key constraints
-      // $table
-      //   ->foreign('id_product_detail')
-      //   ->references('id')
-      //   ->on('product_details')
-      //   ->onDelete('restrict');
       $table
-        ->foreign('id_supplier')
+        ->foreign('id_delivery_order')
         ->references('id')
-        ->on('suppliers')
+        ->on('delivery_orders')
+        ->onDelete('restrict');
+      $table
+        ->foreign('id_product_detail')
+        ->references('id')
+        ->on('product_details')
         ->onDelete('restrict');
       $table
         ->foreign('created_by')
@@ -52,6 +48,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('delivery_orders');
+    Schema::dropIfExists('delivery_order_details');
   }
 };

@@ -12,24 +12,24 @@ return new class extends Migration {
   {
     Schema::create('purchases', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('id_product_detail');
+      // $table->unsignedBigInteger('id_product_detail');
       $table->unsignedBigInteger('id_supplier');
       $table->string('invoice_no', 50)->nullable();
       $table->date('date');
-      $table->smallInteger('quantity');
-      $table->decimal('price', 10, 2);
-      $table->decimal('total_price', 10, 2);
+      // $table->smallInteger('quantity');
+      // $table->decimal('price', 10, 2);
+      $table->decimal('final_price', 10, 2);
       $table->string('status', 30);
       $table->unsignedBigInteger('created_by')->nullable();
       $table->unsignedBigInteger('updated_by')->nullable();
       $table->timestamps();
 
       // Define foreign key constraints
-      $table
-        ->foreign('id_product_detail')
-        ->references('id')
-        ->on('product_details')
-        ->onDelete('restrict');
+      // $table
+      //   ->foreign('id_product_detail')
+      //   ->references('id')
+      //   ->on('product_details')
+      //   ->onDelete('restrict');
       $table
         ->foreign('id_supplier')
         ->references('id')

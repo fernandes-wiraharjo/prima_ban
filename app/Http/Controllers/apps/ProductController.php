@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\apps;
 
 use App\Models\Brand;
-use App\Models\DeliveryOrder;
-use App\Models\Purchase;
-use App\Models\Sale;
+use App\Models\DeliveryOrderDetail;
+use App\Models\PurchaseDetail;
+use App\Models\SaleDetail;
 use App\Models\StockHistory;
 use App\Models\Product;
 use App\Models\ProductDetail;
@@ -308,19 +308,22 @@ class ProductController extends Controller
 
   public function deleteProductDetail($id)
   {
-    $relatedDO = DeliveryOrder::where('id_product_detail', $id)->exists();
-    if ($relatedDO) {
-      return response()->json(['message' => 'Cannot delete product detail as it has associated delivery order.'], 200);
+    $relatedDODetail = DeliveryOrderDetail::where('id_product_detail', $id)->exists();
+    if ($relatedDODetail) {
+      return response()->json(
+        ['message' => 'Cannot delete product detail as it has associated delivery order detail.'],
+        200
+      );
     }
 
-    $relatedPurchase = Purchase::where('id_product_detail', $id)->exists();
-    if ($relatedPurchase) {
-      return response()->json(['message' => 'Cannot delete product detail as it has associated purchase.'], 200);
+    $relatedPurchaseDetail = PurchaseDetail::where('id_product_detail', $id)->exists();
+    if ($relatedPurchaseDetail) {
+      return response()->json(['message' => 'Cannot delete product detail as it has associated purchase detail.'], 200);
     }
 
-    $relatedSale = Sale::where('id_product_detail', $id)->exists();
-    if ($relatedSale) {
-      return response()->json(['message' => 'Cannot delete product detail as it has associated sale.'], 200);
+    $relatedSaleDetail = SaleDetail::where('id_product_detail', $id)->exists();
+    if ($relatedSaleDetail) {
+      return response()->json(['message' => 'Cannot delete product detail as it has associated sale detail.'], 200);
     }
 
     $relatedStockHistory = StockHistory::where('id_product_detail', $id)->exists();

@@ -12,15 +12,15 @@ return new class extends Migration {
   {
     Schema::create('sales', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('id_product_detail');
-      $table->unsignedBigInteger('id_customer');
+      // $table->unsignedBigInteger('id_product_detail');
+      $table->unsignedBigInteger('id_customer')->nullable();
       $table->string('invoice_no', 50)->nullable();
       $table->date('date');
-      $table->smallInteger('quantity');
-      $table->decimal('price', 10, 2);
-      $table->decimal('total_price', 10, 2);
-      $table->decimal('discount_percentage', 5, 2);
-      $table->decimal('nett_price', 10, 2);
+      // $table->smallInteger('quantity');
+      // $table->decimal('price', 10, 2);
+      $table->decimal('final_price', 10, 2);
+      // $table->decimal('discount_percentage', 5, 2);
+      // $table->decimal('nett_price', 10, 2);
       $table->string('bank_account_no', 30);
       $table->string('status', 30);
       $table->unsignedBigInteger('created_by')->nullable();
@@ -28,11 +28,11 @@ return new class extends Migration {
       $table->timestamps();
 
       // Define foreign key constraints
-      $table
-        ->foreign('id_product_detail')
-        ->references('id')
-        ->on('product_details')
-        ->onDelete('restrict');
+      // $table
+      //   ->foreign('id_product_detail')
+      //   ->references('id')
+      //   ->on('product_details')
+      //   ->onDelete('restrict');
       $table
         ->foreign('id_customer')
         ->references('id')
