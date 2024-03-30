@@ -260,6 +260,19 @@ Route::middleware(['auth'])->group(function () {
       Route::delete('/detail/{id}', [ProductController::class, 'deleteProductDetail'])->name('delete-product-detail');
     });
   });
+
+  //masters
+  Route::prefix('transaction')->group(function () {
+    //users
+    Route::prefix('delivery-order')->group(function () {
+      Route::get('/', [DeliveryOrderController::class, 'index'])->name('transaction-delivery-order');
+      Route::get('/get', [DeliveryOrderController::class, 'get'])->name('get-delivery-order');
+      // Route::get('/{id}', [DeliveryOrderController::class, 'getById'])->name('get-delivery-order-by-id');
+      // Route::post('/add', [DeliveryOrderController::class, 'add'])->name('add-delivery-order');
+      // Route::put('/{id}', [DeliveryOrderController::class, 'edit'])->name('edit-delivery-order');
+      // Route::delete('/{id}', [DeliveryOrderController::class, 'delete'])->name('delete-delivery-order');
+    });
+  });
 });
 
 // Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');

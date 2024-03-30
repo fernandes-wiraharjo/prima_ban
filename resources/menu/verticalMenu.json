@@ -50,6 +50,15 @@
       "name": "Products",
       "icon": "menu-icon tf-icons bx bx-color",
       "slug": "master-product"
+    },
+    {
+      "menuHeader": "transactions"
+    },
+    {
+      "url": "transaction/delivery-order",
+      "name": "Delivery Order",
+      "icon": "menu-icon tf-icons bx bx-car",
+      "slug": "transaction-delivery-order"
     }
   ]
 }
