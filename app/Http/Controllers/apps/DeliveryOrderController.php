@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\apps;
 
 use App\Models\DeliveryOrder;
+use App\Models\ProductDetail;
 use App\Models\Supplier;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -14,8 +15,7 @@ class DeliveryOrderController extends Controller
 {
   public function index()
   {
-    $suppliers = Supplier::where('is_active', true)->pluck('name', 'id');
-    return view('content.transactions.delivery-order', ['suppliers' => $suppliers]);
+    return view('content.transactions.delivery-order');
   }
 
   public function get(Request $request)
@@ -74,6 +74,18 @@ class DeliveryOrderController extends Controller
     ];
 
     return response()->json($responseData);
+  }
+
+  public function indexAdd()
+  {
+    $suppliers = Supplier::where('is_active', true)->pluck('name', 'id');
+    $products = ProductDetail::query()
+      ->selectRaw('product_details.id, CONCAT(p.name, " - ", sizes.code) as name')
+      ->leftJoin('products as p', 'p.id', 'product_details.id_product')
+      ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
+      ->where('product_details.is_active', true)
+      ->pluck('name', 'id');
+    return view('content.transactions.delivery-order-add', ['suppliers' => $suppliers, 'products' => $products]);
   }
 
   // public function add(Request $request)

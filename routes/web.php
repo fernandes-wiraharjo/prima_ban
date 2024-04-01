@@ -27,6 +27,7 @@ use App\Http\Controllers\apps\Email;
 use App\Http\Controllers\apps\Chat;
 use App\Http\Controllers\apps\Calendar;
 use App\Http\Controllers\apps\CustomerController;
+use App\Http\Controllers\apps\DeliveryOrderController;
 use App\Http\Controllers\apps\Kanban;
 use App\Http\Controllers\apps\EcommerceDashboard;
 use App\Http\Controllers\apps\EcommerceProductList;
@@ -267,6 +268,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('delivery-order')->group(function () {
       Route::get('/', [DeliveryOrderController::class, 'index'])->name('transaction-delivery-order');
       Route::get('/get', [DeliveryOrderController::class, 'get'])->name('get-delivery-order');
+      Route::get('/get/add', [DeliveryOrderController::class, 'indexAdd'])->name('index-add-delivery-order');
       // Route::get('/{id}', [DeliveryOrderController::class, 'getById'])->name('get-delivery-order-by-id');
       // Route::post('/add', [DeliveryOrderController::class, 'add'])->name('add-delivery-order');
       // Route::put('/{id}', [DeliveryOrderController::class, 'edit'])->name('edit-delivery-order');
