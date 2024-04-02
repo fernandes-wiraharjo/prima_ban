@@ -56,7 +56,7 @@
     },
     {
       "url": "transaction/delivery-order",
-      "name": "Delivery Order",
+      "name": "Delivery Orders",
       "icon": "menu-icon tf-icons bx bx-car",
       "slug": "transaction-delivery-order"
     }

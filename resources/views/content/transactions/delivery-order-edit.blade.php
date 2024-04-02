@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Add - Surat Jalan')
+@section('title', 'Edit - Surat Jalan')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
@@ -20,8 +20,7 @@
 @endsection
 
 @section('page-script')
-<!-- <script src="{{asset('assets/js/offcanvas-send-invoice.js')}}"></script> -->
-<script src="{{asset('assets/js/delivery-order-add.js')}}"></script>
+<script src="{{asset('assets/js/delivery-order-edit.js')}}"></script>
 @endsection
 
 @php
@@ -48,7 +47,8 @@
   </div>
 @endif
 
-<form class="source-item py-sm-3" method="post" action="{{ route('add-delivery-order') }}">
+<form class="source-item py-sm-3" method="post" action="{{ route('edit-delivery-order', ['id' => $id]) }}">
+@method('PUT')
 @csrf
 <div class="row invoice-add">
   <!-- Invoice Add-->
@@ -58,7 +58,6 @@
         <div class="row p-sm-3 p-0">
           <div class="col-md-6 mb-md-0 mb-4">
             <div class="d-flex svg-illustration mb-4 gap-2">
-              <!-- <span class="app-brand-logo demo">@include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])</span> -->
               <span class="demo text-body fw-bold">{{ strtoupper(config('variables.templateName')) }}</span>
             </div>
             <p class="mb-1">{{ $contactData['address'] }}</p>
@@ -71,7 +70,7 @@
               </dt>
               <dd class="col-sm-6 d-flex justify-content-md-end">
                 <div class="w-px-150">
-                  <input type="text" name="date" class="form-control date-picker" placeholder="YYYY-MM-DD" required />
+                  <input type="text" name="date" class="form-control date-picker" placeholder="YYYY-MM-DD" value="{{ $deliveryOrder->date }}" required />
                 </div>
               </dd>
               <dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
@@ -82,7 +81,7 @@
                 <select id="supplier" name="id_supplier" class="select2 select-supplier form-select" required>
                   <option value="">Select</option>
                   @foreach($suppliers as $id => $name)
-                    <option value="{{ $id }}">{{ $name }}</option>
+                    <option value="{{ $id }}" {{ $id == $deliveryOrder->id_supplier ? 'selected' : '' }}>{{ $name }}</option>
                   @endforeach
                 </select>
                 </div>
@@ -99,21 +98,22 @@
 
         <!-- <form class="source-item py-sm-3"> -->
           <div class="mb-3" data-repeater-list="group-a">
+          @foreach($deliveryOrderDetails as $index => $detail)
             <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
               <div class="d-flex border rounded position-relative pe-0">
                 <div class="row w-100 m-0 p-3">
                   <div class="col-md-10 col-12 mb-md-0 mb-3 ps-md-0">
                     <p class="mb-2 repeater-title">Barang</p>
-                    <select class="form-select item-details mb-2" name="group-a[0][item]">
+                    <select class="form-select item-details mb-2" name="group-a[{{ $index }}][item]">
                       <option selected disabled>Select Item</option>
                       @foreach($products as $id => $name)
-                        <option value="{{ $id }}">{{ $name }}</option>
+                        <option value="{{ $id }}" {{ $detail->id_product_detail == $id ? 'selected' : '' }}>{{ $name }}</option>
                       @endforeach
                     </select>
                   </div>
                   <div class="col-md-2 col-12 mb-md-0 mb-3">
                     <p class="mb-2 repeater-title">Qty</p>
-                    <input type="number" class="form-control invoice-item-qty" placeholder="1" name="group-a[0][quantity]"/>
+                    <input type="number" class="form-control invoice-item-qty" placeholder="1" name="group-a[{{ $index }}][quantity]" value="{{ $detail->quantity }}"/>
                   </div>
                 </div>
                 <div class="d-flex flex-column align-items-center justify-content-between border-start p-2">
@@ -121,6 +121,7 @@
                 </div>
               </div>
             </div>
+          @endforeach
           </div>
           <div class="row">
             <div class="col-12">
@@ -167,8 +168,4 @@
   <!-- /Invoice Actions -->
 </div>
 </form>
-
-<!-- Offcanvas -->
-@include('_partials/_offcanvas/offcanvas-send-invoice')
-<!-- /Offcanvas -->
 @endsection

@@ -1,5 +1,9 @@
 'use strict';
 
+function redirectToIndexAdd() {
+  window.location.href = '/transaction/delivery-order/get/add';
+}
+
 // Datatable (jquery)
 $(function () {
   let borderColor, bodyBg, headingColor;
@@ -47,7 +51,7 @@ $(function () {
         // columns according to JSON
         { data: '' },
         { data: 'id' },
-        { data: 'date' },
+        { data: 'formatted_date' },
         { data: 'supplier_name' },
         { data: 'action' }
       ],
@@ -87,21 +91,23 @@ $(function () {
           orderable: false,
           render: function (data, type, full, meta) {
             var $id = full['id'];
-            // var $name = full['name'];
+            var $supplierName = full['supplier_name'];
             return (
               '<div class="d-inline-block text-nowrap">' +
-              '<button class="btn btn-sm btn-icon edit-record" data-id="' +
+              '<button class="btn btn-sm btn-icon edit-record" title="edit/see details" data-id="' +
               $id +
               '"><i class="bx bx-edit"></i></button>' +
               '<button class="btn btn-sm btn-icon delete-record" data-id="' +
               $id +
+              '" data-supplier="' +
+              $supplierName +
               '"><i class="bx bx-trash"></i></button>' +
               '</div>'
             );
           }
         }
       ],
-      order: [[2, 'asc']],
+      order: [[2, 'desc']],
       dom:
         '<"row mx-2"' +
         '<"col-md-2"<"me-3"l>>' +
@@ -123,7 +129,8 @@ $(function () {
           className: 'add-new btn btn-primary mx-3',
           attr: {
             'data-bs-toggle': 'offcanvas',
-            'data-bs-target': '#offcanvasAdd'
+            'data-bs-target': '#offcanvasAdd',
+            onclick: 'redirectToIndexAdd()'
           }
         }
       ],
@@ -165,60 +172,39 @@ $(function () {
   }
 
   // Add event listener for edit button
-  // dt.on('click', '.edit-record', function () {
-  //   var id = $(this).data('id');
-  //   // Retrieve customer data via AJAX and populate the form fields
-  //   $.ajax({
-  //     url: '/master/pattern/' + id,
-  //     type: 'GET',
-  //     headers: {
-  //       'X-CSRF-TOKEN': token
-  //     },
-  //     success: function (response) {
-  //       // Populate the form fields with customer data
-  //       $('#edit-id').val(response.id);
-  //       $('#editForm').attr('action', '/master/pattern/' + response.id);
-  //       $('#edit-brand').val(response.id_brand).trigger('change');
-  //       $('#edit-name').val(response.name);
-  //       $('#edit-status_' + response.is_active).prop('checked', true);
-
-  //       // Show the edit brand offcanvas
-  //       var editOffcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasEdit'));
-  //       editOffcanvas.show();
-  //     },
-  //     error: function (xhr, status, error) {
-  //       // Handle error
-  //       console.error(error);
-  //     }
-  //   });
-  // });
+  dt.on('click', '.edit-record', function () {
+    var id = $(this).data('id');
+    window.location.href = '/transaction/delivery-order/' + id;
+  });
 
   // Delete Record
-  // $('.datatables-patterns tbody').on('click', '.delete-record', function () {
-  //   // dt_user.row($(this).parents('tr')).remove().draw();
-  //   var id = $(this).data('id');
-  //   var name = $(this).data('name');
-  //   if (confirm('Are you sure you want to delete pattern ' + name + ' ?')) {
-  //     // Send AJAX request to delete
-  //     $.ajax({
-  //       url: '/master/pattern/' + id,
-  //       type: 'DELETE',
-  //       headers: {
-  //         'X-CSRF-TOKEN': token
-  //       },
-  //       success: function (response) {
-  //         // Handle success
-  //         alert(response.message);
-  //         // Refresh datatable
-  //         dt.ajax.reload();
-  //       },
-  //       error: function (xhr, status, error) {
-  //         // Handle error
-  //         console.error(error);
-  //       }
-  //     });
-  //   }
-  // });
+  $('.datatables-delivery-orders tbody').on('click', '.delete-record', function () {
+    // dt_user.row($(this).parents('tr')).remove().draw();
+    var id = $(this).data('id');
+    var supplierName = $(this).data('supplier');
+    if (
+      confirm('Are you sure you want to delete delivery order with id ' + id + ' and supplier ' + supplierName + ' ?')
+    ) {
+      // Send AJAX request to delete
+      $.ajax({
+        url: '/transaction/delivery-order/' + id,
+        type: 'DELETE',
+        headers: {
+          'X-CSRF-TOKEN': token
+        },
+        success: function (response) {
+          // Handle success
+          alert(response.message);
+          // Refresh datatable
+          dt.ajax.reload();
+        },
+        error: function (xhr, status, error) {
+          // Handle error
+          console.error(error);
+        }
+      });
+    }
+  });
 
   // Filter form control to default size
   // ? setTimeout used for multilingual table initialization
@@ -227,79 +213,3 @@ $(function () {
     $('.dataTables_length .form-select').removeClass('form-select-sm');
   }, 300);
 });
-
-// Validation
-// (function () {
-//   const addNewForm = document.getElementById('addNewForm'),
-//     editForm = document.getElementById('editForm');
-
-//   // Add New Form Validation
-//   const fv = FormValidation.formValidation(addNewForm, {
-//     fields: {
-//       name: {
-//         validators: {
-//           notEmpty: {
-//             message: 'Please enter name'
-//           }
-//         }
-//       },
-//       id_brand: {
-//         validators: {
-//           notEmpty: {
-//             message: 'Please select a brand'
-//           }
-//         }
-//       }
-//     },
-//     plugins: {
-//       trigger: new FormValidation.plugins.Trigger(),
-//       bootstrap5: new FormValidation.plugins.Bootstrap5({
-//         // Use this for enabling/changing valid/invalid class
-//         eleValidClass: '',
-//         rowSelector: function (field, ele) {
-//           // field is the field name & ele is the field element
-//           return '.mb-3';
-//         }
-//       }),
-//       submitButton: new FormValidation.plugins.SubmitButton(),
-//       // Submit the form when all fields are valid
-//       defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-//       autoFocus: new FormValidation.plugins.AutoFocus()
-//     }
-//   });
-
-//   // Edit Form Validation
-//   const fvEdit = FormValidation.formValidation(editForm, {
-//     fields: {
-//       name: {
-//         validators: {
-//           notEmpty: {
-//             message: 'Please enter name'
-//           }
-//         }
-//       },
-//       id_brand: {
-//         validators: {
-//           notEmpty: {
-//             message: 'Please select a brand'
-//           }
-//         }
-//       }
-//     },
-//     plugins: {
-//       trigger: new FormValidation.plugins.Trigger(),
-//       bootstrap5: new FormValidation.plugins.Bootstrap5({
-//         // Use this for enabling/changing valid/invalid class
-//         eleValidClass: '',
-//         rowSelector: function (field, ele) {
-//           // field is the field name & ele is the field element
-//           return '.mb-3';
-//         }
-//       }),
-//       submitButton: new FormValidation.plugins.SubmitButton(),
-//       // Submit the form when all fields are valid
-//       defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
-//       autoFocus: new FormValidation.plugins.AutoFocus()
-//     }
-//   });
-// })();

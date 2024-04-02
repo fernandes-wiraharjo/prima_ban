@@ -2,7 +2,6 @@
 
 (function () {
   var selectSupplier = $('.select-supplier');
-  // selectItem = $('.select-item');
 
   if (selectSupplier.length) {
     var $this = selectSupplier;
@@ -11,16 +10,6 @@
       dropdownParent: $this.parent()
     });
   }
-
-  // if (selectItem.length) {
-  //   selectItem.each(function () {
-  //     var $this = $(this);
-  //     $this.wrap('<div class="position-relative"></div>').select2({
-  //       placeholder: 'Select Item',
-  //       dropdownParent: $this.parent()
-  //     });
-  //   });
-  // }
 
   const invoiceItemPriceList = document.querySelectorAll('.invoice-item-price'),
     invoiceItemQtyList = document.querySelectorAll('.invoice-item-qty'),

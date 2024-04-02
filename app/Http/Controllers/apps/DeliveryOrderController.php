@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\apps;
 
 use App\Models\DeliveryOrder;
+use App\Models\DeliveryOrderDetail;
 use App\Models\ProductDetail;
 use App\Models\Supplier;
 use App\Http\Controllers\Controller;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Validator;
 
 class DeliveryOrderController extends Controller
 {
@@ -20,15 +22,14 @@ class DeliveryOrderController extends Controller
 
   public function get(Request $request)
   {
-    $query = DeliveryOrder::leftJoin('suppliers', 'delivery_orders.id_supplier', '=', 'suppliers.id')->select(
-      'delivery_orders.*',
-      'suppliers.name as supplier_name'
+    $query = DeliveryOrder::leftJoin('suppliers', 'delivery_orders.id_supplier', '=', 'suppliers.id')->selectRaw(
+      'delivery_orders.*, suppliers.name as supplier_name, DATE_FORMAT(delivery_orders.date, "%d %b %Y") as formatted_date'
     );
 
     $sortableColumns = [
       0 => '',
       1 => 'id',
-      2 => 'date',
+      2 => 'formatted_date',
       3 => 'supplier_name',
     ];
 
@@ -41,7 +42,7 @@ class DeliveryOrderController extends Controller
       $sortColumn = $sortableColumns[$sortColumnIndex];
     } else {
       // Default sorting column if invalid or not provided
-      $sortColumn = 'date'; // Default to 'username' or any other preferred column
+      $sortColumn = 'formatted_date'; // Default to 'username' or any other preferred column
     }
 
     // Get total records count (before filtering)
@@ -51,7 +52,10 @@ class DeliveryOrderController extends Controller
     if ($request->has('search') && !empty($request->search['value'])) {
       $searchValue = '%' . $request->search['value'] . '%';
       $query->where(function ($query) use ($searchValue) {
-        $query->where('suppliers.name', 'like', $searchValue);
+        $query
+          ->where('suppliers.name', 'like', $searchValue)
+          ->orWhere('delivery_orders.id', 'like', $searchValue)
+          ->orWhereRaw("DATE_FORMAT(delivery_orders.date, '%d %b %Y') LIKE ?", [$searchValue]);
       });
     }
 
@@ -84,88 +88,144 @@ class DeliveryOrderController extends Controller
       ->leftJoin('products as p', 'p.id', 'product_details.id_product')
       ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
       ->where('product_details.is_active', true)
+      ->orderBy('p.name')
       ->pluck('name', 'id');
     return view('content.transactions.delivery-order-add', ['suppliers' => $suppliers, 'products' => $products]);
   }
 
-  // public function add(Request $request)
-  // {
-  //   try {
-  //     // Validate the request
-  //     $validatedData = $request->validate([
-  //       'id_brand' => 'required|exists:brands,id',
-  //       'name' => 'required|max:50',
-  //       'is_active' => 'required|in:0,1',
-  //     ]);
+  public function add(Request $request)
+  {
+    try {
+      // Validate the request
+      $validatedData = $request->validate(
+        [
+          'date' => 'required',
+          'id_supplier' => 'required|exists:suppliers,id',
+          'group-a' => 'required|array',
+          'group-a.*.item' => 'required', // Ensure each item is selected
+          'group-a.*.quantity' => 'required|numeric|min:1', // Ensure each quantity is numeric and at least 1
+        ],
+        [
+          // Custom error messages
+          'group-a.required' => 'Please select at least one item.',
+          'group-a.*.item.required' => 'Please select at least one item.',
+          'group-a.*.quantity.required' => 'Please specify the quantity for each item.',
+          'group-a.*.quantity.numeric' => 'Quantity must be a number.',
+          'group-a.*.quantity.min' => 'Quantity must be at least 1.',
+        ]
+      );
 
-  //     // Create a new data instance
-  //     $data = new Pattern();
-  //     $data->id_brand = $validatedData['id_brand'];
-  //     $data->name = $validatedData['name'];
-  //     $data->is_active = $validatedData['is_active'];
-  //     $data->created_by = Auth::id();
-  //     $data->save();
+      // Create a new do instance
+      $deliveryOrder = new DeliveryOrder();
+      $deliveryOrder->id_supplier = $validatedData['id_supplier'];
+      $deliveryOrder->date = $validatedData['date'];
+      $deliveryOrder->created_by = Auth::id();
+      $deliveryOrder->save();
 
-  //     // Redirect or respond with success message
-  //     return Redirect::back()->with('success', 'Pattern created successfully.');
-  //   } catch (ValidationException $e) {
-  //     // Validation failed, redirect back with errors
-  //     return Redirect::back()
-  //       ->withErrors($e->validator->errors())
-  //       ->withInput();
-  //   } catch (\Exception $e) {
-  //     // Other exceptions (e.g., database errors)
-  //     return Redirect::back()->with('othererror', 'An error occurred while creating the pattern.');
-  //   }
-  // }
+      // Process delivery order details
+      foreach ($validatedData['group-a'] as $item) {
+        $deliveryOrderDetail = new DeliveryOrderDetail();
+        $deliveryOrderDetail->id_delivery_order = $deliveryOrder->id;
+        $deliveryOrderDetail->id_product_detail = $item['item'];
+        $deliveryOrderDetail->quantity = $item['quantity'];
+        $deliveryOrderDetail->created_by = Auth::id();
+        $deliveryOrderDetail->save();
+      }
 
-  // public function getById($id)
-  // {
-  //   $pattern = Pattern::findOrFail($id);
-  //   return response()->json($pattern);
-  // }
+      // Redirect or respond with success message
+      return redirect()
+        ->route('transaction-delivery-order')
+        ->with('success', 'Delivery order created successfully.');
+    } catch (ValidationException $e) {
+      // Validation failed, redirect back with errors
+      return Redirect::back()
+        ->withErrors($e->validator->errors())
+        ->withInput();
+    } catch (\Exception $e) {
+      // Other exceptions (e.g., database errors)
+      return Redirect::back()->with('othererror', $e->getMessage());
+    }
+  }
 
-  // public function getByBrandId($id)
-  // {
-  //   $brand = Brand::findOrFail($id);
-  //   $patterns = $brand->patterns;
-  //   return response()->json($patterns);
-  // }
+  public function getById($id)
+  {
+    $suppliers = Supplier::where('is_active', true)->pluck('name', 'id');
+    $products = ProductDetail::query()
+      ->selectRaw('product_details.id, CONCAT(p.name, " - ", sizes.code) as name')
+      ->leftJoin('products as p', 'p.id', 'product_details.id_product')
+      ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
+      ->where('product_details.is_active', true)
+      ->orderBy('p.name')
+      ->pluck('name', 'id');
+    $deliverOrder = DeliveryOrder::findOrFail($id);
+    $deliveryOrderDetails = DeliveryOrderDetail::where('id_delivery_order', $id)->get();
+    return view('content.transactions.delivery-order-edit', [
+      'id' => $id,
+      'deliveryOrder' => $deliverOrder,
+      'suppliers' => $suppliers,
+      'products' => $products,
+      'deliveryOrderDetails' => $deliveryOrderDetails,
+    ]);
+  }
 
-  // public function edit(Request $request, $id)
-  // {
-  //   $validatedData = $request->validate([
-  //     'id_brand' => 'required|exists:brands,id',
-  //     'name' => 'required|max:50',
-  //     'is_active' => 'required|in:0,1',
-  //   ]);
+  public function edit(Request $request, $id)
+  {
+    try {
+      // Validate the request
+      $validatedData = $request->validate(
+        [
+          'date' => 'required',
+          'id_supplier' => 'required|exists:suppliers,id',
+          'group-a' => 'required|array',
+          'group-a.*.item' => 'required', // Ensure each item is selected
+          'group-a.*.quantity' => 'required|numeric|min:1', // Ensure each quantity is numeric and at least 1
+        ],
+        [
+          // Custom error messages
+          'group-a.required' => 'Please select at least one item.',
+          'group-a.*.item.required' => 'Please select at least one item.',
+          'group-a.*.quantity.required' => 'Please specify the quantity for each item.',
+          'group-a.*.quantity.numeric' => 'Quantity must be a number.',
+          'group-a.*.quantity.min' => 'Quantity must be at least 1.',
+        ]
+      );
 
-  //   $data = Pattern::findOrFail($id);
-  //   $data->id_brand = $validatedData['id_brand'];
-  //   $data->name = $validatedData['name'];
-  //   $data->is_active = $validatedData['is_active'];
-  //   $data->updated_by = Auth::id();
-  //   $data->save();
+      $data = DeliveryOrder::findOrFail($id);
+      $data->date = $validatedData['date'];
+      $data->id_supplier = $validatedData['id_supplier'];
+      $data->updated_by = Auth::id();
+      $data->save();
 
-  //   return redirect()
-  //     ->route('master-pattern')
-  //     ->with('success', 'Pattern updated successfully.');
-  // }
+      DeliveryOrderDetail::where('id_delivery_order', $id)->delete();
 
-  // public function delete($id)
-  // {
-  //   $relatedProduct = Product::where('id_pattern', $id)->exists();
-  //   if ($relatedProduct) {
-  //     return response()->json(['message' => 'Cannot delete pattern as it has associated product.'], 200);
-  //   }
+      foreach ($validatedData['group-a'] as $item) {
+        $deliveryOrderDetail = new DeliveryOrderDetail();
+        $deliveryOrderDetail->id_delivery_order = $id;
+        $deliveryOrderDetail->id_product_detail = $item['item'];
+        $deliveryOrderDetail->quantity = $item['quantity'];
+        $deliveryOrderDetail->created_by = Auth::id();
+        $deliveryOrderDetail->save();
+      }
 
-  //   // Find the data by ID
-  //   $pattern = Pattern::findOrFail($id);
+      return redirect()
+        ->route('transaction-delivery-order')
+        ->with('success', 'Delivery order updated successfully.');
+    } catch (ValidationException $e) {
+      // Validation failed, redirect back with errors
+      return Redirect::back()
+        ->withErrors($e->validator->errors())
+        ->withInput();
+    } catch (\Exception $e) {
+      // Other exceptions (e.g., database errors)
+      return Redirect::back()->with('othererror', 'An error occurred while creating the delivery order.');
+    }
+  }
 
-  //   // Delete the brand
-  //   $pattern->delete();
-
-  //   // Return a response indicating success
-  //   return response()->json(['message' => 'Pattern deleted successfully'], 200);
-  // }
+  public function delete($id)
+  {
+    DeliveryOrderDetail::where('id_delivery_order', $id)->delete();
+    $deliveryOrder = DeliveryOrder::findOrFail($id);
+    $deliveryOrder->delete();
+    return response()->json(['message' => 'Delivery order deleted successfully'], 200);
+  }
 }
