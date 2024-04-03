@@ -262,14 +262,15 @@ Route::middleware(['auth'])->group(function () {
     });
   });
 
-  //masters
+  //transactions
   Route::prefix('transaction')->group(function () {
-    //users
+    //delivery-order
     Route::prefix('delivery-order')->group(function () {
       Route::get('/', [DeliveryOrderController::class, 'index'])->name('transaction-delivery-order');
       Route::get('/get', [DeliveryOrderController::class, 'get'])->name('get-delivery-order');
       Route::get('/get/add', [DeliveryOrderController::class, 'indexAdd'])->name('index-add-delivery-order');
       Route::get('/{id}', [DeliveryOrderController::class, 'getById'])->name('get-delivery-order-by-id');
+      Route::get('/{id}/preview', [DeliveryOrderController::class, 'preview'])->name('preview-delivery-order');
       Route::post('/add', [DeliveryOrderController::class, 'add'])->name('add-delivery-order');
       Route::put('/{id}', [DeliveryOrderController::class, 'edit'])->name('edit-delivery-order');
       Route::delete('/{id}', [DeliveryOrderController::class, 'delete'])->name('delete-delivery-order');
