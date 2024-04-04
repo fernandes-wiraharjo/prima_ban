@@ -115,10 +115,10 @@
         <a class="btn btn-label-secondary d-grid w-100 mb-3" href="{{url('transaction/delivery-order')}}">
           Cancel
         </a>
-        <a href="{{url('transaction/delivery-order/' . $id)}}" class="btn btn-label-secondary d-grid w-100 mb-3">
+        <a class="btn btn-label-secondary d-grid w-100 mb-3" href="{{url('transaction/delivery-order/' . $id)}}">
           Edit
         </a>
-        <a class="btn btn-label-secondary d-grid w-100 mb-3" target="_blank" href="{{url('app/invoice/print')}}">
+        <a class="btn btn-label-secondary d-grid w-100 mb-3" target="_blank" href="{{url('transaction/delivery-order/' . $id . '/print')}}">
           Print
         </a>
       </div>

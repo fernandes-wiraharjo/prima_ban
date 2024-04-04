@@ -250,4 +250,28 @@ class DeliveryOrderController extends Controller
       'deliveryOrderDetails' => $deliveryOrderDetails,
     ]);
   }
+
+  public function print($id)
+  {
+    $deliveryOrder = DeliveryOrder::findOrFail($id);
+    $formattedDate = date('d M Y', strtotime($deliveryOrder->date));
+    $supplier = Supplier::findOrFail($deliveryOrder->id_supplier);
+    $deliveryOrderDetails = DeliveryOrderDetail::query()
+      ->selectRaw('CONCAT(p.name, " - ", sizes.code) as name, delivery_order_details.quantity')
+      ->leftJoin('product_details as pd', 'pd.id', 'delivery_order_details.id_product_detail')
+      ->leftJoin('sizes', 'sizes.id', 'pd.id_size')
+      ->leftJoin('products as p', 'p.id', 'pd.id_product')
+      ->where('delivery_order_details.id_delivery_order', $id)
+      ->orderBy('delivery_order_details.id')
+      ->get();
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('content.transactions.delivery-order-print', [
+      'id' => $id,
+      'deliveryOrder' => $deliveryOrder,
+      'formattedDate' => $formattedDate,
+      'supplier' => $supplier,
+      'deliveryOrderDetails' => $deliveryOrderDetails,
+      'pageConfigs' => $pageConfigs,
+    ]);
+  }
 }
