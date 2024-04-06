@@ -60,6 +60,7 @@
         <tr>
           <th></th>
           <th>Name</th>
+          <!-- <th>Type</th> -->
           <th>Address</th>
           <th>Phone No</th>
           <th>Pic Name</th>
@@ -82,6 +83,14 @@
         <div class="mb-3">
           <label class="form-label" for="add-customer-name">Name</label>
           <input type="text" class="form-control" id="add-customer-name" placeholder="name" name="name" aria-label="name" />
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="type">Type</label>
+          <select id="type" name="type" class="form-select">
+            <option value="">Select</option>
+            <option value="user">user</option>
+            <option value="toko">toko</option>
+          </select>
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-customer-phone">Phone No</label>
