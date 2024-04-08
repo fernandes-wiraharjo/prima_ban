@@ -252,19 +252,52 @@ class ProductController extends Controller
       $validatedData = $request->validate([
         'id_product' => 'required|exists:products,id',
         'id_size' => 'required|exists:sizes,id',
-        'price' => 'required',
+        'price_user_cash' => 'required',
+        'discount_user_cash' => 'required',
+        'final_price_user_cash' => 'required',
+        'price_user_tempo' => 'required',
+        'discount_user_tempo' => 'required',
+        'final_price_user_tempo' => 'required',
+        'price_toko_cash' => 'required',
+        'discount_toko_cash' => 'required',
+        'final_price_toko_cash' => 'required',
+        'price_toko_tempo' => 'required',
+        'discount_toko_tempo' => 'required',
+        'final_price_toko_tempo' => 'required',
         'quantity' => 'required',
         'is_active' => 'required|in:0,1',
       ]);
 
-      $price = str_replace('.', '', $validatedData['price']);
+      $price_user_cash = str_replace('.', '', $validatedData['price_user_cash']);
+      $discount_user_cash = str_replace('.', '', $validatedData['discount_user_cash']);
+      $final_price_user_cash = str_replace('.', '', $validatedData['final_price_user_cash']);
+      $price_user_tempo = str_replace('.', '', $validatedData['price_user_tempo']);
+      $discount_user_tempo = str_replace('.', '', $validatedData['discount_user_tempo']);
+      $final_price_user_tempo = str_replace('.', '', $validatedData['final_price_user_tempo']);
+      $price_toko_cash = str_replace('.', '', $validatedData['price_toko_cash']);
+      $discount_toko_cash = str_replace('.', '', $validatedData['discount_toko_cash']);
+      $final_price_toko_cash = str_replace('.', '', $validatedData['final_price_toko_cash']);
+      $price_toko_tempo = str_replace('.', '', $validatedData['price_toko_tempo']);
+      $discount_toko_tempo = str_replace('.', '', $validatedData['discount_toko_tempo']);
+      $final_price_toko_tempo = str_replace('.', '', $validatedData['final_price_toko_tempo']);
       $quantity = str_replace('.', '', $validatedData['quantity']);
 
       // Create a new data instance
       $data = new ProductDetail();
       $data->id_product = $validatedData['id_product'];
       $data->id_size = $validatedData['id_size'];
-      $data->price = $price;
+      $data->price_user_cash = $price_user_cash;
+      $data->discount_user_cash = $discount_user_cash;
+      $data->final_price_user_cash = $final_price_user_cash;
+      $data->price_user_tempo = $price_user_tempo;
+      $data->discount_user_tempo = $discount_user_tempo;
+      $data->final_price_user_tempo = $final_price_user_tempo;
+      $data->price_toko_cash = $price_toko_cash;
+      $data->discount_toko_cash = $discount_toko_cash;
+      $data->final_price_toko_cash = $final_price_toko_cash;
+      $data->price_toko_tempo = $price_toko_tempo;
+      $data->discount_toko_tempo = $discount_toko_tempo;
+      $data->final_price_toko_tempo = $final_price_toko_tempo;
       $data->quantity = $quantity;
       $data->is_active = $validatedData['is_active'];
       $data->created_by = Auth::id();
@@ -293,17 +326,50 @@ class ProductController extends Controller
   {
     $validatedData = $request->validate([
       'id_size' => 'required|exists:sizes,id',
-      'price' => 'required',
+      'price_user_cash' => 'required',
+      'discount_user_cash' => 'required',
+      'final_price_user_cash' => 'required',
+      'price_user_tempo' => 'required',
+      'discount_user_tempo' => 'required',
+      'final_price_user_tempo' => 'required',
+      'price_toko_cash' => 'required',
+      'discount_toko_cash' => 'required',
+      'final_price_toko_cash' => 'required',
+      'price_toko_tempo' => 'required',
+      'discount_toko_tempo' => 'required',
+      'final_price_toko_tempo' => 'required',
       'quantity' => 'required',
       'is_active' => 'required|in:0,1',
     ]);
 
-    $price = str_replace('.', '', $validatedData['price']);
+    $price_user_cash = str_replace('.', '', $validatedData['price_user_cash']);
+    $discount_user_cash = str_replace('.', '', $validatedData['discount_user_cash']);
+    $final_price_user_cash = str_replace('.', '', $validatedData['final_price_user_cash']);
+    $price_user_tempo = str_replace('.', '', $validatedData['price_user_tempo']);
+    $discount_user_tempo = str_replace('.', '', $validatedData['discount_user_tempo']);
+    $final_price_user_tempo = str_replace('.', '', $validatedData['final_price_user_tempo']);
+    $price_toko_cash = str_replace('.', '', $validatedData['price_toko_cash']);
+    $discount_toko_cash = str_replace('.', '', $validatedData['discount_toko_cash']);
+    $final_price_toko_cash = str_replace('.', '', $validatedData['final_price_toko_cash']);
+    $price_toko_tempo = str_replace('.', '', $validatedData['price_toko_tempo']);
+    $discount_toko_tempo = str_replace('.', '', $validatedData['discount_toko_tempo']);
+    $final_price_toko_tempo = str_replace('.', '', $validatedData['final_price_toko_tempo']);
     $quantity = str_replace('.', '', $validatedData['quantity']);
 
     $data = ProductDetail::findOrFail($id);
     $data->id_size = $validatedData['id_size'];
-    $data->price = $price;
+    $data->price_user_cash = $price_user_cash;
+    $data->discount_user_cash = $discount_user_cash;
+    $data->final_price_user_cash = $final_price_user_cash;
+    $data->price_user_tempo = $price_user_tempo;
+    $data->discount_user_tempo = $discount_user_tempo;
+    $data->final_price_user_tempo = $final_price_user_tempo;
+    $data->price_toko_cash = $price_toko_cash;
+    $data->discount_toko_cash = $discount_toko_cash;
+    $data->final_price_toko_cash = $final_price_toko_cash;
+    $data->price_toko_tempo = $price_toko_tempo;
+    $data->discount_toko_tempo = $discount_toko_tempo;
+    $data->final_price_toko_tempo = $final_price_toko_tempo;
     $data->quantity = $quantity;
     $data->is_active = $validatedData['is_active'];
     $data->updated_by = Auth::id();
@@ -322,20 +388,20 @@ class ProductController extends Controller
       );
     }
 
-    $relatedPurchaseDetail = PurchaseDetail::where('id_product_detail', $id)->exists();
-    if ($relatedPurchaseDetail) {
-      return response()->json(['message' => 'Cannot delete product detail as it has associated purchase detail.'], 200);
-    }
+    // $relatedPurchaseDetail = PurchaseDetail::where('id_product_detail', $id)->exists();
+    // if ($relatedPurchaseDetail) {
+    //   return response()->json(['message' => 'Cannot delete product detail as it has associated purchase detail.'], 200);
+    // }
 
-    $relatedSaleDetail = SaleDetail::where('id_product_detail', $id)->exists();
-    if ($relatedSaleDetail) {
-      return response()->json(['message' => 'Cannot delete product detail as it has associated sale detail.'], 200);
-    }
+    // $relatedSaleDetail = SaleDetail::where('id_product_detail', $id)->exists();
+    // if ($relatedSaleDetail) {
+    //   return response()->json(['message' => 'Cannot delete product detail as it has associated sale detail.'], 200);
+    // }
 
-    $relatedStockHistory = StockHistory::where('id_product_detail', $id)->exists();
-    if ($relatedStockHistory) {
-      return response()->json(['message' => 'Cannot delete product detail as it has associated stock history.'], 200);
-    }
+    // $relatedStockHistory = StockHistory::where('id_product_detail', $id)->exists();
+    // if ($relatedStockHistory) {
+    //   return response()->json(['message' => 'Cannot delete product detail as it has associated stock history.'], 200);
+    // }
 
     // Find the data by ID
     $productDetail = ProductDetail::findOrFail($id);

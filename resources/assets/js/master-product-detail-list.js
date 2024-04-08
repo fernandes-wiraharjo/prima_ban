@@ -11,6 +11,90 @@ function formatNumber(input) {
   input.value = formattedValue;
 }
 
+function updateFinalPriceUserCash(action) {
+  var price =
+    parseFloat(
+      document
+        .getElementById(action + '-price-user-cash')
+        .value.replace(/\./g, '')
+        .replace(',', '.')
+    ) || 0;
+  var discount =
+    parseFloat(
+      document
+        .getElementById(action + '-discount-user-cash')
+        .value.replace(/\./g, '')
+        .replace(',', '.')
+    ) || 0;
+  var finalPrice = price - discount;
+  document.getElementById(action + '-final-price-user-cash').value = finalPrice.toLocaleString('id-ID', {
+    minimumFractionDigits: 0
+  });
+}
+
+function updateFinalPriceUserTempo(action) {
+  var price =
+    parseFloat(
+      document
+        .getElementById(action + '-price-user-tempo')
+        .value.replace(/\./g, '')
+        .replace(',', '.')
+    ) || 0;
+  var discount =
+    parseFloat(
+      document
+        .getElementById(action + '-discount-user-tempo')
+        .value.replace(/\./g, '')
+        .replace(',', '.')
+    ) || 0;
+  var finalPrice = price - discount;
+  document.getElementById(action + '-final-price-user-tempo').value = finalPrice.toLocaleString('id-ID', {
+    minimumFractionDigits: 0
+  });
+}
+
+function updateFinalPriceTokoCash(action) {
+  var price =
+    parseFloat(
+      document
+        .getElementById(action + '-price-toko-cash')
+        .value.replace(/\./g, '')
+        .replace(',', '.')
+    ) || 0;
+  var discount =
+    parseFloat(
+      document
+        .getElementById(action + '-discount-toko-cash')
+        .value.replace(/\./g, '')
+        .replace(',', '.')
+    ) || 0;
+  var finalPrice = price - discount;
+  document.getElementById(action + '-final-price-toko-cash').value = finalPrice.toLocaleString('id-ID', {
+    minimumFractionDigits: 0
+  });
+}
+
+function updateFinalPriceTokoTempo(action) {
+  var price =
+    parseFloat(
+      document
+        .getElementById(action + '-price-toko-tempo')
+        .value.replace(/\./g, '')
+        .replace(',', '.')
+    ) || 0;
+  var discount =
+    parseFloat(
+      document
+        .getElementById(action + '-discount-toko-tempo')
+        .value.replace(/\./g, '')
+        .replace(',', '.')
+    ) || 0;
+  var finalPrice = price - discount;
+  document.getElementById(action + '-final-price-toko-tempo').value = finalPrice.toLocaleString('id-ID', {
+    minimumFractionDigits: 0
+  });
+}
+
 // Datatable (jquery)
 $(function () {
   let borderColor, bodyBg, headingColor;
@@ -97,31 +181,7 @@ $(function () {
         },
         {
           // Price
-          targets: 2,
-          render: function (data, type, full, meta) {
-            // Format quantity as thousands
-            return 'Rp' + Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
-          }
-        },
-        {
-          // Price
-          targets: 3,
-          render: function (data, type, full, meta) {
-            // Format quantity as thousands
-            return 'Rp' + Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
-          }
-        },
-        {
-          // Price
-          targets: 4,
-          render: function (data, type, full, meta) {
-            // Format quantity as thousands
-            return 'Rp' + Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
-          }
-        },
-        {
-          // Price
-          targets: 5,
+          targets: [2, 3, 4, 5],
           render: function (data, type, full, meta) {
             // Format quantity as thousands
             return 'Rp' + Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
@@ -227,66 +287,109 @@ $(function () {
           }
         }
       },
-      initComplete: function () {}
+      initComplete: function () {
+        $(document.body).on('click', '.edit-record', function () {
+          var id = $(this).data('id');
+          // Retrieve customer data via AJAX and populate the form fields
+          $.ajax({
+            url: '/master/product/detail/' + id,
+            type: 'GET',
+            headers: {
+              'X-CSRF-TOKEN': token
+            },
+            success: function (response) {
+              // Populate the form fields with related data
+              $('#edit-id').val(response.id);
+              $('#editForm').attr('action', '/master/product/detail/' + response.id);
+              $('#edit-size').val(response.id_size).trigger('change');
+              $('#edit-price-user-cash').val(
+                Number(response.price_user_cash).toLocaleString('id-ID', { minimumFractionDigits: 0 })
+              );
+              $('#edit-discount-user-cash').val(
+                Number(response.discount_user_cash).toLocaleString('id-ID', { minimumFractionDigits: 0 })
+              );
+              $('#edit-final-price-user-cash').val(
+                Number(response.final_price_user_cash).toLocaleString('id-ID', { minimumFractionDigits: 0 })
+              );
+              $('#edit-price-user-tempo').val(
+                Number(response.price_user_tempo).toLocaleString('id-ID', { minimumFractionDigits: 0 })
+              );
+              $('#edit-discount-user-tempo').val(
+                Number(response.discount_user_tempo).toLocaleString('id-ID', { minimumFractionDigits: 0 })
+              );
+              $('#edit-final-price-user-tempo').val(
+                Number(response.final_price_user_tempo).toLocaleString('id-ID', { minimumFractionDigits: 0 })
+              );
+              $('#edit-price-toko-cash').val(
+                Number(response.price_toko_cash).toLocaleString('id-ID', { minimumFractionDigits: 0 })
+              );
+              $('#edit-discount-toko-cash').val(
+                Number(response.discount_toko_cash).toLocaleString('id-ID', { minimumFractionDigits: 0 })
+              );
+              $('#edit-final-price-toko-cash').val(
+                Number(response.final_price_toko_cash).toLocaleString('id-ID', { minimumFractionDigits: 0 })
+              );
+              $('#edit-price-toko-tempo').val(
+                Number(response.price_toko_tempo).toLocaleString('id-ID', { minimumFractionDigits: 0 })
+              );
+              $('#edit-discount-toko-tempo').val(
+                Number(response.discount_toko_tempo).toLocaleString('id-ID', { minimumFractionDigits: 0 })
+              );
+              $('#edit-final-price-toko-tempo').val(
+                Number(response.final_price_toko_tempo).toLocaleString('id-ID', { minimumFractionDigits: 0 })
+              );
+              $('#edit-quantity').val(Number(response.quantity).toLocaleString('id-ID', { minimumFractionDigits: 0 }));
+              $('#edit-status_' + response.is_active).prop('checked', true);
+
+              // Show the edit brand offcanvas
+              var editOffcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasEdit'));
+              editOffcanvas.show();
+              $('.modal').modal('hide');
+            },
+            error: function (xhr, status, error) {
+              // Handle error
+              console.error(error);
+            }
+          });
+        });
+
+        $(document.body).on('click', '.delete-record', function () {
+          var id = $(this).data('id');
+          var sizeName = $(this).data('sizename');
+          if (confirm('Are you sure you want to delete size ' + sizeName + ' ?')) {
+            // Send AJAX request to delete
+            $.ajax({
+              url: '/master/product/detail/' + id,
+              type: 'DELETE',
+              headers: {
+                'X-CSRF-TOKEN': token
+              },
+              success: function (response) {
+                // Handle success
+                $('.modal').modal('hide');
+                alert(response.message);
+                // Refresh datatable
+                dt.ajax.reload();
+              },
+              error: function (xhr, status, error) {
+                // Handle error
+                console.error(error);
+              }
+            });
+          }
+        });
+      }
     });
   }
 
   // Add event listener for edit button
-  dt.on('click', '.edit-record', function () {
-    var id = $(this).data('id');
-    // Retrieve customer data via AJAX and populate the form fields
-    $.ajax({
-      url: '/master/product/detail/' + id,
-      type: 'GET',
-      headers: {
-        'X-CSRF-TOKEN': token
-      },
-      success: function (response) {
-        // Populate the form fields with related data
-        $('#edit-id').val(response.id);
-        $('#editForm').attr('action', '/master/product/detail/' + response.id);
-        $('#edit-size').val(response.id_size).trigger('change');
-        $('#edit-price').val(Number(response.price).toLocaleString('id-ID', { minimumFractionDigits: 0 }));
-        $('#edit-quantity').val(Number(response.quantity).toLocaleString('id-ID', { minimumFractionDigits: 0 }));
-        $('#edit-status_' + response.is_active).prop('checked', true);
-
-        // Show the edit brand offcanvas
-        var editOffcanvas = new bootstrap.Offcanvas(document.getElementById('offcanvasEdit'));
-        editOffcanvas.show();
-      },
-      error: function (xhr, status, error) {
-        // Handle error
-        console.error(error);
-      }
-    });
-  });
+  // dt.on('click', '.edit-record', function () {
+  // });
 
   // Delete Record
-  $('.datatables-product-details tbody').on('click', '.delete-record', function () {
-    // dt_user.row($(this).parents('tr')).remove().draw();
-    var id = $(this).data('id');
-    var sizeName = $(this).data('sizename');
-    if (confirm('Are you sure you want to delete size ' + sizeName + ' ?')) {
-      // Send AJAX request to delete
-      $.ajax({
-        url: '/master/product/detail/' + id,
-        type: 'DELETE',
-        headers: {
-          'X-CSRF-TOKEN': token
-        },
-        success: function (response) {
-          // Handle success
-          alert(response.message);
-          // Refresh datatable
-          dt.ajax.reload();
-        },
-        error: function (xhr, status, error) {
-          // Handle error
-          console.error(error);
-        }
-      });
-    }
-  });
+  // $('.datatables-product-details tbody').on('click', '.delete-record', function () {
+  // dt_user.row($(this).parents('tr')).remove().draw();
+  // });
 
   // Filter form control to default size
   // ? setTimeout used for multilingual table initialization
@@ -304,10 +407,87 @@ $(function () {
   // Add New Form Validation
   const fv = FormValidation.formValidation(addNewForm, {
     fields: {
-      price: {
+      price_user_cash: {
         validators: {
           notEmpty: {
-            message: 'Please enter price'
+            message: 'Please enter price user cash'
+          }
+        }
+      },
+      discount_user_cash: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter discount user cash'
+          }
+        }
+      },
+      final_price_user_cash: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter final price user cash'
+          }
+        }
+      },
+      price_user_tempo: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter price user tempo'
+          }
+        }
+      },
+      discount_user_tempo: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter discount user tempo'
+          }
+        }
+      },
+      final_price_user_tempo: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter final price user tempo'
+          }
+        }
+      },
+      price_toko_cash: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter price toko cash'
+          }
+        }
+      },
+      discount_toko_cash: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter discount toko cash'
+          }
+        }
+      },
+      final_price_toko_cash: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter final price toko cash'
+          }
+        }
+      },
+      price_toko_tempo: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter price toko tempo'
+          }
+        }
+      },
+      discount_toko_tempo: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter discount toko tempo'
+          }
+        }
+      },
+      final_price_toko_tempo: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter final price toko tempo'
           }
         }
       },
@@ -346,10 +526,87 @@ $(function () {
   // Edit Form Validation
   const fvEdit = FormValidation.formValidation(editForm, {
     fields: {
-      price: {
+      price_user_cash: {
         validators: {
           notEmpty: {
-            message: 'Please enter price'
+            message: 'Please enter price user cash'
+          }
+        }
+      },
+      discount_user_cash: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter discount user cash'
+          }
+        }
+      },
+      final_price_user_cash: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter final price user cash'
+          }
+        }
+      },
+      price_user_tempo: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter price user tempo'
+          }
+        }
+      },
+      discount_user_tempo: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter discount user tempo'
+          }
+        }
+      },
+      final_price_user_tempo: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter final price user tempo'
+          }
+        }
+      },
+      price_toko_cash: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter price toko cash'
+          }
+        }
+      },
+      discount_toko_cash: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter discount toko cash'
+          }
+        }
+      },
+      final_price_toko_cash: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter final price toko cash'
+          }
+        }
+      },
+      price_toko_tempo: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter price toko tempo'
+          }
+        }
+      },
+      discount_toko_tempo: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter discount toko tempo'
+          }
+        }
+      },
+      final_price_toko_tempo: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter final price toko tempo'
           }
         }
       },
