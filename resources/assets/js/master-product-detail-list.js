@@ -59,7 +59,10 @@ $(function () {
         // columns according to JSON
         { data: '' },
         { data: 'size_name' },
-        { data: 'price' },
+        { data: 'final_price_user_cash' },
+        { data: 'final_price_user_tempo' },
+        { data: 'final_price_toko_cash' },
+        { data: 'final_price_toko_tempo' },
         { data: 'quantity' },
         { data: 'is_active' },
         { data: 'action' }
@@ -101,8 +104,32 @@ $(function () {
           }
         },
         {
-          // Quantity
+          // Price
           targets: 3,
+          render: function (data, type, full, meta) {
+            // Format quantity as thousands
+            return 'Rp' + Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
+          }
+        },
+        {
+          // Price
+          targets: 4,
+          render: function (data, type, full, meta) {
+            // Format quantity as thousands
+            return 'Rp' + Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
+          }
+        },
+        {
+          // Price
+          targets: 5,
+          render: function (data, type, full, meta) {
+            // Format quantity as thousands
+            return 'Rp' + Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
+          }
+        },
+        {
+          // Quantity
+          targets: 6,
           render: function (data, type, full, meta) {
             // Format quantity as thousands
             return Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
@@ -110,7 +137,7 @@ $(function () {
         },
         {
           // Status
-          targets: 4,
+          targets: 7,
           render: function (data, type, full, meta) {
             var $status = full['is_active'];
 

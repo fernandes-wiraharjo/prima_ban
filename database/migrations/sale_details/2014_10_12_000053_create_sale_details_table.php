@@ -17,8 +17,8 @@ return new class extends Migration {
       $table->smallInteger('quantity');
       $table->decimal('price', 10, 2);
       $table->decimal('total_price', 10, 2);
-      $table->decimal('discount_percentage', 5, 2);
-      $table->decimal('nett_price', 10, 2);
+      // $table->decimal('discount_percentage', 5, 2);
+      // $table->decimal('nett_price', 10, 2);
       $table->unsignedBigInteger('created_by')->nullable();
       $table->unsignedBigInteger('updated_by')->nullable();
       $table->timestamps();

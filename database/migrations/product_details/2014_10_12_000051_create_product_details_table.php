@@ -15,7 +15,19 @@ return new class extends Migration {
       // $table->string('code', 10)->nullable();
       $table->unsignedBigInteger('id_product');
       $table->unsignedBigInteger('id_size');
-      $table->decimal('price', 10, 2);
+      // $table->decimal('price', 10, 2);
+      $table->decimal('price_user_cash', 10, 2);
+      $table->decimal('discount_user_cash', 10, 2);
+      $table->decimal('final_price_user_cash', 10, 2);
+      $table->decimal('price_user_tempo', 10, 2);
+      $table->decimal('discount_user_tempo', 10, 2);
+      $table->decimal('final_price_user_tempo', 10, 2);
+      $table->decimal('price_toko_cash', 10, 2);
+      $table->decimal('discount_toko_cash', 10, 2);
+      $table->decimal('final_price_toko_cash', 10, 2);
+      $table->decimal('price_toko_tempo', 10, 2);
+      $table->decimal('discount_toko_tempo', 10, 2);
+      $table->decimal('final_price_toko_tempo', 10, 2);
       $table->smallInteger('quantity');
       $table->boolean('is_active')->default(true);
       $table->unsignedBigInteger('created_by')->nullable();
@@ -53,6 +65,6 @@ return new class extends Migration {
    */
   public function down(): void
   {
-    Schema::dropIfExists('products');
+    Schema::dropIfExists('product_details');
   }
 };

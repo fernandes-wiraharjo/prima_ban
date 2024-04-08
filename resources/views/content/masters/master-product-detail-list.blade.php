@@ -67,7 +67,10 @@
         <tr>
           <th></th>
           <th>Size</th>
-          <th>Price</th>
+          <th>Price User Cash</th>
+          <th>Price User Tempo</th>
+          <th>Price Toko Cash</th>
+          <th>Price Toko Tempo</th>
           <th>Quantity</th>
           <th>Status</th>
           <th>Actions</th>

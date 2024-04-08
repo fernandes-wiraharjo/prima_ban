@@ -29,8 +29,9 @@ class CustomerController extends Controller
     $sortableColumns = [
       0 => '',
       1 => 'name',
-      2 => 'pic_name',
-      3 => 'is_active',
+      2 => 'type',
+      3 => 'pic_name',
+      4 => 'is_active',
     ];
 
     // Retrieve the column index and direction from the request
@@ -54,6 +55,7 @@ class CustomerController extends Controller
       $query->where(function ($query) use ($searchValue) {
         $query
           ->where('name', 'like', $searchValue)
+          ->orWhere('type', 'like', $searchValue)
           ->orWhere('pic_name', 'like', $searchValue)
           ->orWhere('address', 'like', $searchValue)
           ->orWhere('phone_no', 'like', $searchValue)
@@ -88,6 +90,7 @@ class CustomerController extends Controller
       // Validate the request
       $validatedData = $request->validate([
         'name' => 'required|max:50',
+        'type' => 'required|max:10',
         'address' => 'required|max:250',
         'phone_no' => 'required|max:30',
         'pic_name' => 'required|max:50',
@@ -98,6 +101,7 @@ class CustomerController extends Controller
       // Create a new customer instance
       $customer = new Customer();
       $customer->name = $validatedData['name'];
+      $customer->type = $validatedData['type'];
       $customer->address = $validatedData['address'];
       $customer->phone_no = $validatedData['phone_no'];
       $customer->pic_name = $validatedData['pic_name'];
@@ -129,6 +133,7 @@ class CustomerController extends Controller
   {
     $validatedData = $request->validate([
       'name' => 'required|max:50',
+      'type' => 'required|max:10',
       'address' => 'required|max:250',
       'phone_no' => 'required|max:30',
       'pic_name' => 'required|max:50',
@@ -138,7 +143,7 @@ class CustomerController extends Controller
 
     $customer = Customer::findOrFail($id);
     $customer->name = $validatedData['name'];
-    $customer->name = $validatedData['name'];
+    $customer->type = $validatedData['type'];
     $customer->address = $validatedData['address'];
     $customer->phone_no = $validatedData['phone_no'];
     $customer->pic_name = $validatedData['pic_name'];

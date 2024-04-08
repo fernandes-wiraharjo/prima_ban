@@ -187,9 +187,12 @@ class ProductController extends Controller
     $sortableColumns = [
       0 => '',
       1 => 'size_name',
-      2 => 'price',
-      3 => 'quantity',
-      4 => 'is_active',
+      2 => 'final_price_user_cash',
+      3 => 'final_price_user_tempo',
+      4 => 'final_price_toko_cash',
+      5 => 'final_price_toko_tempo',
+      6 => 'quantity',
+      7 => 'is_active',
     ];
 
     // Retrieve the column index and direction from the request
@@ -214,7 +217,10 @@ class ProductController extends Controller
         $query
           ->where('sizes.code', 'like', $searchValue)
           ->orWhere('product_details.quantity', 'like', $searchValue)
-          ->orWhere('product_details.price', 'like', $searchValue);
+          ->orWhere('product_details.final_price_user_cash', 'like', $searchValue)
+          ->orWhere('product_details.final_price_user_tempo', 'like', $searchValue)
+          ->orWhere('product_details.final_price_toko_cash', 'like', $searchValue)
+          ->orWhere('product_details.final_price_toko_tempo', 'like', $searchValue);
       });
     }
 

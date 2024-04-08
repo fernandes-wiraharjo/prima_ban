@@ -40,6 +40,7 @@ $(function () {
         // columns according to JSON
         { data: '' },
         { data: 'name' },
+        { data: 'type' },
         { data: 'address' },
         { data: 'phone_no' },
         { data: 'pic_name' },
@@ -77,7 +78,7 @@ $(function () {
         },
         {
           // Customer Status
-          targets: 6,
+          targets: 7,
           render: function (data, type, full, meta) {
             var $status = full['is_active'];
 
@@ -186,6 +187,7 @@ $(function () {
         $('#edit-customer-id').val(response.id);
         $('#editCustomerForm').attr('action', '/master/customer/' + response.id);
         $('#edit-customer-name').val(response.name);
+        $('#edit-customer-type').val(response.type);
         $('#edit-customer-address').val(response.address);
         $('#edit-customer-phone').val(response.phone_no);
         $('#edit-customer-pic').val(response.pic_name);
@@ -253,6 +255,13 @@ $(function () {
           }
         }
       },
+      type: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter type'
+          }
+        }
+      },
       phone_no: {
         validators: {
           notEmpty: {
@@ -306,6 +315,13 @@ $(function () {
         validators: {
           notEmpty: {
             message: 'Please enter name'
+          }
+        }
+      },
+      type: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter type'
           }
         }
       },
