@@ -4,7 +4,6 @@ namespace App\Http\Controllers\apps;
 
 use App\Models\TandaTerima;
 use App\Models\TandaTerimaDetail;
-use App\Models\ProductDetail;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
