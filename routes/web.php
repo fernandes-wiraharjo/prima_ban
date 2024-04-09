@@ -62,6 +62,7 @@ use App\Http\Controllers\apps\PatternController;
 use App\Http\Controllers\apps\ProductController;
 use App\Http\Controllers\apps\SizeController;
 use App\Http\Controllers\apps\SupplierController;
+use App\Http\Controllers\apps\TandaTerimaController;
 use App\Http\Controllers\apps\UserList;
 use App\Http\Controllers\apps\UserViewAccount;
 use App\Http\Controllers\apps\UserViewSecurity;
@@ -275,6 +276,19 @@ Route::middleware(['auth'])->group(function () {
       Route::post('/add', [DeliveryOrderController::class, 'add'])->name('add-delivery-order');
       Route::put('/{id}', [DeliveryOrderController::class, 'edit'])->name('edit-delivery-order');
       Route::delete('/{id}', [DeliveryOrderController::class, 'delete'])->name('delete-delivery-order');
+    });
+
+    //tanda-terima
+    Route::prefix('tanda-terima')->group(function () {
+      Route::get('/', [TandaTerimaController::class, 'index'])->name('transaction-tanda-terima');
+      Route::get('/get', [TandaTerimaController::class, 'get'])->name('get-tanda-terima');
+      Route::get('/get/add', [TandaTerimaController::class, 'indexAdd'])->name('index-add-tanda-terima');
+      Route::get('/{id}', [TandaTerimaController::class, 'getById'])->name('get-tanda-terima-by-id');
+      Route::get('/{id}/preview', [TandaTerimaController::class, 'preview'])->name('preview-tanda-terima');
+      Route::get('/{id}/print', [TandaTerimaController::class, 'print'])->name('print-tanda-terima');
+      Route::post('/add', [TandaTerimaController::class, 'add'])->name('add-tanda-terima');
+      Route::put('/{id}', [TandaTerimaController::class, 'edit'])->name('edit-tanda-terima');
+      Route::delete('/{id}', [TandaTerimaController::class, 'delete'])->name('delete-tanda-terima');
     });
   });
 });

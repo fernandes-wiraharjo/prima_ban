@@ -59,6 +59,12 @@
       "name": "Delivery Orders",
       "icon": "menu-icon tf-icons bx bx-car",
       "slug": "transaction-delivery-order"
+    },
+    {
+      "url": "transaction/tanda-terima",
+      "name": "Tanda Terima",
+      "icon": "menu-icon tf-icons bx bx-notepad",
+      "slug": "transaction-tanda-terima"
     }
   ]
 }
