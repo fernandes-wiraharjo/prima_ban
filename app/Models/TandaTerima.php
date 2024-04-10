@@ -9,6 +9,7 @@ class TandaTerima extends Model
 {
   use HasFactory;
 
+  protected $table = 'tanda_terima';
   protected $fillable = ['date', 'total_price', 'receiver_name', 'created_by', 'updated_by'];
 
   // Define any relationships here, e.g., createdBy, updatedBy

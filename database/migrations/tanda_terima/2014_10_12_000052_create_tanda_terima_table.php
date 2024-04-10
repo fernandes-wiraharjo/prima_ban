@@ -14,7 +14,6 @@ return new class extends Migration {
       $table->id();
       $table->date('date');
       $table->decimal('total_price', 10, 2);
-      $table->decimal('discount', 10, 2);
       $table->string('receiver_name', 50);
       $table->unsignedBigInteger('created_by')->nullable();
       $table->unsignedBigInteger('updated_by')->nullable();

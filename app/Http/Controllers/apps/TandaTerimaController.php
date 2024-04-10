@@ -91,42 +91,53 @@ class TandaTerimaController extends Controller
       $validatedData = $request->validate(
         [
           'date' => 'required',
-          'id_supplier' => 'required|exists:suppliers,id',
+          'receiver_name' => 'required',
           'group-a' => 'required|array',
-          'group-a.*.item' => 'required', // Ensure each item is selected
-          'group-a.*.quantity' => 'required|numeric|min:1', // Ensure each quantity is numeric and at least 1
+          'group-a.*.invoice_date' => 'required',
+          'group-a.*.invoice_no' => 'required',
+          'group-a.*.invoice_price' => 'required|numeric|min:1',
         ],
         [
           // Custom error messages
-          'group-a.required' => 'Please select at least one item.',
-          'group-a.*.item.required' => 'Please select at least one item.',
-          'group-a.*.quantity.required' => 'Please specify the quantity for each item.',
-          'group-a.*.quantity.numeric' => 'Quantity must be a number.',
-          'group-a.*.quantity.min' => 'Quantity must be at least 1.',
+          'group-a.required' => 'Please input at least one item.',
+          'group-a.*.invoice_date.required' => 'Please input at least one tanggal faktur.',
+          'group-a.*.invoice_no.required' => 'Please input at least one no faktur.',
+          'group-a.*.invoice_price.required' => 'Please input at least one nilai faktur.',
+          'group-a.*.invoice_price.numeric' => 'Nilai faktur must be a number.',
+          'group-a.*.invoice_price.min' => 'Nilai faktur must be at least 1.',
         ]
       );
 
-      // Create a new do instance
-      $deliveryOrder = new DeliveryOrder();
-      $deliveryOrder->id_supplier = $validatedData['id_supplier'];
-      $deliveryOrder->date = $validatedData['date'];
-      $deliveryOrder->created_by = Auth::id();
-      $deliveryOrder->save();
+      // Create a new tanda terima instance
+      $tandaTerima = new TandaTerima();
+      $tandaTerima->date = $validatedData['date'];
+      $tandaTerima->receiver_name = $validatedData['receiver_name'];
+      $tandaTerima->created_by = Auth::id();
+      $tandaTerima->save();
 
-      // Process delivery order details
+      // Process tanda terima details
+      $total_price = 0;
       foreach ($validatedData['group-a'] as $item) {
-        $deliveryOrderDetail = new DeliveryOrderDetail();
-        $deliveryOrderDetail->id_delivery_order = $deliveryOrder->id;
-        $deliveryOrderDetail->id_product_detail = $item['item'];
-        $deliveryOrderDetail->quantity = $item['quantity'];
-        $deliveryOrderDetail->created_by = Auth::id();
-        $deliveryOrderDetail->save();
+        $tandaTerimaDetail = new TandaTerimaDetail();
+        $tandaTerimaDetail->id_tanda_terima = $tandaTerima->id;
+        $tandaTerimaDetail->invoice_no = $item['invoice_no'];
+        $tandaTerimaDetail->invoice_date = $item['invoice_date'];
+        $tandaTerimaDetail->invoice_price = $item['invoice_price'];
+        $tandaTerimaDetail->invoice_description = $item['invoice_description'];
+        $tandaTerimaDetail->created_by = Auth::id();
+        $tandaTerimaDetail->save();
+
+        $total_price += $item['invoice_price'];
       }
+
+      $findTandaTerima = TandaTerima::find($tandaTerima->id); // Fetch the TandaTerima instance from the database
+      $findTandaTerima->total_price = $total_price; // Update the total price
+      $findTandaTerima->save();
 
       // Redirect or respond with success message
       return redirect()
-        ->route('transaction-delivery-order')
-        ->with('success', 'Delivery order created successfully.');
+        ->route('transaction-tanda-terima')
+        ->with('success', 'Tanda terima created successfully.');
     } catch (ValidationException $e) {
       // Validation failed, redirect back with errors
       return Redirect::back()
@@ -140,22 +151,12 @@ class TandaTerimaController extends Controller
 
   public function getById($id)
   {
-    $suppliers = Supplier::where('is_active', true)->pluck('name', 'id');
-    $products = ProductDetail::query()
-      ->selectRaw('product_details.id, CONCAT(p.name, " - ", sizes.code) as name')
-      ->leftJoin('products as p', 'p.id', 'product_details.id_product')
-      ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
-      ->where('product_details.is_active', true)
-      ->orderBy('p.name')
-      ->pluck('name', 'id');
-    $deliverOrder = DeliveryOrder::findOrFail($id);
-    $deliveryOrderDetails = DeliveryOrderDetail::where('id_delivery_order', $id)->get();
-    return view('content.transactions.delivery-order-edit', [
+    $tandaTerima = TandaTerima::findOrFail($id);
+    $tandaTerimaDetails = TandaTerimaDetail::where('id_tanda_terima', $id)->get();
+    return view('content.transactions.tanda-terima-edit', [
       'id' => $id,
-      'deliveryOrder' => $deliverOrder,
-      'suppliers' => $suppliers,
-      'products' => $products,
-      'deliveryOrderDetails' => $deliveryOrderDetails,
+      'tandaTerima' => $tandaTerima,
+      'tandaTerimaDetails' => $tandaTerimaDetails,
     ]);
   }
 
@@ -166,41 +167,52 @@ class TandaTerimaController extends Controller
       $validatedData = $request->validate(
         [
           'date' => 'required',
-          'id_supplier' => 'required|exists:suppliers,id',
+          'receiver_name' => 'required',
           'group-a' => 'required|array',
-          'group-a.*.item' => 'required', // Ensure each item is selected
-          'group-a.*.quantity' => 'required|numeric|min:1', // Ensure each quantity is numeric and at least 1
+          'group-a.*.invoice_date' => 'required',
+          'group-a.*.invoice_no' => 'required',
+          'group-a.*.invoice_price' => 'required|numeric|min:1',
         ],
         [
           // Custom error messages
-          'group-a.required' => 'Please select at least one item.',
-          'group-a.*.item.required' => 'Please select at least one item.',
-          'group-a.*.quantity.required' => 'Please specify the quantity for each item.',
-          'group-a.*.quantity.numeric' => 'Quantity must be a number.',
-          'group-a.*.quantity.min' => 'Quantity must be at least 1.',
+          'group-a.required' => 'Please input at least one item.',
+          'group-a.*.invoice_date.required' => 'Please input at least one tanggal faktur.',
+          'group-a.*.invoice_no.required' => 'Please input at least one no faktur.',
+          'group-a.*.invoice_price.required' => 'Please input at least one nilai faktur.',
+          'group-a.*.invoice_price.numeric' => 'Nilai faktur must be a number.',
+          'group-a.*.invoice_price.min' => 'Nilai faktur must be at least 1.',
         ]
       );
 
-      $data = DeliveryOrder::findOrFail($id);
+      $data = TandaTerima::findOrFail($id);
       $data->date = $validatedData['date'];
-      $data->id_supplier = $validatedData['id_supplier'];
+      $data->receiver_name = $validatedData['receiver_name'];
       $data->updated_by = Auth::id();
       $data->save();
 
-      DeliveryOrderDetail::where('id_delivery_order', $id)->delete();
+      TandaTerimaDetail::where('id_tanda_terima', $id)->delete();
 
+      $total_price = 0;
       foreach ($validatedData['group-a'] as $item) {
-        $deliveryOrderDetail = new DeliveryOrderDetail();
-        $deliveryOrderDetail->id_delivery_order = $id;
-        $deliveryOrderDetail->id_product_detail = $item['item'];
-        $deliveryOrderDetail->quantity = $item['quantity'];
-        $deliveryOrderDetail->created_by = Auth::id();
-        $deliveryOrderDetail->save();
+        $tandaTerimaDetail = new TandaTerimaDetail();
+        $tandaTerimaDetail->id_tanda_terima = $data->id;
+        $tandaTerimaDetail->invoice_no = $item['invoice_no'];
+        $tandaTerimaDetail->invoice_date = $item['invoice_date'];
+        $tandaTerimaDetail->invoice_price = $item['invoice_price'];
+        $tandaTerimaDetail->invoice_description = $item['invoice_description'];
+        $tandaTerimaDetail->created_by = Auth::id();
+        $tandaTerimaDetail->save();
+
+        $total_price += $item['invoice_price'];
       }
 
+      $tandaTerima = TandaTerima::find($data->id); // Fetch the TandaTerima instance from the database
+      $tandaTerima->total_price = $total_price; // Update the total price
+      $tandaTerima->save();
+
       return redirect()
-        ->route('transaction-delivery-order')
-        ->with('success', 'Delivery order updated successfully.');
+        ->route('transaction-tanda-terima')
+        ->with('success', 'Tanda terima updated successfully.');
     } catch (ValidationException $e) {
       // Validation failed, redirect back with errors
       return Redirect::back()
@@ -208,60 +220,42 @@ class TandaTerimaController extends Controller
         ->withInput();
     } catch (\Exception $e) {
       // Other exceptions (e.g., database errors)
-      return Redirect::back()->with('othererror', 'An error occurred while creating the delivery order.');
+      return Redirect::back()->with('othererror', $e->getMessage());
     }
   }
 
   public function delete($id)
   {
-    DeliveryOrderDetail::where('id_delivery_order', $id)->delete();
-    $deliveryOrder = DeliveryOrder::findOrFail($id);
-    $deliveryOrder->delete();
-    return response()->json(['message' => 'Delivery order deleted successfully'], 200);
+    TandaTerimaDetail::where('id_tanda_terima', $id)->delete();
+    $tandaTerima = TandaTerima::findOrFail($id);
+    $tandaTerima->delete();
+    return response()->json(['message' => 'Tanda terima deleted successfully'], 200);
   }
 
   public function preview($id)
   {
-    $deliveryOrder = DeliveryOrder::findOrFail($id);
-    $formattedDate = date('d M Y', strtotime($deliveryOrder->date));
-    $supplier = Supplier::findOrFail($deliveryOrder->id_supplier);
-    $deliveryOrderDetails = DeliveryOrderDetail::query()
-      ->selectRaw('CONCAT(p.name, " - ", sizes.code) as name, delivery_order_details.quantity')
-      ->leftJoin('product_details as pd', 'pd.id', 'delivery_order_details.id_product_detail')
-      ->leftJoin('sizes', 'sizes.id', 'pd.id_size')
-      ->leftJoin('products as p', 'p.id', 'pd.id_product')
-      ->where('delivery_order_details.id_delivery_order', $id)
-      ->orderBy('delivery_order_details.id')
-      ->get();
-    return view('content.transactions.delivery-order-preview', [
+    $tandaTerima = TandaTerima::findOrFail($id);
+    $formattedDate = date('d M Y', strtotime($tandaTerima->date));
+    $tandaTerimaDetails = TandaTerimaDetail::where('id_tanda_terima', $id)->get();
+    return view('content.transactions.tanda-terima-preview', [
       'id' => $id,
-      'deliveryOrder' => $deliveryOrder,
+      'tandaTerima' => $tandaTerima,
       'formattedDate' => $formattedDate,
-      'supplier' => $supplier,
-      'deliveryOrderDetails' => $deliveryOrderDetails,
+      'tandaTerimaDetails' => $tandaTerimaDetails,
     ]);
   }
 
   public function print($id)
   {
-    $deliveryOrder = DeliveryOrder::findOrFail($id);
-    $formattedDate = date('d M Y', strtotime($deliveryOrder->date));
-    $supplier = Supplier::findOrFail($deliveryOrder->id_supplier);
-    $deliveryOrderDetails = DeliveryOrderDetail::query()
-      ->selectRaw('CONCAT(p.name, " - ", sizes.code) as name, delivery_order_details.quantity')
-      ->leftJoin('product_details as pd', 'pd.id', 'delivery_order_details.id_product_detail')
-      ->leftJoin('sizes', 'sizes.id', 'pd.id_size')
-      ->leftJoin('products as p', 'p.id', 'pd.id_product')
-      ->where('delivery_order_details.id_delivery_order', $id)
-      ->orderBy('delivery_order_details.id')
-      ->get();
+    $tandaTerima = TandaTerima::findOrFail($id);
+    $formattedDate = date('d M Y', strtotime($tandaTerima->date));
+    $tandaTerimaDetails = TandaTerimaDetail::where('id_tanda_terima', $id)->get();
     $pageConfigs = ['myLayout' => 'blank'];
-    return view('content.transactions.delivery-order-print', [
+    return view('content.transactions.tanda-terima-print', [
       'id' => $id,
-      'deliveryOrder' => $deliveryOrder,
+      'tandaTerima' => $tandaTerima,
       'formattedDate' => $formattedDate,
-      'supplier' => $supplier,
-      'deliveryOrderDetails' => $deliveryOrderDetails,
+      'tandaTerimaDetails' => $tandaTerimaDetails,
       'pageConfigs' => $pageConfigs,
     ]);
   }
