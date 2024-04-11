@@ -97,6 +97,9 @@ $(function () {
               '<button class="btn btn-sm btn-icon edit-record" title="edit/see details" data-id="' +
               $id +
               '"><i class="bx bx-edit"></i></button>' +
+              '<button class="btn btn-sm btn-icon print-record" title="preview/print" data-id="' +
+              $id +
+              '"><i class="bx bx-printer"></i></button>' +
               '<button class="btn btn-sm btn-icon delete-record" data-id="' +
               $id +
               '" data-supplier="' +
@@ -175,6 +178,11 @@ $(function () {
   dt.on('click', '.edit-record', function () {
     var id = $(this).data('id');
     window.location.href = '/transaction/delivery-order/' + id;
+  });
+
+  dt.on('click', '.print-record', function () {
+    var id = $(this).data('id');
+    window.location.href = '/transaction/delivery-order/' + id + '/preview';
   });
 
   // Delete Record

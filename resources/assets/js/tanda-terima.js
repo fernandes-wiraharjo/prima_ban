@@ -74,6 +74,13 @@ $(function () {
           }
         },
         {
+          targets: [3],
+          render: function (data, type, full, meta) {
+            // Format quantity as thousands
+            return 'Rp' + Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
+          }
+        },
+        {
           // Actions
           targets: -1,
           title: 'Actions',
@@ -87,6 +94,9 @@ $(function () {
               '<button class="btn btn-sm btn-icon edit-record" title="edit/see details" data-id="' +
               $id +
               '"><i class="bx bx-edit"></i></button>' +
+              '<button class="btn btn-sm btn-icon print-record" title="preview/print" data-id="' +
+              $id +
+              '"><i class="bx bx-printer"></i></button>' +
               '<button class="btn btn-sm btn-icon delete-record" data-id="' +
               $id +
               '" data-receiver="' +
@@ -167,13 +177,18 @@ $(function () {
     window.location.href = '/transaction/tanda-terima/' + id;
   });
 
+  dt.on('click', '.print-record', function () {
+    var id = $(this).data('id');
+    window.location.href = '/transaction/tanda-terima/' + id + '/preview';
+  });
+
   // Delete Record
-  $('.datatables-delivery-orders tbody').on('click', '.delete-record', function () {
+  $('.datatables-tanda-terima tbody').on('click', '.delete-record', function () {
     // dt_user.row($(this).parents('tr')).remove().draw();
     var id = $(this).data('id');
     var receiverName = $(this).data('receiver');
     if (
-      confirm('Are you sure you want to delete tanda terima with id ' + id + ' and receiver ' + supplierName + ' ?')
+      confirm('Are you sure you want to delete tanda terima with id ' + id + ' and receiver ' + receiverName + ' ?')
     ) {
       // Send AJAX request to delete
       $.ajax({

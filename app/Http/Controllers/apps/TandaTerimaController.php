@@ -107,23 +107,25 @@ class TandaTerimaController extends Controller
           'group-a.*.invoice_price.min' => 'Nilai faktur must be at least 1.',
         ]
       );
+      $total_price = 0;
 
       // Create a new tanda terima instance
       $tandaTerima = new TandaTerima();
       $tandaTerima->date = $validatedData['date'];
       $tandaTerima->receiver_name = $validatedData['receiver_name'];
       $tandaTerima->created_by = Auth::id();
+      $tandaTerima->total_price = $total_price;
+
       $tandaTerima->save();
 
       // Process tanda terima details
-      $total_price = 0;
-      foreach ($validatedData['group-a'] as $item) {
+      foreach ($request->input('group-a') as $item) {
         $tandaTerimaDetail = new TandaTerimaDetail();
         $tandaTerimaDetail->id_tanda_terima = $tandaTerima->id;
         $tandaTerimaDetail->invoice_no = $item['invoice_no'];
         $tandaTerimaDetail->invoice_date = $item['invoice_date'];
         $tandaTerimaDetail->invoice_price = $item['invoice_price'];
-        $tandaTerimaDetail->invoice_description = $item['invoice_description'];
+        $tandaTerimaDetail->invoice_description = $item['invoice_description'] ?? '';
         $tandaTerimaDetail->created_by = Auth::id();
         $tandaTerimaDetail->save();
 
@@ -153,6 +155,11 @@ class TandaTerimaController extends Controller
   {
     $tandaTerima = TandaTerima::findOrFail($id);
     $tandaTerimaDetails = TandaTerimaDetail::where('id_tanda_terima', $id)->get();
+
+    foreach ($tandaTerimaDetails as $detail) {
+      $detail->invoice_price = intval($detail->invoice_price);
+    }
+
     return view('content.transactions.tanda-terima-edit', [
       'id' => $id,
       'tandaTerima' => $tandaTerima,
@@ -184,30 +191,27 @@ class TandaTerimaController extends Controller
         ]
       );
 
-      $data = TandaTerima::findOrFail($id);
-      $data->date = $validatedData['date'];
-      $data->receiver_name = $validatedData['receiver_name'];
-      $data->updated_by = Auth::id();
-      $data->save();
-
       TandaTerimaDetail::where('id_tanda_terima', $id)->delete();
 
       $total_price = 0;
-      foreach ($validatedData['group-a'] as $item) {
+      foreach ($request->input('group-a') as $item) {
         $tandaTerimaDetail = new TandaTerimaDetail();
-        $tandaTerimaDetail->id_tanda_terima = $data->id;
+        $tandaTerimaDetail->id_tanda_terima = $id;
         $tandaTerimaDetail->invoice_no = $item['invoice_no'];
         $tandaTerimaDetail->invoice_date = $item['invoice_date'];
         $tandaTerimaDetail->invoice_price = $item['invoice_price'];
-        $tandaTerimaDetail->invoice_description = $item['invoice_description'];
+        $tandaTerimaDetail->invoice_description = $item['invoice_description'] ?? '';
         $tandaTerimaDetail->created_by = Auth::id();
         $tandaTerimaDetail->save();
 
         $total_price += $item['invoice_price'];
       }
 
-      $tandaTerima = TandaTerima::find($data->id); // Fetch the TandaTerima instance from the database
-      $tandaTerima->total_price = $total_price; // Update the total price
+      $tandaTerima = TandaTerima::findOrFail($id);
+      $tandaTerima->date = $validatedData['date'];
+      $tandaTerima->receiver_name = $validatedData['receiver_name'];
+      $tandaTerima->total_price = $total_price;
+      $tandaTerima->updated_by = Auth::id();
       $tandaTerima->save();
 
       return redirect()
@@ -236,7 +240,18 @@ class TandaTerimaController extends Controller
   {
     $tandaTerima = TandaTerima::findOrFail($id);
     $formattedDate = date('d M Y', strtotime($tandaTerima->date));
-    $tandaTerimaDetails = TandaTerimaDetail::where('id_tanda_terima', $id)->get();
+    $tandaTerimaDetails = TandaTerimaDetail::where('id_tanda_terima', $id)
+      ->selectRaw(
+        'tanda_terima_details.*, DATE_FORMAT(tanda_terima_details.invoice_date, "%d %b %Y") as formatted_invoice_date'
+      )
+      ->get();
+
+    foreach ($tandaTerimaDetails as $detail) {
+      $detail->invoice_price = 'Rp' . number_format($detail->invoice_price, 0, ',', '.');
+    }
+
+    $tandaTerima->total_price = 'Rp' . number_format($tandaTerima->total_price, 0, ',', '.');
+
     return view('content.transactions.tanda-terima-preview', [
       'id' => $id,
       'tandaTerima' => $tandaTerima,
@@ -249,7 +264,18 @@ class TandaTerimaController extends Controller
   {
     $tandaTerima = TandaTerima::findOrFail($id);
     $formattedDate = date('d M Y', strtotime($tandaTerima->date));
-    $tandaTerimaDetails = TandaTerimaDetail::where('id_tanda_terima', $id)->get();
+    $tandaTerimaDetails = TandaTerimaDetail::where('id_tanda_terima', $id)
+      ->selectRaw(
+        'tanda_terima_details.*, DATE_FORMAT(tanda_terima_details.invoice_date, "%d %b %Y") as formatted_invoice_date'
+      )
+      ->get();
+
+    foreach ($tandaTerimaDetails as $detail) {
+      $detail->invoice_price = 'Rp' . number_format($detail->invoice_price, 0, ',', '.');
+    }
+
+    $tandaTerima->total_price = 'Rp' . number_format($tandaTerima->total_price, 0, ',', '.');
+
     $pageConfigs = ['myLayout' => 'blank'];
     return view('content.transactions.tanda-terima-print', [
       'id' => $id,
