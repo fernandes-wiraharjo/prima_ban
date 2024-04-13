@@ -25,7 +25,7 @@ class StockHistoryController extends Controller
           'CONCAT(prd.name, " - ", sizes.code) as product_detail'
       )
       ->join('product_details as pd', 'pd.id', 'stock_histories.id_product_detail')
-      ->join('products as prd' . 'prd.id', 'pd.id_product')
+      ->join('products as prd', 'prd.id', 'pd.id_product')
       ->join('sizes', 'sizes.id', 'pd.id_size');
 
     $sortableColumns = [
@@ -62,8 +62,8 @@ class StockHistoryController extends Controller
           ->orWhere('stock_histories.quantity', 'like', $searchValue)
           ->orWhere('stock_histories.stock_before', 'like', $searchValue)
           ->orWhere('stock_histories.stock_after', 'like', $searchValue)
-          ->orWhereRaw("CONCAT(prd . name, ' - ', sizes . code) LIKE ?", [$searchValue])
-          ->orWhereRaw("DATE_FORMAT(stock_purchases.created_at, '%d %b %Y %H:%i:%s') LIKE ?", [$searchValue]);
+          ->orWhereRaw("CONCAT(prd. name, ' - ', sizes.code) LIKE ?", [$searchValue])
+          ->orWhereRaw("DATE_FORMAT(stock_histories.created_at, '%d %b %Y %H:%i:%s') LIKE ?", [$searchValue]);
       });
     }
 

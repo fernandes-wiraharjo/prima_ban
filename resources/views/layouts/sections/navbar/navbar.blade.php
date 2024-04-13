@@ -399,7 +399,7 @@ $navbarDetached = ($navbarDetached ?? '');
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li>
-              <a class="dropdown-item" href="{{ Route::has('profile.show') ? route('profile.show') : url('pages/profile-user') }}">
+              <a class="dropdown-item" href="#">
                 <div class="d-flex">
                   <div class="flex-shrink-0 me-3">
                     <div class="avatar avatar-online">

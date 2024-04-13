@@ -65,6 +65,12 @@
       "name": "Tanda Terima",
       "icon": "menu-icon tf-icons bx bx-notepad",
       "slug": "transaction-tanda-terima"
+    },
+    {
+      "url": "transaction/stock-history",
+      "name": "Stock Histories",
+      "icon": "menu-icon tf-icons bx bx-history",
+      "slug": "transaction-stock-history"
     }
   ]
 }

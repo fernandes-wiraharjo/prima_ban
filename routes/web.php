@@ -61,6 +61,7 @@ use App\Http\Controllers\apps\InvoiceAdd;
 use App\Http\Controllers\apps\PatternController;
 use App\Http\Controllers\apps\ProductController;
 use App\Http\Controllers\apps\SizeController;
+use App\Http\Controllers\apps\StockHistoryController;
 use App\Http\Controllers\apps\SupplierController;
 use App\Http\Controllers\apps\TandaTerimaController;
 use App\Http\Controllers\apps\UserList;

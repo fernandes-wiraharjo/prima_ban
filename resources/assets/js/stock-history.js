@@ -84,6 +84,8 @@ $(function () {
         search: '',
         searchPlaceholder: 'Search..'
       },
+      // Buttons with Dropdown
+      buttons: [],
       // For responsive popup
       responsive: {
         details: {
