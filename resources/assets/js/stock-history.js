@@ -1,7 +1,3 @@
-/**
- * Page UOM List
- */
-
 'use strict';
 
 // Datatable (jquery)
@@ -21,7 +17,7 @@ $(function () {
   // Variable declaration for table
   var dt_table = $('.datatables-stock-histories');
 
-  // Brands datatable
+  // datatable
   if (dt_table.length) {
     var dt = dt_table.DataTable({
       processing: true,
