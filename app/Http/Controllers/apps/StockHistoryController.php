@@ -13,7 +13,7 @@ class StockHistoryController extends Controller
 {
   public function index()
   {
-    return view('content.transactions.transaction-stock-history');
+    return view('content.transactions.stock-history');
   }
 
   public function get(Request $request)
