@@ -290,6 +290,12 @@ Route::middleware(['auth'])->group(function () {
       Route::put('/{id}', [TandaTerimaController::class, 'edit'])->name('edit-tanda-terima');
       Route::delete('/{id}', [TandaTerimaController::class, 'delete'])->name('delete-tanda-terima');
     });
+
+    //stock-history
+    Route::prefix('stock-history')->group(function () {
+      Route::get('/', [StockHistoryController::class, 'index'])->name('transaction-stock-history');
+      Route::get('/get', [StockHistoryController::class, 'get'])->name('get-stock-history');
+    });
   });
 });
 
