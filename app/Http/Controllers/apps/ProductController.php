@@ -405,7 +405,7 @@ class ProductController extends Controller
           $stockHistory->stock_before = $lastStockHistory ? $lastStockHistory->stock_after : 0;
           $stockHistory->stock_after = $quantity;
           $stockHistory->quantity =
-            $movementType === 'inbound'
+            $movementType === MovementType::IN
               ? $stockHistory->stock_after - $stockHistory->stock_before
               : $stockHistory->stock_before - $stockHistory->stock_after;
           $stockHistory->created_by = Auth::id();
