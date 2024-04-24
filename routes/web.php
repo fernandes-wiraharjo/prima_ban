@@ -60,6 +60,7 @@ use App\Http\Controllers\apps\InvoiceEdit;
 use App\Http\Controllers\apps\InvoiceAdd;
 use App\Http\Controllers\apps\PatternController;
 use App\Http\Controllers\apps\ProductController;
+use App\Http\Controllers\apps\PurchaseController;
 use App\Http\Controllers\apps\SizeController;
 use App\Http\Controllers\apps\StockHistoryController;
 use App\Http\Controllers\apps\SupplierController;
@@ -296,6 +297,24 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('stock-history')->group(function () {
       Route::get('/', [StockHistoryController::class, 'index'])->name('transaction-stock-history');
       Route::get('/get', [StockHistoryController::class, 'get'])->name('get-stock-history');
+    });
+
+    //purchase
+    Route::prefix('purchase')->group(function () {
+      Route::get('/', [PurchaseController::class, 'index'])->name('transaction-purchase');
+      Route::get('/get', [PurchaseController::class, 'get'])->name('get-purchase');
+      Route::get('/{id}', [PurchaseController::class, 'getById'])->name('get-purchase-by-id');
+      Route::post('/add', [PurchaseController::class, 'add'])->name('add-purchase');
+      Route::put('/{id}', [PurchaseController::class, 'edit'])->name('edit-purchase');
+      Route::delete('/{id}', [PurchaseController::class, 'delete'])->name('delete-purchase');
+      Route::get('/{id}/{supplier}/{invoice}/detail', [PurchaseController::class, 'indexDetail'])->name(
+        'master-purchase-detail'
+      );
+      Route::get('/{id}/get-detail', [PurchaseController::class, 'getDetail'])->name('get-purchase-detail');
+      Route::get('/detail/{id}', [PurchaseController::class, 'getDetailById'])->name('get-purchase-detail-by-id');
+      Route::post('/detail/add', [PurchaseController::class, 'addDetail'])->name('add-purchase-detail');
+      Route::put('/detail/{id}', [PurchaseController::class, 'editDetail'])->name('edit-purchase-detail');
+      Route::delete('/detail/{id}', [PurchaseController::class, 'deleteDetail'])->name('delete-purchase-detail');
     });
   });
 });

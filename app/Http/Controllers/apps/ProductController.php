@@ -391,8 +391,8 @@ class ProductController extends Controller
         ->first();
 
       if ($lastStockHistory) {
-        if ($lastStockHistory->quantity != $quantity) {
-          if ($lastStockHistory->quantity < $quantity) {
+        if ($lastStockHistory->stock_after != $quantity) {
+          if ($lastStockHistory->stock_after < $quantity) {
             $movementType = MovementType::IN;
           } else {
             $movementType = MovementType::OUT;

@@ -61,6 +61,12 @@
       "slug": "transaction-delivery-order"
     },
     {
+      "url": "transaction/purchase",
+      "name": "Purchases",
+      "icon": "menu-icon tf-icons bx bx-purchase-tag",
+      "slug": "transaction-purchase"
+    },
+    {
       "url": "transaction/tanda-terima",
       "name": "Tanda Terima",
       "icon": "menu-icon tf-icons bx bx-notepad",
