@@ -309,9 +309,7 @@ Route::middleware(['auth'])->group(function () {
       Route::post('/add', [PurchaseController::class, 'add'])->name('add-purchase');
       Route::put('/{id}', [PurchaseController::class, 'edit'])->name('edit-purchase');
       Route::delete('/{id}', [PurchaseController::class, 'delete'])->name('delete-purchase');
-      Route::get('/{id}/{supplier}/{invoice}/detail', [PurchaseController::class, 'indexDetail'])
-        ->name('transaction-purchase-detail')
-        ->where(['supplier' => '[^/]+', 'invoice' => '.*']);
+      Route::get('/{id}/detail', [PurchaseController::class, 'indexDetail'])->name('transaction-purchase-detail');
       Route::get('/{id}/get-detail', [PurchaseController::class, 'getDetail'])->name('get-purchase-detail');
       Route::get('/detail/{id}', [PurchaseController::class, 'getDetailById'])->name('get-purchase-detail-by-id');
       Route::post('/detail/add', [PurchaseController::class, 'addDetail'])->name('add-purchase-detail');

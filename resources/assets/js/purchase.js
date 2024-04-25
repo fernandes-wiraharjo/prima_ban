@@ -13,9 +13,10 @@ function formatNumber(input) {
 
 function redirectToPurchaseDetail(button) {
   var idPurchase = button.getAttribute('data-id');
-  var supplier = button.getAttribute('data-suppliername');
-  var invoice = button.getAttribute('data-invoiceno');
-  var url = '/transaction/purchase/' + idPurchase + '/' + supplier + '/' + invoice + '/detail';
+  // var supplier = button.getAttribute('data-suppliername');
+  // var invoice = button.getAttribute('data-invoiceno');
+  // var url = '/transaction/purchase/' + idPurchase + '/' + supplier + '/' + invoice + '/detail';
+  var url = '/transaction/purchase/' + idPurchase + '/detail';
   window.location.href = url;
 }
 

@@ -56,7 +56,7 @@
   <a href="{{ route('transaction-purchase') }}">
     <span class="text-muted fw-light">{{ $supplier }} ({{$invoice}}) /</span>
   </a>
-  Detail List
+  Details Of Purchase
 </h4>
 
 <div class="card">

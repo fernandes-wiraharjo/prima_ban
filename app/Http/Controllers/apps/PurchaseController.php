@@ -172,17 +172,21 @@ class PurchaseController extends Controller
     return response()->json(['message' => 'Purchase deleted successfully'], 200);
   }
 
-  public function indexDetail($id, $supplier, $invoice)
+  public function indexDetail($id)
   {
     $productDetails = ProductDetail::leftJoin('products as p', 'p.id', 'product_details.id_product')
       ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
       ->where('product_details.is_active', true)
       ->selectRaw('product_details.id, CONCAT(p.name, " - ", sizes.code) as product_detail_name')
       ->pluck('product_detail_name', 'id');
+    $purchase = Purchase::leftJoin('suppliers', 'suppliers.id', 'purchases.id_supplier')
+      ->select('purchases.invoice_no', 'suppliers.name as supplier_name')
+      ->where('purchases.id', $id)
+      ->first();
     return view('content.transactions.purchase-detail', [
       'idPurchase' => $id,
-      'supplier' => $supplier,
-      'invoice' => $invoice,
+      'supplier' => $purchase->supplier_name,
+      'invoice' => $purchase->invoice_no ?? '-',
       'productDetails' => $productDetails,
     ]);
   }

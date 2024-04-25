@@ -115,7 +115,37 @@ $(function () {
           }
         }
       },
-      initComplete: function () {}
+      initComplete: function () {
+        dt_table.on('click', 'tr', function () {
+          var rowData = dt.row(this).data();
+          if (rowData) {
+            var idTransaction = rowData.id_transaction;
+            var movementType = rowData.movement_type;
+            if (idTransaction) {
+              var url;
+              if (movementType === 'inbound') {
+                url = '/transaction/purchase/' + idTransaction + '/detail';
+              } else if (movementType === 'outbound') {
+                url = '/transaction/sale/' + idTransaction + '/detail';
+              }
+              if (url) {
+                window.open(url, '_blank');
+              }
+            }
+          }
+        });
+
+        dt_table.on('mouseover', 'tr', function () {
+          var rowData = dt.row(this).data();
+          if (rowData && rowData.id_transaction) {
+            $(this).addClass('clickable-row');
+          }
+        });
+
+        dt_table.on('mouseleave', 'tr', function () {
+          $(this).removeClass('clickable-row');
+        });
+      }
     });
   }
 

@@ -8,7 +8,12 @@
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css')}}">
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/@form-validation/umd/styles/index.min.css')}}" />
-
+<style>
+  .clickable-row {
+    cursor: pointer;
+    background-color: #f5f5f5 !important;
+  }
+</style>
 @endsection
 
 @section('vendor-script')
