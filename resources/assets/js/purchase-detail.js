@@ -167,7 +167,7 @@ $(function () {
       // Buttons with Dropdown
       buttons: [
         {
-          text: '<i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Add Product Detail</span>',
+          text: '<i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Add Purchase Detail</span>',
           className: 'add-new btn btn-primary mx-3',
           attr: {
             'data-bs-toggle': 'offcanvas',

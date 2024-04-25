@@ -54,7 +54,7 @@
 
 <h4 class="py-3 mb-4">
   <a href="{{ route('transaction-purchase') }}">
-    <span class="text-muted fw-light">{{ $supplier }} ({{ $invoice }}) /</span>
+    <span class="text-muted fw-light">{{ $supplier }} ({{$invoice}}) /</span>
   </a>
   Detail List
 </h4>
@@ -124,6 +124,7 @@
         @method('PUT')
         @csrf
             <input type="hidden" id="edit-id" name="id">
+            <input type="hidden" name="id_purchase" value="{{ $idPurchase }}">
             <div class="mb-3">
               <label class="form-label" for="edit-product">Product</label>
               <select id="edit-product" name="id_product_detail" class="select2 form-select">

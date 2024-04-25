@@ -176,7 +176,7 @@ class PurchaseController extends Controller
   {
     $productDetails = ProductDetail::leftJoin('products as p', 'p.id', 'product_details.id_product')
       ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
-      ->where('is_active', true)
+      ->where('product_details.is_active', true)
       ->selectRaw('product_details.id, CONCAT(p.name, " - ", sizes.code) as product_detail_name')
       ->pluck('product_detail_name', 'id');
     return view('content.transactions.purchase-detail', [
@@ -223,7 +223,7 @@ class PurchaseController extends Controller
       $searchValue = '%' . $request->search['value'] . '%';
       $query->where(function ($query) use ($searchValue) {
         $query
-          ->whereRaw('CONCAT(p.name, ' - ', sizes.code) LIKE ?', [$searchValue])
+          ->whereRaw('CONCAT(p.name, " - ", sizes.code) LIKE ?', [$searchValue])
           ->orWhere('purchase_details.quantity', 'like', $searchValue)
           ->orWhere('purchase_details.price', 'like', $searchValue)
           ->orWhere('purchase_details.total_price', 'like', $searchValue);
@@ -342,14 +342,15 @@ class PurchaseController extends Controller
       $data->updated_by = Auth::id();
       $data->save();
 
-      $stockHistoryPurchase = StockHistory::where('id_product_detail', $validatedData['id_product_detail'])
+      $stockHistoryByPurchase = StockHistory::where('id_product_detail', $validatedData['id_product_detail'])
         ->where('id_transaction', $validatedData['id_purchase'])
         ->where('movement_type', MovementType::IN)
-        ->latest()
-        ->first();
+        ->get();
 
-      if ($stockHistoryPurchase) {
-        if ($stockHistoryPurchase->quantity != $quantity) {
+      if ($stockHistoryByPurchase->isNotEmpty()) {
+        $sumQuantity = $stockHistoryByPurchase->sum('quantity');
+
+        if ($sumQuantity != $quantity) {
           $lastStockHistory = StockHistory::where('id_product_detail', $validatedData['id_product_detail'])
             ->latest()
             ->first();
@@ -358,7 +359,7 @@ class PurchaseController extends Controller
           $stock_history->id_product_detail = $data->id_product_detail;
           $stock_history->id_transaction = $data->id_purchase;
           $stock_history->movement_type = MovementType::IN;
-          $stock_history->quantity = $quantity - $stockHistoryPurchase->quantity;
+          $stock_history->quantity = $quantity - $sumQuantity;
           $stock_history->stock_before = $lastStockHistory->stock_after;
           $stock_history->stock_after = $lastStockHistory->stock_after + $stock_history->quantity;
           $stock_history->created_by = Auth::id();
