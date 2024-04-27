@@ -61,6 +61,7 @@ use App\Http\Controllers\apps\InvoiceAdd;
 use App\Http\Controllers\apps\PatternController;
 use App\Http\Controllers\apps\ProductController;
 use App\Http\Controllers\apps\PurchaseController;
+use App\Http\Controllers\apps\SaleController;
 use App\Http\Controllers\apps\SizeController;
 use App\Http\Controllers\apps\StockHistoryController;
 use App\Http\Controllers\apps\SupplierController;
@@ -315,6 +316,19 @@ Route::middleware(['auth'])->group(function () {
       Route::post('/detail/add', [PurchaseController::class, 'addDetail'])->name('add-purchase-detail');
       Route::put('/detail/{id}', [PurchaseController::class, 'editDetail'])->name('edit-purchase-detail');
       Route::delete('/detail/{id}', [PurchaseController::class, 'deleteDetail'])->name('delete-purchase-detail');
+    });
+
+    //sale
+    Route::prefix('sale')->group(function () {
+      Route::get('/', [SaleController::class, 'index'])->name('transaction-sale');
+      Route::get('/get', [SaleController::class, 'get'])->name('get-sale');
+      Route::get('/get/add', [SaleController::class, 'indexAdd'])->name('index-add-sale');
+      Route::get('/{id}', [SaleController::class, 'getById'])->name('get-sale-by-id');
+      Route::get('/{id}/preview', [SaleController::class, 'preview'])->name('preview-sale');
+      Route::get('/{id}/print', [SaleController::class, 'print'])->name('print-sale');
+      Route::post('/add', [SaleController::class, 'add'])->name('add-sale');
+      Route::put('/{id}', [SaleController::class, 'edit'])->name('edit-sale');
+      Route::delete('/{id}', [SaleController::class, 'delete'])->name('delete-sale');
     });
   });
 });
