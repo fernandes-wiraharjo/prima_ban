@@ -169,11 +169,11 @@
         <hr class="my-4 mx-n4" />
 
         <div class="row py-sm-3">
-        <div class="col-md-6 mb-md-0 mb-3">
-            <div class="d-flex align-items-center mb-3">
+          <div class="col-md-6 mb-md-0 mb-3">
+            <!-- <div class="d-flex align-items-center mb-3">
               <label for="salesperson" class="form-label me-5 fw-medium">Note:</label>
-              <!-- <input type="text" class="form-control" id="salesperson" placeholder="Edward Crowley" /> -->
-            </div>
+              <input type="text" class="form-control" id="salesperson" placeholder="Edward Crowley" />
+            </div> -->
             <input type="text" class="form-control" id="note" name="note" placeholder="Note" />
           </div>
           <div class="col-md-6 d-flex justify-content-end">
@@ -229,7 +229,7 @@
   <div class="col-lg-3 col-12 invoice-actions">
     <div class="card mb-4">
       <div class="card-body">
-        <a href="{{url('/transaction/tanda-terima')}}" class="btn btn-label-secondary d-grid w-100 mb-3">Cancel</a>
+        <a href="{{url('/transaction/sale')}}" class="btn btn-label-secondary d-grid w-100 mb-3">Cancel</a>
         <button type="submit" class="btn btn-label-secondary d-grid w-100">Save</button>
       </div>
     </div>
