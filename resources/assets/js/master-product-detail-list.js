@@ -143,6 +143,7 @@ $(function () {
         // columns according to JSON
         { data: '' },
         { data: 'size_name' },
+        { data: 'code' },
         { data: 'final_price_user_cash' },
         { data: 'final_price_user_tempo' },
         { data: 'final_price_toko_cash' },
@@ -181,7 +182,7 @@ $(function () {
         },
         {
           // Price
-          targets: [2, 3, 4, 5],
+          targets: [3, 4, 5, 6],
           render: function (data, type, full, meta) {
             // Format quantity as thousands
             return 'Rp' + Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
@@ -189,7 +190,7 @@ $(function () {
         },
         {
           // Quantity
-          targets: 6,
+          targets: 7,
           render: function (data, type, full, meta) {
             // Format quantity as thousands
             return Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
@@ -197,7 +198,7 @@ $(function () {
         },
         {
           // Status
-          targets: 7,
+          targets: 8,
           render: function (data, type, full, meta) {
             var $status = full['is_active'];
 
@@ -302,6 +303,7 @@ $(function () {
               $('#edit-id').val(response.id);
               $('#editForm').attr('action', '/master/product/detail/' + response.id);
               $('#edit-size').val(response.id_size).trigger('change');
+              $('#edit-code').val(response.code);
               $('#edit-price-user-cash').val(
                 Number(response.price_user_cash).toLocaleString('id-ID', { minimumFractionDigits: 0 })
               );
@@ -407,6 +409,13 @@ $(function () {
   // Add New Form Validation
   const fv = FormValidation.formValidation(addNewForm, {
     fields: {
+      code: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter code'
+          }
+        }
+      },
       price_user_cash: {
         validators: {
           notEmpty: {
@@ -526,6 +535,13 @@ $(function () {
   // Edit Form Validation
   const fvEdit = FormValidation.formValidation(editForm, {
     fields: {
+      code: {
+        validators: {
+          notEmpty: {
+            message: 'Please enter code'
+          }
+        }
+      },
       price_user_cash: {
         validators: {
           notEmpty: {

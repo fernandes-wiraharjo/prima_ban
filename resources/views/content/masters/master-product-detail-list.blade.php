@@ -67,6 +67,7 @@
         <tr>
           <th></th>
           <th>Size</th>
+          <th>Code</th>
           <th>User Cash</th>
           <th>User Tempo</th>
           <th>Toko Cash</th>
@@ -96,6 +97,10 @@
               <option value="{{ $id }}">{{ $code }}</option>
             @endforeach
           </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="add-code">Code</label>
+          <input type="text" class="form-control" id="add-code" placeholder="code" name="code" aria-label="code" />
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-price-user-cash">Price User Cash</label>
@@ -188,6 +193,10 @@
                   <option value="{{ $id }}">{{ $code }}</option>
                 @endforeach
               </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="edit-code">Code</label>
+              <input type="text" class="form-control" id="edit-code" placeholder="code" name="code" aria-label="code" />
             </div>
             <div class="mb-3">
               <label class="form-label" for="edit-price-user-cash">Price User Cash</label>

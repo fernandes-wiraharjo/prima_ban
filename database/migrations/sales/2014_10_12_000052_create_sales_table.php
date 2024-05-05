@@ -23,7 +23,9 @@ return new class extends Migration {
       $table->decimal('final_price', 10, 2);
       // $table->decimal('discount_percentage', 5, 2);
       // $table->decimal('nett_price', 10, 2);
-      $table->string('bank_account_no', 30);
+      $table->string('bank_account_no', 100);
+      $table->string('technician', 50)->nullable();
+      $table->text('note')->nullable();
       $table->string('status', 30);
       $table->unsignedBigInteger('created_by')->nullable();
       $table->unsignedBigInteger('updated_by')->nullable();

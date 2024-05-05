@@ -253,6 +253,7 @@ class ProductController extends Controller
       $validatedData = $request->validate([
         'id_product' => 'required|exists:products,id',
         'id_size' => 'required|exists:sizes,id',
+        'code' => 'required',
         'price_user_cash' => 'required',
         'discount_user_cash' => 'required',
         'final_price_user_cash' => 'required',
@@ -287,6 +288,7 @@ class ProductController extends Controller
       $data = new ProductDetail();
       $data->id_product = $validatedData['id_product'];
       $data->id_size = $validatedData['id_size'];
+      $data->code = $validatedData['code'];
       $data->price_user_cash = $price_user_cash;
       $data->discount_user_cash = $discount_user_cash;
       $data->final_price_user_cash = $final_price_user_cash;
@@ -337,6 +339,7 @@ class ProductController extends Controller
     try {
       $validatedData = $request->validate([
         'id_size' => 'required|exists:sizes,id',
+        'code' => 'required',
         'price_user_cash' => 'required',
         'discount_user_cash' => 'required',
         'final_price_user_cash' => 'required',
@@ -369,6 +372,7 @@ class ProductController extends Controller
 
       $data = ProductDetail::findOrFail($id);
       $data->id_size = $validatedData['id_size'];
+      $data->code = $validatedData['code'];
       $data->price_user_cash = $price_user_cash;
       $data->discount_user_cash = $discount_user_cash;
       $data->final_price_user_cash = $final_price_user_cash;

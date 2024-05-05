@@ -21,7 +21,7 @@ class StockHistoryController extends Controller
     $query = StockHistory::query()
       ->selectRaw(
         'stock_histories.movement_type, stock_histories.quantity, stock_histories.stock_before, stock_histories.id_transaction, ' .
-          'stock_histories.stock_after, DATE_FORMAT(stock_histories.created_at, "%d %b %Y %H:%i:%s") as formatted_created_at, ' .
+          'stock_histories.stock_after, stock_histories.created_at, DATE_FORMAT(stock_histories.created_at, "%d %b %Y %H:%i:%s") as formatted_created_at, ' .
           'CONCAT(prd.name, " - ", sizes.code) as product_detail'
       )
       ->join('product_details as pd', 'pd.id', 'stock_histories.id_product_detail')
@@ -30,7 +30,7 @@ class StockHistoryController extends Controller
 
     $sortableColumns = [
       0 => '',
-      1 => 'formatted_created_at',
+      1 => 'created_at',
       2 => 'product_detail',
       3 => 'movement_type',
       4 => 'quantity',
@@ -47,7 +47,7 @@ class StockHistoryController extends Controller
       $sortColumn = $sortableColumns[$sortColumnIndex];
     } else {
       // Default sorting column if invalid or not provided
-      $sortColumn = 'formatted_created_at'; // Default to 'created at' or any other preferred column
+      $sortColumn = 'stock_histories.created_at'; // Default to 'created at' or any other preferred column
     }
 
     // Get total records count (before filtering)

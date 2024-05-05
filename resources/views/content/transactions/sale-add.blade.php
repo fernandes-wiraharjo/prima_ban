@@ -56,6 +56,11 @@
     <div class="card invoice-preview-card">
       <div class="card-body">
         <div class="row p-sm-3 p-0">
+          <div class="col-md-12 text-center">
+            <div class="svg-illustration mb-4 gap-2">
+              <span class="demo text-body fw-bold">INVOICE</span>
+            </div>
+          </div>
           <div class="col-md-6 mb-md-0 mb-4">
             <div class="d-flex svg-illustration mb-4 gap-2">
               <!-- <span class="app-brand-logo demo">@include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])</span> -->
@@ -87,37 +92,50 @@
                 </select>
                 </div>
               </dd>
+              <dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+                <span class="fw-normal">Teknisi: </span>
+              </dt>
+              <dd class="col-sm-6 d-flex justify-content-md-end">
+                <div class="w-px-150">
+                  <input type="text" name="technician" class="form-control" />
+                </div>
+              </dd>
+              <dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
+                <span class="fw-normal">Nota: </span>
+              </dt>
+              <dd class="col-sm-6 d-flex justify-content-md-end">
+                <div class="w-px-150">
+                  <input type="text" name="invoice_no" class="form-control" required />
+                </div>
+              </dd>
             </dl>
           </div>
         </div>
 
         <hr class="my-4 mx-n4" />
 
-        <div class="text-center mt-4 mb-3">
-          <h4>TANDA TERIMA FAKTUR</h4>
+        <!-- <div class="text-center mt-4 mb-3">
+          <h4>NOTA</h4>
           <br>
-        </div>
+        </div> -->
 
         <!-- <form class="source-item py-sm-3"> -->
-          <div class="mb-3" data-repeater-list="group-a">
+        <div class="mb-3" data-repeater-list="group-a">
             <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
               <div class="d-flex border rounded position-relative pe-0">
                 <div class="row w-100 m-0 p-3">
-                  <div class="col-md-3 col-12 mb-md-0 mb-3 ps-md-0">
-                    <p class="mb-2 repeater-title">Tgl Faktur</p>
-                    <input type="date" class="form-control" name="group-a[0][invoice_date]" placeholder="tgl faktur" />
+                  <div class="col-md-10 col-12 mb-md-0 mb-3 ps-md-0">
+                    <p class="mb-2 repeater-title">Barang</p>
+                    <select class="form-select item-details mb-2" name="group-a[0][item]">
+                      <option selected disabled>Select Item</option>
+                      @foreach($products as $id => $name)
+                        <option value="{{ $id }}">{{ $name }}</option>
+                      @endforeach
+                    </select>
                   </div>
-                  <div class="col-md-3 col-12 mb-md-0 mb-3">
-                    <p class="mb-2 repeater-title">No Faktur</p>
-                    <input type="text" class="form-control" name="group-a[0][invoice_no]" placeholder="no faktur" />
-                  </div>
-                  <div class="col-md-3 col-12 mb-md-0 mb-3">
-                    <p class="mb-2 repeater-title">Nilai Faktur</p>
-                    <input type="number" class="form-control invoice-price" placeholder="100000" name="group-a[0][invoice_price]"/>
-                  </div>
-                  <div class="col-md-3 col-12 pe-0">
-                    <p class="mb-2 repeater-title">Keterangan</p>
-                    <input type="text" class="form-control" name="group-a[0][invoice_description]" placeholder="keterangan" />
+                  <div class="col-md-2 col-12 mb-md-0 mb-3">
+                    <p class="mb-2 repeater-title">Qty</p>
+                    <input type="number" class="form-control invoice-item-qty" placeholder="1" name="group-a[0][quantity]"/>
                   </div>
                 </div>
                 <div class="d-flex flex-column align-items-center justify-content-between border-start p-2">
@@ -151,18 +169,39 @@
         <hr class="my-4 mx-n4" />
 
         <div class="row py-sm-3">
-          <div class="col-md-6 mb-md-0 mb-3">
+        <div class="col-md-6 mb-md-0 mb-3">
+            <div class="d-flex align-items-center mb-3">
+              <label for="salesperson" class="form-label me-5 fw-medium">Note:</label>
+              <!-- <input type="text" class="form-control" id="salesperson" placeholder="Edward Crowley" /> -->
+            </div>
+            <input type="text" class="form-control" id="note" name="note" placeholder="Note" />
           </div>
           <div class="col-md-6 d-flex justify-content-end">
             <div class="invoice-calculations">
+              <!-- <div class="d-flex justify-content-between mb-2">
+                <span class="w-px-100">Subtotal:</span>
+                <span class="fw-medium">$00.00</span>
+              </div> -->
               <div class="d-flex justify-content-between mb-2">
-                <span class="w-px-100">Penerima,</span>
+                <span class="w-px-100">Diskon:</span>
+                <span class="fw-medium">
+                  <input type="number" class="form-control" id="discount" name="discount" value="0" placeholder="Diskon" required style="width: 120px;" />
+                </span>
               </div>
+              <!-- <div class="d-flex justify-content-between mb-2">
+                <span class="w-px-100">Tax:</span>
+                <span class="fw-medium">$00.00</span>
+              </div>
+              <hr />
+              <div class="d-flex justify-content-between">
+                <span class="w-px-100">Total:</span>
+                <span class="fw-medium">$00.00</span>
+              </div> -->
             </div>
           </div>
         </div>
 
-        <div class="row py-sm-3 mt-4">
+        <!-- <div class="row py-sm-3 mt-4">
           <div class="col-md-6 mb-md-0 mb-3">
           </div>
           <div class="col-md-6 d-flex justify-content-end">
@@ -172,7 +211,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- <div class="row">
           <div class="col-4">
@@ -193,6 +232,14 @@
         <a href="{{url('/transaction/tanda-terima')}}" class="btn btn-label-secondary d-grid w-100 mb-3">Cancel</a>
         <button type="submit" class="btn btn-label-secondary d-grid w-100">Save</button>
       </div>
+    </div>
+    <div>
+      <p class="mb-2">Pembayaran ke rek</p>
+      <select class="form-select mb-4" id="bank-account-no" name="bank_account_no">
+        @foreach($contactData['bankAccountNo'] as $accountNo)
+          <option value="{{ $accountNo }}">{{ $accountNo }}</option>
+        @endforeach
+      </select>
     </div>
   </div>
   <!-- /Invoice Actions -->

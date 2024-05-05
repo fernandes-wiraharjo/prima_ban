@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\apps;
 
 use App\Models\Customer;
+use App\Models\ProductDetail;
 use App\Models\Sale;
 use App\Models\SaleDetail;
 use App\Http\Controllers\Controller;
@@ -92,7 +93,14 @@ class SaleController extends Controller
   public function indexAdd()
   {
     $customers = Customer::where('is_active', true)->pluck('name', 'id');
-    return view('content.transactions.sale-add', ['customers' => $customers]);
+    $products = ProductDetail::query()
+      ->selectRaw('product_details.id, CONCAT(p.name, " - ", sizes.code) as name')
+      ->leftJoin('products as p', 'p.id', 'product_details.id_product')
+      ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
+      ->where('product_details.is_active', true)
+      ->orderBy('p.name')
+      ->pluck('name', 'id');
+    return view('content.transactions.sale-add', ['customers' => $customers, 'products' => $products]);
   }
 
   // public function add(Request $request)
