@@ -165,13 +165,13 @@ class SaleController extends Controller
           if ($customer->type === 'user') {
             $productPrice = $findProductDetail->final_price_user_cash;
           } else {
-            $productPrice = $findProductDetail->final_price_user_tempo;
+            $productPrice = $findProductDetail->final_price_toko_cash;
           }
         } else {
           if ($customer->type === 'toko') {
-            $productPrice = $findProductDetail->final_price_toko_cash;
-          } else {
             $productPrice = $findProductDetail->final_price_toko_tempo;
+          } else {
+            $productPrice = $findProductDetail->final_price_user_tempo;
           }
         }
 
