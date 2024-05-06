@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\apps;
 
+use App\Enums\MovementType;
 use App\Models\Customer;
 use App\Models\ProductDetail;
 use App\Models\Sale;
 use App\Models\SaleDetail;
+use App\Models\StockHistory;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
@@ -29,13 +32,13 @@ class SaleController extends Controller
     $sortableColumns = [
       0 => '',
       1 => 'customer_name',
-      2 => 'formatted_date',
+      2 => 'date',
       3 => 'invoice_no',
-      4 => 'subtotal_price',
-      5 => 'discount',
-      6 => 'final_price',
-      7 => 'bank_account_no',
-      8 => 'status',
+      // 4 => 'subtotal_price',
+      // 5 => 'discount',
+      4 => 'final_price',
+      // 7 => 'bank_account_no',
+      5 => 'status',
     ];
 
     // Retrieve the column index and direction from the request
@@ -47,7 +50,7 @@ class SaleController extends Controller
       $sortColumn = $sortableColumns[$sortColumnIndex];
     } else {
       // Default sorting column if invalid or not provided
-      $sortColumn = 'formatted_date'; // Default to 'username' or any other preferred column
+      $sortColumn = 'date'; // Default to 'username' or any other preferred column
     }
 
     // Get total records count (before filtering)
@@ -61,10 +64,10 @@ class SaleController extends Controller
           ->where('customers.name', 'like', $searchValue)
           ->orWhere('invoice_no', 'like', $searchValue)
           ->orWhereRaw("DATE_FORMAT(sales.date, '%d %b %Y') LIKE ?", [$searchValue])
-          ->orWhere('subtotal_price', 'like', $searchValue)
-          ->orWhere('discount', 'like', $searchValue)
+          // ->orWhere('subtotal_price', 'like', $searchValue)
+          // ->orWhere('discount', 'like', $searchValue)
           ->orWhere('final_price', 'like', $searchValue)
-          ->orWhere('sales.bank_account_no', 'like', $searchValue)
+          // ->orWhere('sales.bank_account_no', 'like', $searchValue)
           ->orWhere('status', 'like', $searchValue);
       });
     }
@@ -103,72 +106,136 @@ class SaleController extends Controller
     return view('content.transactions.sale-add', ['customers' => $customers, 'products' => $products]);
   }
 
-  // public function add(Request $request)
-  // {
-  //   try {
-  //     // Validate the request
-  //     $validatedData = $request->validate(
-  //       [
-  //         'date' => 'required',
-  //         'receiver_name' => 'required',
-  //         'group-a' => 'required|array',
-  //         'group-a.*.invoice_date' => 'required',
-  //         'group-a.*.invoice_no' => 'required',
-  //         'group-a.*.invoice_price' => 'required|numeric|min:1',
-  //       ],
-  //       [
-  //         // Custom error messages
-  //         'group-a.required' => 'Please input at least one item.',
-  //         'group-a.*.invoice_date.required' => 'Please input at least one tanggal faktur.',
-  //         'group-a.*.invoice_no.required' => 'Please input at least one no faktur.',
-  //         'group-a.*.invoice_price.required' => 'Please input at least one nilai faktur.',
-  //         'group-a.*.invoice_price.numeric' => 'Nilai faktur must be a number.',
-  //         'group-a.*.invoice_price.min' => 'Nilai faktur must be at least 1.',
-  //       ]
-  //     );
-  //     $total_price = 0;
+  public function add(Request $request)
+  {
+    try {
+      // Validate the request
+      $validatedData = $request->validate(
+        [
+          'date' => 'required',
+          'id_customer' => 'required|exists:customers,id',
+          'discount' => 'required|numeric|min:1',
+          'bank_account_no' => 'required',
+          'status' => 'required|in:belum lunas,lunas',
+          'payment_type' => 'required|in:cash,tempo',
+          'invoice_no' => 'required',
+          'group-a' => 'required|array',
+          'group-a.*.item' => 'required',
+          'group-a.*.quantity' => 'required|numeric|min:1',
+        ],
+        [
+          // Custom error messages
+          'group-a.required' => 'Please select at least one item.',
+          'group-a.*.item.required' => 'Please select at least one item.',
+          'group-a.*.quantity.required' => 'Please specify the quantity for each item.',
+          'group-a.*.quantity.numeric' => 'Quantity must be a number.',
+          'group-a.*.quantity.min' => 'Quantity must be at least 1.',
+        ]
+      );
+      DB::beginTransaction();
 
-  //     // Create a new tanda terima instance
-  //     $tandaTerima = new TandaTerima();
-  //     $tandaTerima->date = $validatedData['date'];
-  //     $tandaTerima->receiver_name = $validatedData['receiver_name'];
-  //     $tandaTerima->created_by = Auth::id();
-  //     $tandaTerima->total_price = $total_price;
+      //subtotal price sale header
+      $subtotal_price = 0;
 
-  //     $tandaTerima->save();
+      // Create a new tanda terima instance
+      $sale = new Sale();
+      $sale->date = $validatedData['date'];
+      $sale->id_customer = $validatedData['id_customer'];
+      $sale->invoice_no = $validatedData['invoice_no'];
+      $sale->subtotal_price = $subtotal_price;
+      $sale->discount = $validatedData['discount'];
+      $sale->final_price = 0;
+      $sale->bank_account_no = $validatedData['bank_account_no'];
+      $sale->technician = $request->technician ?? '';
+      $sale->note = $request->note ?? '';
+      $sale->status = $validatedData['status'];
+      $sale->payment_type = $validatedData['payment_type'];
+      $sale->created_by = Auth::id();
 
-  //     // Process tanda terima details
-  //     foreach ($request->input('group-a') as $item) {
-  //       $tandaTerimaDetail = new TandaTerimaDetail();
-  //       $tandaTerimaDetail->id_tanda_terima = $tandaTerima->id;
-  //       $tandaTerimaDetail->invoice_no = $item['invoice_no'];
-  //       $tandaTerimaDetail->invoice_date = $item['invoice_date'];
-  //       $tandaTerimaDetail->invoice_price = $item['invoice_price'];
-  //       $tandaTerimaDetail->invoice_description = $item['invoice_description'] ?? '';
-  //       $tandaTerimaDetail->created_by = Auth::id();
-  //       $tandaTerimaDetail->save();
+      $sale->save();
 
-  //       $total_price += $item['invoice_price'];
-  //     }
+      // Process sale details
+      $customer = Customer::find($validatedData['id_customer']);
+      foreach ($request->input('group-a') as $item) {
+        $findProductDetail = ProductDetail::find($item['item']);
+        $productPrice = 0;
 
-  //     $findTandaTerima = TandaTerima::find($tandaTerima->id); // Fetch the TandaTerima instance from the database
-  //     $findTandaTerima->total_price = $total_price; // Update the total price
-  //     $findTandaTerima->save();
+        // Determine the price based on customer type and payment type
+        if ($validatedData['payment_type'] === 'cash') {
+          if ($customer->type === 'user') {
+            $productPrice = $findProductDetail->final_price_user_cash;
+          } else {
+            $productPrice = $findProductDetail->final_price_user_tempo;
+          }
+        } else {
+          if ($customer->type === 'toko') {
+            $productPrice = $findProductDetail->final_price_toko_cash;
+          } else {
+            $productPrice = $findProductDetail->final_price_toko_tempo;
+          }
+        }
 
-  //     // Redirect or respond with success message
-  //     return redirect()
-  //       ->route('transaction-tanda-terima')
-  //       ->with('success', 'Tanda terima created successfully.');
-  //   } catch (ValidationException $e) {
-  //     // Validation failed, redirect back with errors
-  //     return Redirect::back()
-  //       ->withErrors($e->validator->errors())
-  //       ->withInput();
-  //   } catch (\Exception $e) {
-  //     // Other exceptions (e.g., database errors)
-  //     return Redirect::back()->with('othererror', $e->getMessage());
-  //   }
-  // }
+        //total price per detail
+        $total_price = $item['quantity'] * $productPrice;
+
+        $saleDetail = new SaleDetail();
+        $saleDetail->id_sale = $sale->id;
+        $saleDetail->id_product_detail = $item['item'];
+        $saleDetail->quantity = $item['quantity'];
+        $saleDetail->price = $productPrice;
+        $saleDetail->total_price = $total_price;
+        $saleDetail->created_by = Auth::id();
+        $saleDetail->save();
+
+        $subtotal_price += $total_price;
+
+        //update stock history and product detail stock/qty
+        $lastStockHistory = StockHistory::where('id_product_detail', $item['item'])
+          ->latest()
+          ->first();
+
+        if ($lastStockHistory) {
+          // Insert into stock history
+          $stock_history = new StockHistory();
+          $stock_history->id_product_detail = $item['item'];
+          $stock_history->id_transaction = $sale->id;
+          $stock_history->movement_type = MovementType::OUT;
+          $stock_history->quantity = $item['quantity'];
+          $stock_history->stock_before = $lastStockHistory->stock_after;
+          $stock_history->stock_after = $lastStockHistory->stock_after - $item['quantity'];
+          $stock_history->created_by = Auth::id();
+          $stock_history->save();
+
+          $product_detail = ProductDetail::findOrFail($item['item']);
+          $product_detail->quantity = $stock_history->stock_after;
+          $product_detail->updated_by = Auth::id();
+          $product_detail->save();
+        }
+      }
+
+      $findSale = Sale::find($sale->id); // Fetch the Sale instance from the database
+      $findSale->subtotal_price = $subtotal_price; // Update the subtotal price
+      $findSale->final_price = $subtotal_price - $findSale->discount;
+      $findSale->save();
+
+      DB::commit();
+
+      // Redirect or respond with success message
+      return redirect()
+        ->route('transaction-sale')
+        ->with('success', 'Sale created successfully.');
+    } catch (ValidationException $e) {
+      DB::rollBack();
+      // Validation failed, redirect back with errors
+      return Redirect::back()
+        ->withErrors($e->validator->errors())
+        ->withInput();
+    } catch (\Exception $e) {
+      DB::rollBack();
+      // Other exceptions (e.g., database errors)
+      return Redirect::back()->with('othererror', $e->getMessage());
+    }
+  }
 
   // public function getById($id)
   // {

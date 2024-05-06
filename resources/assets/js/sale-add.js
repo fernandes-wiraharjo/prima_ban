@@ -1,8 +1,8 @@
 'use strict';
 
 (function () {
-  const invoicePriceList = document.querySelectorAll('.invoice-price'),
-    invoiceDateList = document.querySelectorAll('.date-picker'),
+  // const invoicePriceList = document.querySelectorAll('.invoice-price'),
+  const invoiceDateList = document.querySelectorAll('.date-picker'),
     selectCustomer = $('.select-customer');
 
   //select customer
@@ -15,14 +15,14 @@
   }
 
   // Price
-  if (invoicePriceList) {
-    invoicePriceList.forEach(function (invoicePrice) {
-      new Cleave(invoicePrice, {
-        delimiter: '',
-        numeral: true
-      });
-    });
-  }
+  // if (invoicePriceList) {
+  //   invoicePriceList.forEach(function (invoicePrice) {
+  //     new Cleave(invoicePrice, {
+  //       delimiter: '',
+  //       numeral: true
+  //     });
+  //   });
+  // }
 
   // Datepicker
   if (invoiceDateList) {

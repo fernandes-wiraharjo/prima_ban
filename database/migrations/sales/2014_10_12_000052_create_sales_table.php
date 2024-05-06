@@ -16,14 +16,15 @@ return new class extends Migration {
       $table->unsignedBigInteger('id_customer')->nullable();
       $table->string('invoice_no', 50)->nullable();
       $table->date('date');
-      $table->decimal('subtotal_price', 10, 2);
+      $table->decimal('subtotal_price', 15, 2);
       $table->decimal('discount', 10, 2);
       // $table->smallInteger('quantity');
       // $table->decimal('price', 10, 2);
-      $table->decimal('final_price', 10, 2);
+      $table->decimal('final_price', 15, 2);
       // $table->decimal('discount_percentage', 5, 2);
       // $table->decimal('nett_price', 10, 2);
       $table->string('bank_account_no', 100);
+      $table->string('payment_type', 30);
       $table->string('technician', 50)->nullable();
       $table->text('note')->nullable();
       $table->string('status', 30);

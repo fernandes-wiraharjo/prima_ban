@@ -126,7 +126,7 @@ $(function () {
               if (movementType === 'inbound') {
                 url = '/transaction/purchase/' + idTransaction + '/detail';
               } else if (movementType === 'outbound') {
-                url = '/transaction/sale/' + idTransaction + '/detail';
+                url = '/transaction/sale/' + idTransaction;
               }
               if (url) {
                 window.open(url, '_blank');

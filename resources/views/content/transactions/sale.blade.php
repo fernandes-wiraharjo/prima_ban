@@ -61,10 +61,10 @@
           <th>Customer</th>
           <th>Date</th>
           <th>Invoice</th>
-          <th>Subtotal</th>
-          <th>Discount</th>
-          <th>Final</th>
-          <th>Bank Account</th>
+          <!-- <th>Subtotal</th>
+          <th>Discount</th> -->
+          <th>Total</th>
+          <!-- <th>Bank Account</th> -->
           <th>Status</th>
           <th>Actions</th>
         </tr>

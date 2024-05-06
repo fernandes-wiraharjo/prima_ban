@@ -42,10 +42,10 @@ $(function () {
         { data: 'customer_name' },
         { data: 'formatted_date' },
         { data: 'invoice_no' },
-        { data: 'subtotal_price' },
-        { data: 'discount' },
+        // { data: 'subtotal_price' },
+        // { data: 'discount' },
         { data: 'final_price' },
-        { data: 'bank_account_no' },
+        // { data: 'bank_account_no' },
         { data: 'status' },
         { data: 'action' }
       ],
@@ -78,7 +78,7 @@ $(function () {
           }
         },
         {
-          targets: [4, 5, 6],
+          targets: [4],
           render: function (data, type, full, meta) {
             // Format number
             return 'Rp' + Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });

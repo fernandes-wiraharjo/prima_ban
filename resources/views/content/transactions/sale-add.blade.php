@@ -240,13 +240,20 @@
           <option value="{{ $accountNo }}">{{ $accountNo }}</option>
         @endforeach
       </select>
+      <p class="mb-2">Status</p>
+      <select class="form-select mb-4" id="status" name="status">
+        <option value="lunas">Lunas</option>
+        <option value="belum lunas">Belum Lunas</option>
+      </select>
+    </div>
+    <p class="mb-2">Tipe Pembayaran</p>
+      <select class="form-select mb-4" id="payment-type" name="payment_type">
+        <option value="cash">Tunai</option>
+        <option value="tempo">Tempo</option>
+      </select>
     </div>
   </div>
   <!-- /Invoice Actions -->
 </div>
 </form>
-
-<!-- Offcanvas -->
-@include('_partials/_offcanvas/offcanvas-send-invoice')
-<!-- /Offcanvas -->
 @endsection

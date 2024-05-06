@@ -30,7 +30,7 @@ class StockHistoryController extends Controller
 
     $sortableColumns = [
       0 => '',
-      1 => 'created_at',
+      1 => 'stock_histories.created_at',
       2 => 'product_detail',
       3 => 'movement_type',
       4 => 'quantity',
