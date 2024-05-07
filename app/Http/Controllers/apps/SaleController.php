@@ -237,82 +237,205 @@ class SaleController extends Controller
     }
   }
 
-  // public function getById($id)
-  // {
-  //   $tandaTerima = TandaTerima::findOrFail($id);
-  //   $tandaTerimaDetails = TandaTerimaDetail::where('id_tanda_terima', $id)->get();
+  public function getById($id)
+  {
+    $customers = Customer::where('is_active', true)->pluck('name', 'id');
+    $products = ProductDetail::query()
+      ->selectRaw('product_details.id, CONCAT(p.name, " - ", sizes.code) as name')
+      ->leftJoin('products as p', 'p.id', 'product_details.id_product')
+      ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
+      ->where('product_details.is_active', true)
+      ->orderBy('p.name')
+      ->pluck('name', 'id');
+    $sale = Sale::findOrFail($id);
+    $saleDetails = SaleDetail::where('id_sale', $id)->get();
 
-  //   foreach ($tandaTerimaDetails as $detail) {
-  //     $detail->invoice_price = intval($detail->invoice_price);
-  //   }
+    $sale->discount = intval($sale->discount);
 
-  //   return view('content.transactions.tanda-terima-edit', [
-  //     'id' => $id,
-  //     'tandaTerima' => $tandaTerima,
-  //     'tandaTerimaDetails' => $tandaTerimaDetails,
-  //   ]);
-  // }
+    return view('content.transactions.sale-edit', [
+      'id' => $id,
+      'products' => $products,
+      'customers' => $customers,
+      'sale' => $sale,
+      'saleDetails' => $saleDetails,
+    ]);
+  }
 
-  // public function edit(Request $request, $id)
-  // {
-  //   try {
-  //     // Validate the request
-  //     $validatedData = $request->validate(
-  //       [
-  //         'date' => 'required',
-  //         'receiver_name' => 'required',
-  //         'group-a' => 'required|array',
-  //         'group-a.*.invoice_date' => 'required',
-  //         'group-a.*.invoice_no' => 'required',
-  //         'group-a.*.invoice_price' => 'required|numeric|min:1',
-  //       ],
-  //       [
-  //         // Custom error messages
-  //         'group-a.required' => 'Please input at least one item.',
-  //         'group-a.*.invoice_date.required' => 'Please input at least one tanggal faktur.',
-  //         'group-a.*.invoice_no.required' => 'Please input at least one no faktur.',
-  //         'group-a.*.invoice_price.required' => 'Please input at least one nilai faktur.',
-  //         'group-a.*.invoice_price.numeric' => 'Nilai faktur must be a number.',
-  //         'group-a.*.invoice_price.min' => 'Nilai faktur must be at least 1.',
-  //       ]
-  //     );
+  public function edit(Request $request, $id)
+  {
+    try {
+      // Validate the request
+      $validatedData = $request->validate(
+        [
+          'date' => 'required',
+          'id_customer' => 'required|exists:customers,id',
+          'discount' => 'required|numeric|min:1',
+          'bank_account_no' => 'required',
+          'status' => 'required|in:belum lunas,lunas',
+          'payment_type' => 'required|in:cash,tempo',
+          'invoice_no' => 'required',
+          'group-a' => 'required|array',
+          'group-a.*.item' => 'required',
+          'group-a.*.quantity' => 'required|numeric|min:1',
+        ],
+        [
+          // Custom error messages
+          'group-a.required' => 'Please select at least one item.',
+          'group-a.*.item.required' => 'Please select at least one item.',
+          'group-a.*.quantity.required' => 'Please specify the quantity for each item.',
+          'group-a.*.quantity.numeric' => 'Quantity must be a number.',
+          'group-a.*.quantity.min' => 'Quantity must be at least 1.',
+        ]
+      );
+      DB::beginTransaction();
 
-  //     TandaTerimaDetail::where('id_tanda_terima', $id)->delete();
+      $subtotal_price = 0;
 
-  //     $total_price = 0;
-  //     foreach ($request->input('group-a') as $item) {
-  //       $tandaTerimaDetail = new TandaTerimaDetail();
-  //       $tandaTerimaDetail->id_tanda_terima = $id;
-  //       $tandaTerimaDetail->invoice_no = $item['invoice_no'];
-  //       $tandaTerimaDetail->invoice_date = $item['invoice_date'];
-  //       $tandaTerimaDetail->invoice_price = $item['invoice_price'];
-  //       $tandaTerimaDetail->invoice_description = $item['invoice_description'] ?? '';
-  //       $tandaTerimaDetail->created_by = Auth::id();
-  //       $tandaTerimaDetail->save();
+      $sale = Sale::findOrFail($id);
+      $sale->date = $validatedData['date'];
+      $sale->id_customer = $validatedData['id_customer'];
+      $sale->invoice_no = $validatedData['invoice_no'];
+      $sale->discount = $validatedData['discount'];
+      $sale->bank_account_no = $validatedData['bank_account_no'];
+      $sale->technician = $request->technician ?? '';
+      $sale->note = $request->note ?? '';
+      $sale->status = $validatedData['status'];
+      $sale->payment_type = $validatedData['payment_type'];
+      $sale->updated_by = Auth::id();
+      $sale->save();
 
-  //       $total_price += $item['invoice_price'];
-  //     }
+      $customer = Customer::find($validatedData['id_customer']);
+      foreach ($request->input('group-a') as $item) {
+        $findProductDetail = ProductDetail::find($item['item']);
+        $productPrice = 0;
 
-  //     $tandaTerima = TandaTerima::findOrFail($id);
-  //     $tandaTerima->date = $validatedData['date'];
-  //     $tandaTerima->receiver_name = $validatedData['receiver_name'];
-  //     $tandaTerima->total_price = $total_price;
-  //     $tandaTerima->updated_by = Auth::id();
-  //     $tandaTerima->save();
+        // Determine the price based on customer type and payment type
+        if ($validatedData['payment_type'] === 'cash') {
+          if ($customer->type === 'user') {
+            $productPrice = $findProductDetail->final_price_user_cash;
+          } else {
+            $productPrice = $findProductDetail->final_price_toko_cash;
+          }
+        } else {
+          if ($customer->type === 'toko') {
+            $productPrice = $findProductDetail->final_price_toko_tempo;
+          } else {
+            $productPrice = $findProductDetail->final_price_user_tempo;
+          }
+        }
 
-  //     return redirect()
-  //       ->route('transaction-tanda-terima')
-  //       ->with('success', 'Tanda terima updated successfully.');
-  //   } catch (ValidationException $e) {
-  //     // Validation failed, redirect back with errors
-  //     return Redirect::back()
-  //       ->withErrors($e->validator->errors())
-  //       ->withInput();
-  //   } catch (\Exception $e) {
-  //     // Other exceptions (e.g., database errors)
-  //     return Redirect::back()->with('othererror', $e->getMessage());
-  //   }
-  // }
+        //total price per detail
+        $total_price = $item['quantity'] * $productPrice;
+
+        $existingSaleDetail = SaleDetail::where('id_sale', $id)
+          ->where('id_product_detail', $item['item'])
+          ->first();
+
+        if ($existingSaleDetail) {
+          // If sale detail exists, check if quantity has changed
+          if ($existingSaleDetail->quantity != $item['quantity']) {
+            // Calculate quantity difference
+            $quantityDifference = $item['quantity'] - $existingSaleDetail->quantity;
+
+            // Update sale detail with new quantity
+            $existingSaleDetail->quantity = $item['quantity'];
+            $existingSaleDetail->price = $productPrice;
+            $existingSaleDetail->total_price = $total_price;
+            $existingSaleDetail->updated_by = Auth::id();
+            $existingSaleDetail->save();
+
+            // Update stock history with quantity difference
+            $this->updateStockHistory($id, $item['item'], $quantityDifference);
+          }
+        } else {
+          // Sale detail does not exist, create new sale detail
+          $saleDetail = new SaleDetail();
+          $saleDetail->id_sale = $id;
+          $saleDetail->id_product_detail = $item['item'];
+          $saleDetail->quantity = $item['quantity'];
+          $saleDetail->price = $productPrice;
+          $saleDetail->total_price = $total_price;
+          $saleDetail->created_by = Auth::id();
+          $saleDetail->save();
+
+          $this->updateStockHistory($id, $item['item'], $item['quantity']);
+        }
+
+        $subtotal_price += $total_price;
+      }
+
+      // Delete sale details for items not present in the request
+      $this->deleteMissingSaleDetails($request->input('group-a'), $id);
+
+      $findSale = Sale::find($id); // Fetch the Sale instance from the database
+      $findSale->subtotal_price = $subtotal_price; // Update the subtotal price
+      $findSale->final_price = $subtotal_price - $validatedData['discount'];
+      $findSale->save();
+
+      DB::commit();
+
+      return redirect()
+        ->route('transaction-sale')
+        ->with('success', 'Sale updated successfully.');
+    } catch (ValidationException $e) {
+      // Validation failed, redirect back with errors
+      DB::rollBack();
+      return Redirect::back()
+        ->withErrors($e->validator->errors())
+        ->withInput();
+    } catch (\Exception $e) {
+      // Other exceptions (e.g., database errors)
+      DB::rollBack();
+      return Redirect::back()->with('othererror', $e->getMessage());
+    }
+  }
+
+  // Function to update stock history
+  private function updateStockHistory($saleId, $productDetailId, $quantity)
+  {
+    // Find last stock history
+    $lastStockHistory = StockHistory::where('id_product_detail', $productDetailId)
+      ->latest()
+      ->first();
+
+    if ($lastStockHistory) {
+      // Insert new stock history
+      $stockHistory = new StockHistory();
+      $stockHistory->id_product_detail = $productDetailId;
+      $stockHistory->id_transaction = $saleId;
+      $stockHistory->movement_type = MovementType::OUT;
+      $stockHistory->quantity = $quantity;
+      $stockHistory->stock_before = $lastStockHistory->stock_after;
+      $stockHistory->stock_after = $lastStockHistory->stock_after - $quantity;
+      $stockHistory->created_by = Auth::id();
+      $stockHistory->save();
+
+      // Update product detail quantity
+      $productDetail = ProductDetail::findOrFail($productDetailId);
+      $productDetail->quantity = $stockHistory->stock_after;
+      $productDetail->updated_by = Auth::id();
+      $productDetail->save();
+    }
+  }
+
+  // Function to delete sale details for missing items (for EDIT process)
+  private function deleteMissingSaleDetails($items, $saleId)
+  {
+    $existingProductDetailIds = array_map(function ($item) {
+      return $item['item'];
+    }, $items);
+
+    // Find sale details that need to be deleted
+    $saleDetailsToDelete = SaleDetail::where('id_sale', $saleId)
+      ->whereNotIn('id_product_detail', $existingProductDetailIds)
+      ->get();
+
+    // Delete sale details and update stock history
+    foreach ($saleDetailsToDelete as $saleDetail) {
+      $this->updateStockHistory($saleId, $saleDetail->id_product_detail, -$saleDetail->quantity);
+      $saleDetail->delete();
+    }
+  }
 
   // public function delete($id)
   // {
