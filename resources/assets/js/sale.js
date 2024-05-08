@@ -190,11 +190,11 @@ $(function () {
   });
 
   // Delete Record
-  $('.datatables-tanda-terima tbody').on('click', '.delete-record', function () {
+  $('.datatables-sale tbody').on('click', '.delete-record', function () {
     // dt_user.row($(this).parents('tr')).remove().draw();
     var id = $(this).data('id');
-    var customer = $(this).data('customer_name');
-    var invoice = $(this).data('invoice_no');
+    var customer = $(this).data('customer');
+    var invoice = $(this).data('invoice');
     if (
       confirm('Are you sure you want to delete sale with customer "' + customer + '" and invoice "' + invoice + '" ?')
     ) {

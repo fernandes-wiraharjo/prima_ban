@@ -437,13 +437,32 @@ class SaleController extends Controller
     }
   }
 
-  // public function delete($id)
-  // {
-  //   TandaTerimaDetail::where('id_tanda_terima', $id)->delete();
-  //   $tandaTerima = TandaTerima::findOrFail($id);
-  //   $tandaTerima->delete();
-  //   return response()->json(['message' => 'Tanda terima deleted successfully'], 200);
-  // }
+  public function delete($id)
+  {
+    try {
+      DB::beginTransaction();
+
+      // Retrieve sale details before deletion
+      $saleDetails = SaleDetail::where('id_sale', $id)->get();
+
+      SaleDetail::where('id_sale', $id)->delete();
+
+      $sale = Sale::findOrFail($id);
+      $sale->delete();
+
+      // Update stock history for each sale detail
+      foreach ($saleDetails as $saleDetail) {
+        $this->updateStockHistory($id, $saleDetail->id_product_detail, -$saleDetail->quantity);
+      }
+
+      DB::commit();
+      return response()->json(['message' => 'Sale deleted successfully'], 200);
+    } catch (\Exception $e) {
+      // Exceptions (e.g., database errors)
+      DB::rollBack();
+      return response()->json(['message' => $e->getMessage()], 200);
+    }
+  }
 
   // public function preview($id)
   // {
