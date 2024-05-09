@@ -464,53 +464,73 @@ class SaleController extends Controller
     }
   }
 
-  // public function preview($id)
-  // {
-  //   $tandaTerima = TandaTerima::findOrFail($id);
-  //   $formattedDate = date('d M Y', strtotime($tandaTerima->date));
-  //   $tandaTerimaDetails = TandaTerimaDetail::where('id_tanda_terima', $id)
-  //     ->selectRaw(
-  //       'tanda_terima_details.*, DATE_FORMAT(tanda_terima_details.invoice_date, "%d %b %Y") as formatted_invoice_date'
-  //     )
-  //     ->get();
+  public function preview($id)
+  {
+    $sale = Sale::findOrFail($id);
+    $formattedDate = date('d M Y', strtotime($sale->date));
+    $customer = Customer::findOrFail($sale->id_customer);
+    $saleDetails = SaleDetail::where('id_sale', $id)
+      ->selectRaw(
+        'CONCAT(p.name, " - ", sizes.code) as product_name, pd.code as product_code,
+        sale_details.quantity as sale_quantity, uoms.code as product_uom, sale_details.price, sale_details.total_price'
+      )
+      ->leftJoin('product_details as pd', 'pd.id', 'sale_details.id_product_detail')
+      ->leftJoin('sizes', 'sizes.id', 'pd.id_size')
+      ->leftJoin('products as p', 'p.id', 'pd.id_product')
+      ->leftJoin('uoms', 'uoms.id', 'p.id_uom')
+      ->get();
 
-  //   foreach ($tandaTerimaDetails as $detail) {
-  //     $detail->invoice_price = 'Rp' . number_format($detail->invoice_price, 0, ',', '.');
-  //   }
+    foreach ($saleDetails as $detail) {
+      $detail->price = 'Rp' . number_format($detail->price, 0, ',', '.');
+      $detail->total_price = 'Rp' . number_format($detail->total_price, 0, ',', '.');
+    }
 
-  //   $tandaTerima->total_price = 'Rp' . number_format($tandaTerima->total_price, 0, ',', '.');
+    $sale->subtotal_price = 'Rp' . number_format($sale->subtotal_price, 0, ',', '.');
+    $sale->discount = 'Rp' . number_format($sale->discount, 0, ',', '.');
+    $sale->final_price = 'Rp' . number_format($sale->final_price, 0, ',', '.');
 
-  //   return view('content.transactions.tanda-terima-preview', [
-  //     'id' => $id,
-  //     'tandaTerima' => $tandaTerima,
-  //     'formattedDate' => $formattedDate,
-  //     'tandaTerimaDetails' => $tandaTerimaDetails,
-  //   ]);
-  // }
+    return view('content.transactions.sale-preview', [
+      'id' => $id,
+      'sale' => $sale,
+      'formattedDate' => $formattedDate,
+      'saleDetails' => $saleDetails,
+      'customer' => $customer,
+    ]);
+  }
 
-  // public function print($id)
-  // {
-  //   $tandaTerima = TandaTerima::findOrFail($id);
-  //   $formattedDate = date('d M Y', strtotime($tandaTerima->date));
-  //   $tandaTerimaDetails = TandaTerimaDetail::where('id_tanda_terima', $id)
-  //     ->selectRaw(
-  //       'tanda_terima_details.*, DATE_FORMAT(tanda_terima_details.invoice_date, "%d %b %Y") as formatted_invoice_date'
-  //     )
-  //     ->get();
+  public function print($id)
+  {
+    $sale = Sale::findOrFail($id);
+    $formattedDate = date('d M Y', strtotime($sale->date));
+    $customer = Customer::findOrFail($sale->id_customer);
+    $saleDetails = SaleDetail::where('id_sale', $id)
+      ->selectRaw(
+        'CONCAT(p.name, " - ", sizes.code) as product_name, pd.code as product_code,
+        sale_details.quantity as sale_quantity, uoms.code as product_uom, sale_details.price, sale_details.total_price'
+      )
+      ->leftJoin('product_details as pd', 'pd.id', 'sale_details.id_product_detail')
+      ->leftJoin('sizes', 'sizes.id', 'pd.id_size')
+      ->leftJoin('products as p', 'p.id', 'pd.id_product')
+      ->leftJoin('uoms', 'uoms.id', 'p.id_uom')
+      ->get();
 
-  //   foreach ($tandaTerimaDetails as $detail) {
-  //     $detail->invoice_price = 'Rp' . number_format($detail->invoice_price, 0, ',', '.');
-  //   }
+    foreach ($saleDetails as $detail) {
+      $detail->price = 'Rp' . number_format($detail->price, 0, ',', '.');
+      $detail->total_price = 'Rp' . number_format($detail->total_price, 0, ',', '.');
+    }
 
-  //   $tandaTerima->total_price = 'Rp' . number_format($tandaTerima->total_price, 0, ',', '.');
+    $sale->subtotal_price = 'Rp' . number_format($sale->subtotal_price, 0, ',', '.');
+    $sale->discount = 'Rp' . number_format($sale->discount, 0, ',', '.');
+    $sale->final_price = 'Rp' . number_format($sale->final_price, 0, ',', '.');
 
-  //   $pageConfigs = ['myLayout' => 'blank'];
-  //   return view('content.transactions.tanda-terima-print', [
-  //     'id' => $id,
-  //     'tandaTerima' => $tandaTerima,
-  //     'formattedDate' => $formattedDate,
-  //     'tandaTerimaDetails' => $tandaTerimaDetails,
-  //     'pageConfigs' => $pageConfigs,
-  //   ]);
-  // }
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('content.transactions.sale-print', [
+      'id' => $id,
+      'sale' => $sale,
+      'formattedDate' => $formattedDate,
+      'saleDetails' => $saleDetails,
+      'customer' => $customer,
+      'pageConfigs' => $pageConfigs,
+    ]);
+  }
 }
