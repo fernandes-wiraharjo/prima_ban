@@ -85,6 +85,14 @@ $(function () {
           }
         },
         {
+          // Status
+          targets: 5,
+          render: function (data, type, full, meta) {
+            var $status = full['status'];
+            return '<span class="badge ' + statusObj[$status].class + '">' + statusObj[$status].title + '</span>';
+          }
+        },
+        {
           // Actions
           targets: -1,
           title: 'Actions',
