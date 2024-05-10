@@ -67,8 +67,8 @@
         <tr>
           <th>Kode</th>
           <th>Barang</th>
-          <th>Qty</th>
-          <th>Unit</th>
+          <th style="width: 50px;">Qty</th>
+          <th style="width: 50px;">Unit</th>
           <th>Harga</th>
           <th>Jumlah</th>
         </tr>
@@ -78,8 +78,8 @@
           <tr>
             <td class="text-nowrap">{{ $detail->product_code }}</td>
             <td>{{ $detail->product_name }}</td>
-            <td>{{ $detail->sale_quantity }}</td>
-            <td>{{ $detail->product_uom }}</td>
+            <td style="width: 50px;">{{ $detail->sale_quantity }}</td>
+            <td style="width: 50px;">{{ $detail->product_uom }}</td>
             <td>{{ $detail->price }}</td>
             <td>{{ $detail->total_price }}</td>
           </tr>
