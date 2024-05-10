@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
 
     foreach ($users as $user) {
       $user_has_exist = DB::table('users')
-        ->where('username', '=', $user['name'])
+        ->where('username', '=', $user['username'])
         ->exists();
 
       if (!$user_has_exist) {
