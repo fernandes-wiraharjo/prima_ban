@@ -122,7 +122,7 @@ $(function () {
       // Buttons with Dropdown
       buttons: [
         {
-          text: '<i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Add New Brand</span>',
+          text: '<i class="bx bx-plus me-0 me-sm-1"></i><span class="d-none d-sm-inline-block">Add New</span>',
           className: 'add-new btn btn-primary mx-3',
           attr: {
             'data-bs-toggle': 'offcanvas',
@@ -200,7 +200,7 @@ $(function () {
     // dt_user.row($(this).parents('tr')).remove().draw();
     var brandId = $(this).data('id');
     var name = $(this).data('name');
-    if (confirm('Are you sure you want to delete brand ' + name + ' ?')) {
+    if (confirm('Are you sure you want to delete group type ' + name + ' ?')) {
       // Send AJAX request to delete brand
       $.ajax({
         url: '/master/brand/' + brandId,

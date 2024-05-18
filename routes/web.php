@@ -223,7 +223,9 @@ Route::middleware(['auth'])->group(function () {
       Route::get('/', [PatternController::class, 'index'])->name('master-pattern');
       Route::get('/get', [PatternController::class, 'get'])->name('get-pattern');
       Route::get('/{id}', [PatternController::class, 'getById'])->name('get-pattern-by-id');
-      Route::get('/brand/{id}', [PatternController::class, 'getByBrandId'])->name('get-pattern-by-brand-id');
+      Route::get('/brand/{parentBrand}/{id}', [PatternController::class, 'getByBrandId'])->name(
+        'get-pattern-by-brand-id'
+      );
       Route::post('/add', [PatternController::class, 'add'])->name('add-pattern');
       Route::put('/{id}', [PatternController::class, 'edit'])->name('edit-pattern');
       Route::delete('/{id}', [PatternController::class, 'delete'])->name('delete-pattern');

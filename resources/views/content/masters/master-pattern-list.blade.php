@@ -60,7 +60,8 @@
         <tr>
           <th></th>
           <th>Brand</th>
-          <th>Name</th>
+          <th>Group Type</th>
+          <th>Pattern</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
@@ -77,7 +78,15 @@
       <form class="add-new pt-0" id="addNewForm" onsubmit="return false" action="{{ route('add-pattern') }}" method="POST">
         @csrf
         <div class="mb-3">
-          <label class="form-label" for="brand">Brand</label>
+          <label class="form-label" for="parent-brand">Brand</label>
+          <select id="parent-brand" name="parent_brand" class="select2 form-select">
+            <option value="">Select</option>
+            <option value="Bridgestone">Bridgestone</option>
+            <option value="GT">GT</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label class="form-label" for="brand">Group Type</label>
           <select id="brand" name="id_brand" class="select2 form-select">
             <option value="">Select</option>
             @foreach($brands as $id => $name)
@@ -102,7 +111,7 @@
             </div>
           </small>
         </div>
-        <br><br><br><br><br><br><br>
+        <br><br><br><br>
         <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</button>
         <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
       </form>
@@ -121,7 +130,15 @@
         @csrf
             <input type="hidden" id="edit-id" name="id">
             <div class="mb-3">
-              <label class="form-label" for="edit-brand">Brand</label>
+              <label class="form-label" for="edit-parent-brand">Brand</label>
+              <select id="edit-parent-brand" name="parent_brand" class="select2 form-select">
+                <option value="">Select</option>
+                <option value="Bridgestone">Bridgestone</option>
+                <option value="GT">GT</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label" for="edit-brand">Group Type</label>
               <select id="edit-brand" name="id_brand" class="select2 form-select">
                 <option value="">Select</option>
                 @foreach($brands as $id => $name)
@@ -146,7 +163,7 @@
                 </div>
               </small>
             </div>
-            <br><br><br><br><br><br><br>
+            <br><br><br><br>
             <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</button>
             <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
         </form>

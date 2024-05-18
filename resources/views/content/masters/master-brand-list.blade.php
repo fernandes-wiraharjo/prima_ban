@@ -69,7 +69,7 @@
   <!-- Offcanvas to add new brand -->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddBrand" aria-labelledby="offcanvasAddBrandLabel">
     <div class="offcanvas-header">
-      <h5 id="offcanvasAddBrandLabel" class="offcanvas-title">Add Brand</h5>
+      <h5 id="offcanvasAddBrandLabel" class="offcanvas-title">Add Group Type</h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">
@@ -101,7 +101,7 @@
   <!-- edit form -->
   <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEditBrand" aria-labelledby="offcanvasEditBrandLabel">
     <div class="offcanvas-header">
-        <h5 id="offcanvasEditBrandLabel" class="offcanvas-title">Edit Brand</h5>
+        <h5 id="offcanvasEditBrandLabel" class="offcanvas-title">Edit Group Type</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">

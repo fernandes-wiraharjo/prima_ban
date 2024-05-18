@@ -26,9 +26,10 @@ class PatternController extends Controller
 
     $sortableColumns = [
       0 => '',
-      1 => 'brand_name',
-      2 => 'name',
-      3 => 'is_active',
+      1 => 'parent_brand',
+      2 => 'brand_name',
+      3 => 'name',
+      4 => 'is_active',
     ];
 
     // Retrieve the column index and direction from the request
@@ -40,7 +41,7 @@ class PatternController extends Controller
       $sortColumn = $sortableColumns[$sortColumnIndex];
     } else {
       // Default sorting column if invalid or not provided
-      $sortColumn = 'brand_name'; // Default to 'username' or any other preferred column
+      $sortColumn = 'parent_brand'; // Default to 'username' or any other preferred column
     }
 
     // Get total records count (before filtering)
@@ -50,7 +51,10 @@ class PatternController extends Controller
     if ($request->has('search') && !empty($request->search['value'])) {
       $searchValue = '%' . $request->search['value'] . '%';
       $query->where(function ($query) use ($searchValue) {
-        $query->where('patterns.name', 'like', $searchValue)->orWhere('brands.name', 'like', $searchValue);
+        $query
+          ->where('patterns.name', 'like', $searchValue)
+          ->orWhere('brands.name', 'like', $searchValue)
+          ->orWhere('parent_brand', 'like', $searchValue);
       });
     }
 
@@ -80,6 +84,7 @@ class PatternController extends Controller
     try {
       // Validate the request
       $validatedData = $request->validate([
+        'parent_brand' => 'required|in:Bridgestone,GT',
         'id_brand' => 'required|exists:brands,id',
         'name' => 'required|max:50',
         'is_active' => 'required|in:0,1',
@@ -87,6 +92,7 @@ class PatternController extends Controller
 
       // Create a new data instance
       $data = new Pattern();
+      $data->parent_brand = $validatedData['parent_brand'];
       $data->id_brand = $validatedData['id_brand'];
       $data->name = $validatedData['name'];
       $data->is_active = $validatedData['is_active'];
@@ -112,22 +118,27 @@ class PatternController extends Controller
     return response()->json($pattern);
   }
 
-  public function getByBrandId($id)
+  public function getByBrandId($parentBrand, $id)
   {
-    $brand = Brand::findOrFail($id);
-    $patterns = $brand->patterns;
+    // $brand = Brand::findOrFail($id);
+    // $patterns = $brand->patterns;
+    $patterns = Pattern::where('id_brand', $id)
+      ->where('parent_brand', $parentBrand)
+      ->get();
     return response()->json($patterns);
   }
 
   public function edit(Request $request, $id)
   {
     $validatedData = $request->validate([
+      'parent_brand' => 'required|in:Bridgestone,GT',
       'id_brand' => 'required|exists:brands,id',
       'name' => 'required|max:50',
       'is_active' => 'required|in:0,1',
     ]);
 
     $data = Pattern::findOrFail($id);
+    $data->parent_brand = $validatedData['parent_brand'];
     $data->id_brand = $validatedData['id_brand'];
     $data->name = $validatedData['name'];
     $data->is_active = $validatedData['is_active'];

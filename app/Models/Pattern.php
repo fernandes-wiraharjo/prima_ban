@@ -9,7 +9,7 @@ class Pattern extends Model
 {
   use HasFactory;
 
-  protected $fillable = ['id_brand', 'name', 'is_active', 'created_by', 'updated_by'];
+  protected $fillable = ['parent_brand', 'id_brand', 'name', 'is_active', 'created_by', 'updated_by'];
 
   // Define any relationships here, e.g., createdBy, updatedBy
   public function brand()

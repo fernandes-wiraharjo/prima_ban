@@ -23,6 +23,7 @@ $(function () {
 
   // Variable declaration for table
   var dt_table = $('.datatables-products'),
+    selectParentBrand = $('.selectParentBrand'),
     selectBrand = $('.selectBrand'),
     selectPattern = $('.selectPattern'),
     selectUOM = $('.selectUOM'),
@@ -32,11 +33,21 @@ $(function () {
     },
     token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
+  if (selectParentBrand.length) {
+    selectParentBrand.each(function () {
+      var $this = $(this);
+      $this.wrap('<div class="position-relative"></div>').select2({
+        placeholder: 'Select Brand',
+        dropdownParent: $this.parent()
+      });
+    });
+  }
+
   if (selectBrand.length) {
     selectBrand.each(function () {
       var $this = $(this);
       $this.wrap('<div class="position-relative"></div>').select2({
-        placeholder: 'Select Brand',
+        placeholder: 'Select Group Type',
         dropdownParent: $this.parent()
       });
     });
@@ -76,6 +87,7 @@ $(function () {
         // columns according to JSON
         { data: '' },
         { data: 'name' },
+        { data: 'parent_brand' },
         { data: 'brand_name' },
         { data: 'pattern_name' },
         { data: 'uom_name' },
@@ -112,7 +124,7 @@ $(function () {
         },
         {
           // Status
-          targets: 5,
+          targets: 6,
           render: function (data, type, full, meta) {
             var $status = full['is_active'];
 
@@ -211,10 +223,10 @@ $(function () {
     });
   }
 
-  function setPatternByBrand(brandId, patternId) {
+  function setPatternByBrand(parentBrand, brandId, patternId) {
     if (brandId) {
       $.ajax({
-        url: '/master/pattern/brand/' + brandId,
+        url: '/master/pattern/brand/' + parentBrand + '/' + brandId,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -245,8 +257,9 @@ $(function () {
         // Populate the form fields with customer data
         $('#edit-id').val(response.id);
         $('#editForm').attr('action', '/master/product/' + response.id);
+        $('#edit-parent-brand').val(response.parent_brand).trigger('change');
         $('#edit-brand').val(response.id_brand).trigger('change');
-        setPatternByBrand(response.id_brand, response.id_pattern);
+        setPatternByBrand(response.parent_brand, response.id_brand, response.id_pattern);
         // $('#edit-pattern').val(response.id_pattern).trigger('change');
         $('#edit-uom').val(response.id_uom).trigger('change');
         $('#edit-name').val(response.name);
@@ -313,10 +326,17 @@ $(function () {
           }
         }
       },
-      id_brand: {
+      parent_brand: {
         validators: {
           notEmpty: {
             message: 'Please select a brand'
+          }
+        }
+      },
+      id_brand: {
+        validators: {
+          notEmpty: {
+            message: 'Please select a group type'
           }
         }
       },
@@ -362,10 +382,17 @@ $(function () {
           }
         }
       },
-      id_brand: {
+      parent_brand: {
         validators: {
           notEmpty: {
             message: 'Please select a brand'
+          }
+        }
+      },
+      id_brand: {
+        validators: {
+          notEmpty: {
+            message: 'Please select a group type'
           }
         }
       },
@@ -403,10 +430,31 @@ $(function () {
 
   //slBrand onchange
   $('#brand').on('change', function () {
+    var parentBrand = $('#parent-brand').val();
     var brandId = $(this).val();
-    if (brandId) {
+    if (brandId && parentBrand) {
       $.ajax({
-        url: '/master/pattern/brand/' + brandId,
+        url: '/master/pattern/brand/' + parentBrand + '/' + brandId,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          $('#pattern').empty();
+          $.each(data, function (key, value) {
+            $('#pattern').append('<option value="' + value.id + '">' + value.name + '</option>');
+          });
+        }
+      });
+    } else {
+      $('#pattern').empty();
+    }
+  });
+
+  $('#parent-brand').on('change', function () {
+    var parentBrand = $(this).val();
+    var brandId = $('#brand').val();
+    if (brandId && parentBrand) {
+      $.ajax({
+        url: '/master/pattern/brand/' + parentBrand + '/' + brandId,
         type: 'GET',
         dataType: 'json',
         success: function (data) {
@@ -422,10 +470,31 @@ $(function () {
   });
 
   $('#edit-brand').on('change', function () {
+    var parentBrand = $('#edit-parent-brand').val();
     var brandId = $(this).val();
-    if (brandId) {
+    if (brandId && parentBrand) {
       $.ajax({
-        url: '/master/pattern/brand/' + brandId,
+        url: '/master/pattern/brand/' + parentBrand + '/' + brandId,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          $('#edit-pattern').empty();
+          $.each(data, function (key, value) {
+            $('#edit-pattern').append('<option value="' + value.id + '">' + value.name + '</option>');
+          });
+        }
+      });
+    } else {
+      $('#edit-pattern').empty();
+    }
+  });
+
+  $('#edit-parent-brand').on('change', function () {
+    var parentBrand = $(this).val();
+    var brandId = $('#edit-brand').val();
+    if (brandId && parentBrand) {
+      $.ajax({
+        url: '/master/pattern/brand/' + parentBrand + '/' + brandId,
         type: 'GET',
         dataType: 'json',
         success: function (data) {

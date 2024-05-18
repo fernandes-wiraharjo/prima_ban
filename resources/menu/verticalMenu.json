@@ -23,7 +23,7 @@
     },
     {
       "url": "master/brand",
-      "name": "Brands",
+      "name": "Group Types",
       "icon": "menu-icon tf-icons bx bx-sitemap",
       "slug": "master-brand"
     },

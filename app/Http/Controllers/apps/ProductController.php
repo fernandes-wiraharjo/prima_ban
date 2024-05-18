@@ -32,15 +32,22 @@ class ProductController extends Controller
     $query = Product::leftJoin('brands', 'products.id_brand', '=', 'brands.id')
       ->leftJoin('patterns', 'products.id_pattern', '=', 'patterns.id')
       ->leftJoin('uoms', 'products.id_uom', '=', 'uoms.id')
-      ->select('products.*', 'brands.name as brand_name', 'patterns.name as pattern_name', 'uoms.code as uom_name');
+      ->select(
+        'products.*',
+        'patterns.parent_brand',
+        'brands.name as brand_name',
+        'patterns.name as pattern_name',
+        'uoms.code as uom_name'
+      );
 
     $sortableColumns = [
       0 => '',
       1 => 'name',
-      2 => 'brand_name',
-      3 => 'pattern_name',
-      4 => 'uom_name',
-      5 => 'is_active',
+      2 => 'parent_brand',
+      3 => 'brand_name',
+      4 => 'pattern_name',
+      5 => 'uom_name',
+      6 => 'is_active',
     ];
 
     // Retrieve the column index and direction from the request
@@ -64,6 +71,7 @@ class ProductController extends Controller
       $query->where(function ($query) use ($searchValue) {
         $query
           ->where('products.name', 'like', $searchValue)
+          ->orWhere('parent_brand', 'like', $searchValue)
           ->orWhere('brands.name', 'like', $searchValue)
           ->orWhere('patterns.name', 'like', $searchValue)
           ->orWhere('uoms.code', 'like', $searchValue);
@@ -96,6 +104,7 @@ class ProductController extends Controller
     try {
       // Validate the request
       $validatedData = $request->validate([
+        'parent_brand' => 'required|in:Bridgestone,GT',
         'id_brand' => 'required|exists:brands,id',
         'id_pattern' => 'required|exists:patterns,id',
         'id_uom' => 'required|exists:uoms,id',
@@ -105,6 +114,7 @@ class ProductController extends Controller
 
       // Create a new data instance
       $data = new Product();
+      $data->parent_brand = $validatedData['parent_brand'];
       $data->id_brand = $validatedData['id_brand'];
       $data->id_pattern = $validatedData['id_pattern'];
       $data->id_uom = $validatedData['id_uom'];
@@ -135,6 +145,7 @@ class ProductController extends Controller
   public function edit(Request $request, $id)
   {
     $validatedData = $request->validate([
+      'parent_brand' => 'required|in:Bridgestone,GT',
       'id_brand' => 'required|exists:brands,id',
       'id_pattern' => 'required|exists:patterns,id',
       'id_uom' => 'required|exists:uoms,id',
@@ -143,6 +154,7 @@ class ProductController extends Controller
     ]);
 
     $data = Product::findOrFail($id);
+    $data->parent_brand = $validatedData['parent_brand'];
     $data->id_brand = $validatedData['id_brand'];
     $data->id_pattern = $validatedData['id_pattern'];
     $data->id_uom = $validatedData['id_uom'];

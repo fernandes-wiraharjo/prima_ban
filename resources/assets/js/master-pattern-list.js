@@ -31,7 +31,7 @@ $(function () {
     select2.each(function () {
       var $this = $(this);
       $this.wrap('<div class="position-relative"></div>').select2({
-        placeholder: 'Select Brand',
+        placeholder: 'Select Item',
         dropdownParent: $this.parent()
       });
     });
@@ -50,6 +50,7 @@ $(function () {
       columns: [
         // columns according to JSON
         { data: '' },
+        { data: 'parent_brand' },
         { data: 'brand_name' },
         { data: 'name' },
         { data: 'is_active' },
@@ -72,7 +73,7 @@ $(function () {
           targets: 1,
           responsivePriority: 4,
           render: function (data, type, full, meta) {
-            var $name = full['brand_name'];
+            var $name = full['parent_brand'];
             // Creates full output for row
             var $row_output =
               '<div class="d-flex justify-content-start align-items-center name">' +
@@ -85,7 +86,7 @@ $(function () {
         },
         {
           // Status
-          targets: 3,
+          targets: 4,
           render: function (data, type, full, meta) {
             var $status = full['is_active'];
 
@@ -193,6 +194,7 @@ $(function () {
         // Populate the form fields with customer data
         $('#edit-id').val(response.id);
         $('#editForm').attr('action', '/master/pattern/' + response.id);
+        $('#edit-parent-brand').val(response.parent_brand).trigger('change');
         $('#edit-brand').val(response.id_brand).trigger('change');
         $('#edit-name').val(response.name);
         $('#edit-status_' + response.is_active).prop('checked', true);
@@ -258,10 +260,17 @@ $(function () {
           }
         }
       },
-      id_brand: {
+      parent_brand: {
         validators: {
           notEmpty: {
             message: 'Please select a brand'
+          }
+        }
+      },
+      id_brand: {
+        validators: {
+          notEmpty: {
+            message: 'Please select a group type'
           }
         }
       }
@@ -293,10 +302,17 @@ $(function () {
           }
         }
       },
-      id_brand: {
+      parent_brand: {
         validators: {
           notEmpty: {
             message: 'Please select a brand'
+          }
+        }
+      },
+      id_brand: {
+        validators: {
+          notEmpty: {
+            message: 'Please select a group type'
           }
         }
       }
