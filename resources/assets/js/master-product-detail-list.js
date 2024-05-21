@@ -462,7 +462,7 @@ $(function () {
       discount_user_cash: {
         validators: {
           notEmpty: {
-            message: 'Please enter discount user cash'
+            message: 'Please enter formula discount user cash'
           }
         }
       },
@@ -483,7 +483,7 @@ $(function () {
       discount_user_tempo: {
         validators: {
           notEmpty: {
-            message: 'Please enter discount user tempo'
+            message: 'Please enter formula discount user tempo'
           }
         }
       },
@@ -504,7 +504,7 @@ $(function () {
       discount_toko_cash: {
         validators: {
           notEmpty: {
-            message: 'Please enter discount toko cash'
+            message: 'Please enter formula discount toko cash'
           }
         }
       },
@@ -525,7 +525,7 @@ $(function () {
       discount_toko_tempo: {
         validators: {
           notEmpty: {
-            message: 'Please enter discount toko tempo'
+            message: 'Please enter formula discount toko tempo'
           }
         }
       },
@@ -588,7 +588,7 @@ $(function () {
       discount_user_cash: {
         validators: {
           notEmpty: {
-            message: 'Please enter discount user cash'
+            message: 'Please enter formula discount user cash'
           }
         }
       },
@@ -609,7 +609,7 @@ $(function () {
       discount_user_tempo: {
         validators: {
           notEmpty: {
-            message: 'Please enter discount user tempo'
+            message: 'Please enter formula discount user tempo'
           }
         }
       },
@@ -630,7 +630,7 @@ $(function () {
       discount_toko_cash: {
         validators: {
           notEmpty: {
-            message: 'Please enter discount toko cash'
+            message: 'Please enter formula discount toko cash'
           }
         }
       },
@@ -651,7 +651,7 @@ $(function () {
       discount_toko_tempo: {
         validators: {
           notEmpty: {
-            message: 'Please enter discount toko tempo'
+            message: 'Please enter formula discount toko tempo'
           }
         }
       },
