@@ -20,6 +20,7 @@
 <script src="{{asset('assets/vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/cleavejs/cleave.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/cleavejs/cleave-phone.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/9.4.4/math.min.js"></script>
 @endsection
 
 @section('page-script')
@@ -108,7 +109,7 @@
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-discount-user-cash">Discount User Cash</label>
-          <input type="text" class="form-control" id="add-discount-user-cash" placeholder="discount user cash" name="discount_user_cash" aria-label="discount-user-cash" onkeyup="formatNumber(this)" onblur="updateFinalPriceUserCash('add')" />
+          <input type="text" class="form-control" id="add-discount-user-cash" placeholder="discount user cash" name="discount_user_cash" aria-label="discount-user-cash" onblur="updateFinalPriceUserCash('add')" />
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-final-price-user-cash">Final Price User Cash</label>
@@ -120,7 +121,7 @@
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-discount-user-tempo">Discount User Tempo</label>
-          <input type="text" class="form-control" id="add-discount-user-tempo" placeholder="discount user tempo" name="discount_user_tempo" aria-label="discount-user-tempo" onkeyup="formatNumber(this)" onblur="updateFinalPriceUserTempo('add')" />
+          <input type="text" class="form-control" id="add-discount-user-tempo" placeholder="discount user tempo" name="discount_user_tempo" aria-label="discount-user-tempo" onblur="updateFinalPriceUserTempo('add')" />
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-final-price-user-tempo">Final Price User Tempo</label>
@@ -132,7 +133,7 @@
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-discount-toko-cash">Discount Toko Cash</label>
-          <input type="text" class="form-control" id="add-discount-toko-cash" placeholder="discount toko cash" name="discount_toko_cash" aria-label="discount-toko-cash" onkeyup="formatNumber(this)" onblur="updateFinalPriceTokoCash('add')" />
+          <input type="text" class="form-control" id="add-discount-toko-cash" placeholder="discount toko cash" name="discount_toko_cash" aria-label="discount-toko-cash" onblur="updateFinalPriceTokoCash('add')" />
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-final-price-toko-cash">Final Price Toko Cash</label>
@@ -144,7 +145,7 @@
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-discount-toko-tempo">Discount Toko Tempo</label>
-          <input type="text" class="form-control" id="add-discount-toko-tempo" placeholder="discount toko tempo" name="discount_toko_tempo" aria-label="discount-toko-tempo" onkeyup="formatNumber(this)" onblur="updateFinalPriceTokoTempo('add')" />
+          <input type="text" class="form-control" id="add-discount-toko-tempo" placeholder="discount toko tempo" name="discount_toko_tempo" aria-label="discount-toko-tempo" onblur="updateFinalPriceTokoTempo('add')" />
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-final-price-toko-tempo">Final Price Toko Tempo</label>
@@ -203,8 +204,8 @@
               <input type="text" class="form-control" id="edit-price-user-cash" placeholder="price user cash" name="price_user_cash" aria-label="price-user-cash" onkeyup="formatNumber(this)" />
             </div>
             <div class="mb-3">
-              <label class="form-label" for="edit-discount-user-cash">Discount User Cash</label>
-              <input type="text" class="form-control" id="edit-discount-user-cash" placeholder="discount user cash" name="discount_user_cash" aria-label="discount-user-cash" onkeyup="formatNumber(this)" onblur="updateFinalPriceUserCash('edit')" />
+              <label class="form-label" for="edit-discount-user-cash">Formula Discount User Cash</label>
+              <input type="text" class="form-control" id="edit-discount-user-cash" placeholder="+, -, *, /, %" name="discount_user_cash" aria-label="discount-user-cash" onblur="updateFinalPriceUserCash('edit')" />
             </div>
             <div class="mb-3">
               <label class="form-label" for="edit-final-price-user-cash">Final Price User Cash</label>
@@ -215,8 +216,8 @@
               <input type="text" class="form-control" id="edit-price-user-tempo" placeholder="price user tempo" name="price_user_tempo" aria-label="price-user-tempo" onkeyup="formatNumber(this)" />
             </div>
             <div class="mb-3">
-              <label class="form-label" for="edit-discount-user-tempo">Discount User Tempo</label>
-              <input type="text" class="form-control" id="edit-discount-user-tempo" placeholder="discount user tempo" name="discount_user_tempo" aria-label="discount-user-tempo" onkeyup="formatNumber(this)" onblur="updateFinalPriceUserTempo('edit')" />
+              <label class="form-label" for="edit-discount-user-tempo">Formula Discount User Tempo</label>
+              <input type="text" class="form-control" id="edit-discount-user-tempo" placeholder="discount user tempo" name="discount_user_tempo" aria-label="discount-user-tempo" onblur="updateFinalPriceUserTempo('edit')" />
             </div>
             <div class="mb-3">
               <label class="form-label" for="edit-final-price-user-tempo">Final Price User Tempo</label>
@@ -227,8 +228,8 @@
               <input type="text" class="form-control" id="edit-price-toko-cash" placeholder="price toko cash" name="price_toko_cash" aria-label="price-toko-cash" onkeyup="formatNumber(this)" />
             </div>
             <div class="mb-3">
-              <label class="form-label" for="edit-discount-toko-cash">Discount Toko Cash</label>
-              <input type="text" class="form-control" id="edit-discount-toko-cash" placeholder="discount toko cash" name="discount_toko_cash" aria-label="discount-toko-cash" onkeyup="formatNumber(this)" onblur="updateFinalPriceTokoCash('edit')" />
+              <label class="form-label" for="edit-discount-toko-cash">Formula Discount Toko Cash</label>
+              <input type="text" class="form-control" id="edit-discount-toko-cash" placeholder="discount toko cash" name="discount_toko_cash" aria-label="discount-toko-cash" onblur="updateFinalPriceTokoCash('edit')" />
             </div>
             <div class="mb-3">
               <label class="form-label" for="edit-final-price-toko-cash">Final Price Toko Cash</label>
@@ -239,8 +240,8 @@
               <input type="text" class="form-control" id="edit-price-toko-tempo" placeholder="price toko tempo" name="price_toko_tempo" aria-label="price-toko-tempo" onkeyup="formatNumber(this)" />
             </div>
             <div class="mb-3">
-              <label class="form-label" for="edit-discount-toko-tempo">Discount Toko Tempo</label>
-              <input type="text" class="form-control" id="edit-discount-toko-tempo" placeholder="discount toko tempo" name="discount_toko_tempo" aria-label="discount-toko-tempo" onkeyup="formatNumber(this)" onblur="updateFinalPriceTokoTempo('edit')" />
+              <label class="form-label" for="edit-discount-toko-tempo">Formula Discount Toko Tempo</label>
+              <input type="text" class="form-control" id="edit-discount-toko-tempo" placeholder="discount toko tempo" name="discount_toko_tempo" aria-label="discount-toko-tempo" onblur="updateFinalPriceTokoTempo('edit')" />
             </div>
             <div class="mb-3">
               <label class="form-label" for="edit-final-price-toko-tempo">Final Price Toko Tempo</label>

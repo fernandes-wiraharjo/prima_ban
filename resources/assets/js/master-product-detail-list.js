@@ -11,85 +11,129 @@ function formatNumber(input) {
   input.value = formattedValue;
 }
 
+function evaluateDiscountExpression(price, expression) {
+  // Replace 'x' with '*' for multiplication and ':' with '/' for division
+  expression = expression.replace(/x/g, '*').replace(/:/g, '/');
+
+  // Split the expression into individual operations
+  var operations = expression.match(/[+\-*/]/g);
+  var values = expression.split(/[+\-*/]/);
+  var result = price;
+
+  // Convert percentage notation to decimal
+  for (var i = 0; i < values.length - 1; i++) {
+    if (values[i + 1].includes('%')) {
+      var percentage = parseFloat(values[i + 1].replace('%', '')) / 100;
+      values[i + 1] = price * percentage;
+    } else {
+      values[i + 1] = parseFloat(values[i + 1]);
+    }
+
+    if (operations[i] == '-') {
+      result -= values[i + 1];
+    } else if (operations[i] == '+') {
+      result += values[i + 1];
+    } else if (operations[i] == '*') {
+      result *= values[i + 1];
+    } else if (operations[i] == '/') {
+      result /= values[i + 1];
+    }
+  }
+
+  return result;
+}
+
 function updateFinalPriceUserCash(action) {
-  var price =
-    parseFloat(
-      document
-        .getElementById(action + '-price-user-cash')
-        .value.replace(/\./g, '')
-        .replace(',', '.')
-    ) || 0;
-  var discount =
-    parseFloat(
-      document
-        .getElementById(action + '-discount-user-cash')
-        .value.replace(/\./g, '')
-        .replace(',', '.')
-    ) || 0;
-  var finalPrice = price - discount;
+  // Get the price and discount values as strings
+  var priceStr = document
+    .getElementById(action + '-price-user-cash')
+    .value.replace(/\./g, '')
+    .replace(',', '.');
+  var discountStr = document.getElementById(action + '-discount-user-cash').value;
+
+  // Convert price to float
+  var price = parseFloat(priceStr) || 0;
+
+  try {
+    var finalPrice = evaluateDiscountExpression(price, discountStr);
+  } catch (e) {
+    console.error('Error evaluating discount expression:', e);
+    var finalPrice = price;
+  }
+
+  // Format the final price and update the final price input field
   document.getElementById(action + '-final-price-user-cash').value = finalPrice.toLocaleString('id-ID', {
     minimumFractionDigits: 0
   });
 }
 
 function updateFinalPriceUserTempo(action) {
-  var price =
-    parseFloat(
-      document
-        .getElementById(action + '-price-user-tempo')
-        .value.replace(/\./g, '')
-        .replace(',', '.')
-    ) || 0;
-  var discount =
-    parseFloat(
-      document
-        .getElementById(action + '-discount-user-tempo')
-        .value.replace(/\./g, '')
-        .replace(',', '.')
-    ) || 0;
-  var finalPrice = price - discount;
+  // Get the price and discount values as strings
+  var priceStr = document
+    .getElementById(action + '-price-user-tempo')
+    .value.replace(/\./g, '')
+    .replace(',', '.');
+  var discountStr = document.getElementById(action + '-discount-user-tempo').value;
+
+  // Convert price to float
+  var price = parseFloat(priceStr) || 0;
+
+  try {
+    var finalPrice = evaluateDiscountExpression(price, discountStr);
+  } catch (e) {
+    console.error('Error evaluating discount expression:', e);
+    var finalPrice = price;
+  }
+
+  // Format the final price and update the final price input field
   document.getElementById(action + '-final-price-user-tempo').value = finalPrice.toLocaleString('id-ID', {
     minimumFractionDigits: 0
   });
 }
 
 function updateFinalPriceTokoCash(action) {
-  var price =
-    parseFloat(
-      document
-        .getElementById(action + '-price-toko-cash')
-        .value.replace(/\./g, '')
-        .replace(',', '.')
-    ) || 0;
-  var discount =
-    parseFloat(
-      document
-        .getElementById(action + '-discount-toko-cash')
-        .value.replace(/\./g, '')
-        .replace(',', '.')
-    ) || 0;
-  var finalPrice = price - discount;
+  // Get the price and discount values as strings
+  var priceStr = document
+    .getElementById(action + '-price-toko-cash')
+    .value.replace(/\./g, '')
+    .replace(',', '.');
+  var discountStr = document.getElementById(action + '-discount-toko-cash').value;
+
+  // Convert price to float
+  var price = parseFloat(priceStr) || 0;
+
+  try {
+    var finalPrice = evaluateDiscountExpression(price, discountStr);
+  } catch (e) {
+    console.error('Error evaluating discount expression:', e);
+    var finalPrice = price;
+  }
+
+  // Format the final price and update the final price input field
   document.getElementById(action + '-final-price-toko-cash').value = finalPrice.toLocaleString('id-ID', {
     minimumFractionDigits: 0
   });
 }
 
 function updateFinalPriceTokoTempo(action) {
-  var price =
-    parseFloat(
-      document
-        .getElementById(action + '-price-toko-tempo')
-        .value.replace(/\./g, '')
-        .replace(',', '.')
-    ) || 0;
-  var discount =
-    parseFloat(
-      document
-        .getElementById(action + '-discount-toko-tempo')
-        .value.replace(/\./g, '')
-        .replace(',', '.')
-    ) || 0;
-  var finalPrice = price - discount;
+  // Get the price and discount values as strings
+  var priceStr = document
+    .getElementById(action + '-price-toko-tempo')
+    .value.replace(/\./g, '')
+    .replace(',', '.');
+  var discountStr = document.getElementById(action + '-discount-toko-tempo').value;
+
+  // Convert price to float
+  var price = parseFloat(priceStr) || 0;
+
+  try {
+    var finalPrice = evaluateDiscountExpression(price, discountStr);
+  } catch (e) {
+    console.error('Error evaluating discount expression:', e);
+    var finalPrice = price;
+  }
+
+  // Format the final price and update the final price input field
   document.getElementById(action + '-final-price-toko-tempo').value = finalPrice.toLocaleString('id-ID', {
     minimumFractionDigits: 0
   });
@@ -307,36 +351,28 @@ $(function () {
               $('#edit-price-user-cash').val(
                 Number(response.price_user_cash).toLocaleString('id-ID', { minimumFractionDigits: 0 })
               );
-              $('#edit-discount-user-cash').val(
-                Number(response.discount_user_cash).toLocaleString('id-ID', { minimumFractionDigits: 0 })
-              );
+              $('#edit-discount-user-cash').val(response.discount_user_cash);
               $('#edit-final-price-user-cash').val(
                 Number(response.final_price_user_cash).toLocaleString('id-ID', { minimumFractionDigits: 0 })
               );
               $('#edit-price-user-tempo').val(
                 Number(response.price_user_tempo).toLocaleString('id-ID', { minimumFractionDigits: 0 })
               );
-              $('#edit-discount-user-tempo').val(
-                Number(response.discount_user_tempo).toLocaleString('id-ID', { minimumFractionDigits: 0 })
-              );
+              $('#edit-discount-user-tempo').val(response.discount_user_tempo);
               $('#edit-final-price-user-tempo').val(
                 Number(response.final_price_user_tempo).toLocaleString('id-ID', { minimumFractionDigits: 0 })
               );
               $('#edit-price-toko-cash').val(
                 Number(response.price_toko_cash).toLocaleString('id-ID', { minimumFractionDigits: 0 })
               );
-              $('#edit-discount-toko-cash').val(
-                Number(response.discount_toko_cash).toLocaleString('id-ID', { minimumFractionDigits: 0 })
-              );
+              $('#edit-discount-toko-cash').val(response.discount_toko_cash);
               $('#edit-final-price-toko-cash').val(
                 Number(response.final_price_toko_cash).toLocaleString('id-ID', { minimumFractionDigits: 0 })
               );
               $('#edit-price-toko-tempo').val(
                 Number(response.price_toko_tempo).toLocaleString('id-ID', { minimumFractionDigits: 0 })
               );
-              $('#edit-discount-toko-tempo').val(
-                Number(response.discount_toko_tempo).toLocaleString('id-ID', { minimumFractionDigits: 0 })
-              );
+              $('#edit-discount-toko-tempo').val(response.discount_toko_tempo);
               $('#edit-final-price-toko-tempo').val(
                 Number(response.final_price_toko_tempo).toLocaleString('id-ID', { minimumFractionDigits: 0 })
               );
