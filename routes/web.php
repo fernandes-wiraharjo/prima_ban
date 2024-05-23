@@ -331,6 +331,10 @@ Route::middleware(['auth'])->group(function () {
       Route::post('/add', [SaleController::class, 'add'])->name('add-sale');
       Route::put('/{id}', [SaleController::class, 'edit'])->name('edit-sale');
       Route::delete('/{id}', [SaleController::class, 'delete'])->name('delete-sale');
+      Route::get('/get/belum-lunas', [SaleController::class, 'indexBelumLunas'])->name('transaction-sale-belum-lunas');
+      Route::get('/print/belum-lunas/{idCustomer}', [SaleController::class, 'printBelumLunas'])->name(
+        'transaction-print-belum-lunas'
+      );
     });
   });
 });

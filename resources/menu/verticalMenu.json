@@ -73,6 +73,12 @@
       "slug": "transaction-sale"
     },
     {
+      "url": "transaction/sale/get/belum-lunas",
+      "name": "Sales Belum Lunas",
+      "icon": "menu-icon tf-icons bx bx-food-menu",
+      "slug": "transaction-sale-belum-lunas"
+    },
+    {
       "url": "transaction/tanda-terima",
       "name": "Tanda Terima",
       "icon": "menu-icon tf-icons bx bx-notepad",

@@ -14,7 +14,10 @@ return new class extends Migration {
       $table->id();
       // $table->unsignedBigInteger('id_product_detail');
       $table->unsignedBigInteger('id_customer')->nullable();
-      $table->string('invoice_no', 50)->nullable();
+      $table
+        ->string('invoice_no', 50)
+        ->unique()
+        ->nullable();
       $table->date('date');
       $table->decimal('subtotal_price', 15, 2);
       $table->decimal('discount', 10, 2);

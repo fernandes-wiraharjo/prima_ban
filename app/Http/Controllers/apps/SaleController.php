@@ -114,11 +114,11 @@ class SaleController extends Controller
         [
           'date' => 'required',
           'id_customer' => 'required|exists:customers,id',
-          'discount' => 'required|numeric|min:1',
+          'discount' => 'required|numeric',
           'bank_account_no' => 'required',
           'status' => 'required|in:belum lunas,lunas',
           'payment_type' => 'required|in:cash,tempo',
-          'invoice_no' => 'required',
+          'invoice_no' => 'required|unique:sales,invoice_no',
           'group-a' => 'required|array',
           'group-a.*.item' => 'required',
           'group-a.*.quantity' => 'required|numeric|min:1',
@@ -130,6 +130,7 @@ class SaleController extends Controller
           'group-a.*.quantity.required' => 'Please specify the quantity for each item.',
           'group-a.*.quantity.numeric' => 'Quantity must be a number.',
           'group-a.*.quantity.min' => 'Quantity must be at least 1.',
+          'invoice_no.unique' => 'The invoice number has already been taken.',
         ]
       );
       DB::beginTransaction();
@@ -269,11 +270,11 @@ class SaleController extends Controller
         [
           'date' => 'required',
           'id_customer' => 'required|exists:customers,id',
-          'discount' => 'required|numeric|min:1',
+          'discount' => 'required|numeric',
           'bank_account_no' => 'required',
           'status' => 'required|in:belum lunas,lunas',
           'payment_type' => 'required|in:cash,tempo',
-          'invoice_no' => 'required',
+          'invoice_no' => 'required|unique:sales,invoice_no,' . $id,
           'group-a' => 'required|array',
           'group-a.*.item' => 'required',
           'group-a.*.quantity' => 'required|numeric|min:1',
@@ -285,6 +286,7 @@ class SaleController extends Controller
           'group-a.*.quantity.required' => 'Please specify the quantity for each item.',
           'group-a.*.quantity.numeric' => 'Quantity must be a number.',
           'group-a.*.quantity.min' => 'Quantity must be at least 1.',
+          'invoice_no.unique' => 'The invoice number has already been taken.',
         ]
       );
       DB::beginTransaction();
@@ -530,6 +532,34 @@ class SaleController extends Controller
       'formattedDate' => $formattedDate,
       'saleDetails' => $saleDetails,
       'customer' => $customer,
+      'pageConfigs' => $pageConfigs,
+    ]);
+  }
+
+  public function indexBelumLunas()
+  {
+    $customers = Customer::where('is_active', true)->pluck('name', 'id');
+    return view('content.transactions.sale-belum-lunas', ['customers' => $customers]);
+  }
+
+  public function printBelumLunas($idCustomer)
+  {
+    $sales = Sale::query()
+      ->leftJoin('customers', 'customers.id', 'sales.id_customer')
+      ->selectRaw(
+        'sales.invoice_no, DATE_FORMAT(sales.date, "%d %b %Y") as formatted_date, customers.name as customer_name, sales.final_price'
+      )
+      ->where('sales.status', 'belum lunas')
+      ->where('sales.id_customer', $idCustomer)
+      ->get();
+
+    foreach ($sales as $sale) {
+      $sale->final_price = 'Rp' . number_format($sale->final_price, 0, ',', '.');
+    }
+
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('content.transactions.sale-belum-lunas-print', [
+      'sales' => $sales,
       'pageConfigs' => $pageConfigs,
     ]);
   }

@@ -105,7 +105,7 @@
               </dt>
               <dd class="col-sm-6 d-flex justify-content-md-end">
                 <div class="w-px-150">
-                  <input type="text" name="invoice_no" class="form-control" required />
+                  <input type="text" name="invoice_no" class="form-control" value="INV/" required />
                 </div>
               </dd>
             </dl>
