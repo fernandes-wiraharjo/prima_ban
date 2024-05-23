@@ -4,6 +4,53 @@
 
 @section('page-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/css/pages/app-invoice-print.css')}}" />
+<style>
+  .invoice-print {
+    padding: 0.1rem !important;
+    font-size: 0.65rem;
+  }
+  .invoice-print h6 {
+    font-size: 0.8rem;
+  }
+  .invoice-print .table th, .invoice-print .table td {
+    font-size: 0.65rem;
+    padding: 0.1rem !important;
+  }
+  .invoice-print .mb-4, .invoice-print .mb-3, .invoice-print .mb-2, .invoice-print .mb-1, .invoice-print .mb-0 {
+    margin-bottom: 0.1rem !important;
+  }
+  .invoice-print .text-center {
+    margin-bottom: 0.1rem !important;
+  }
+  .invoice-print .table {
+    width: 100%;
+    table-layout: auto;
+    border-collapse: collapse;
+  }
+  .invoice-print .table th, .invoice-print .table td {
+    word-wrap: break-word;
+    /* border: 1px solid #dee2e6; */
+    vertical-align: top;
+    /* text-align: center; */
+  }
+  .invoice-print .table th {
+    background-color: #f8f9fa;
+  }
+  .page-break {
+    page-break-inside: avoid;
+  }
+  .footer-text {
+    white-space: nowrap;
+  }
+  @media print {
+    .invoice-print {
+      page-break-inside: avoid;
+    }
+    .invoice-print .table tr {
+      page-break-inside: avoid;
+    }
+  }
+</style>
 @endsection
 
 @section('page-script')
