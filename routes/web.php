@@ -64,6 +64,7 @@ use App\Http\Controllers\apps\PurchaseController;
 use App\Http\Controllers\apps\SaleController;
 use App\Http\Controllers\apps\SizeController;
 use App\Http\Controllers\apps\StockHistoryController;
+use App\Http\Controllers\apps\StockBrandController;
 use App\Http\Controllers\apps\SupplierController;
 use App\Http\Controllers\apps\TandaTerimaController;
 use App\Http\Controllers\apps\UserList;
@@ -304,6 +305,11 @@ Route::middleware(['auth'])->group(function () {
       Route::get('/get', [StockHistoryController::class, 'get'])->name('get-stock-history');
     });
 
+    Route::prefix('stock-brand')->group(function () {
+      Route::get('/', [StockBrandController::class, 'index'])->name('transaction-stock-brand');
+      Route::get('/print/{brand}', [StockBrandController::class, 'print'])->name('print-stock-brand');
+    });
+
     //purchase
     Route::prefix('purchase')->group(function () {
       Route::get('/', [PurchaseController::class, 'index'])->name('transaction-purchase');
@@ -333,7 +339,7 @@ Route::middleware(['auth'])->group(function () {
       Route::delete('/{id}', [SaleController::class, 'delete'])->name('delete-sale');
       Route::get('/get/belum-lunas', [SaleController::class, 'indexBelumLunas'])->name('transaction-sale-belum-lunas');
       Route::get('/print/belum-lunas/{idCustomer}', [SaleController::class, 'printBelumLunas'])->name(
-        'transaction-print-belum-lunas'
+        'print-sale-belum-lunas'
       );
     });
   });

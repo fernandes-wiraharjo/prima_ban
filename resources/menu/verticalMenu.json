@@ -89,6 +89,12 @@
       "name": "Stock Histories",
       "icon": "menu-icon tf-icons bx bx-history",
       "slug": "transaction-stock-history"
+    },
+    {
+      "url": "transaction/stock-brand",
+      "name": "Stock Per Brand",
+      "icon": "menu-icon tf-icons bx bx-color",
+      "slug": "transaction-stock-brand"
     }
   ]
 }
