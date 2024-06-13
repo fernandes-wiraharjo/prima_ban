@@ -4,6 +4,42 @@
 
 @section('page-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/css/pages/app-invoice-print.css')}}" />
+<style>
+  /* Custom CSS to minimize line spacing in the table */
+  .table th, .table td {
+    line-height: 0; /* Reduce line-height to minimize spacing */
+  }
+
+  .table td {
+    border: none !important; /* Remove top border from table cells */
+  }
+
+  .table thead th {
+    border-top: 2px solid #dee2e6 !important; /* Ensure top border on the first row of headers */
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 900;
+  }
+
+  .table-content {
+    min-height: 250px; /* Set a minimum height for the invoice content */
+  }
+
+  /* Make all text bolder */
+  .demo,
+  .text-body,
+  .fw-medium,
+  p,
+  span,
+  th,
+  td {
+    font-weight: 900;
+  }
+
+  .total-row {
+    border-top: 2px solid #dee2e6 !important;
+    border-bottom: 2px solid #dee2e6;
+  }
+</style>
 @endsection
 
 @section('page-script')
@@ -15,33 +51,34 @@
 @endphp
 
 @section('content')
-<div class="invoice-print p-5">
+<div class="invoice-print">
 
   <div class="d-flex justify-content-between flex-row">
-    <div class="mb-4">
-      <div class="d-flex svg-illustration mb-3 gap-2">
+    <div>
+      <span class="demo text-body fw-bold">TANDA TERIMA FAKTUR</span>
+      <div class="d-flex svg-illustration gap-2">
         <!-- <span class="app-brand-logo demo">@include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])</span> -->
-        <span class="demo text-body fw-bold">{{ strtoupper(config('variables.templateName')) }}</span>
+        <span class="demo text-body">{{ strtoupper(config('variables.templateName')) }}</span>
       </div>
-      <p class="mb-1">{{ $contactData['address'] }}</p>
+      <p class="mb-0">{{ $contactData['address'] }}</p>
       <p class="mb-0">Telp {{ $contactData['phone'] }}</p>
     </div>
     <div>
       <!-- <h4>Invoice #3492</h4> -->
-      <div class="mb-2">
+      <div>
         <span>Jakarta, </span>
-        <span class="fw-medium">{{ $formattedDate }}</span>
+        <span>{{ $formattedDate }}</span>
       </div>
     </div>
   </div>
 
-  <hr />
+  <!-- <hr /> -->
 
-  <div class="text-center mt-4 mb-3">
+  <!-- <div class="text-center mt-4 mb-3">
     <h4>TANDA TERIMA FAKTUR</h4>
-  </div>
+  </div> -->
 
-  <div class="table-responsive">
+  <div class="table-content table-responsive">
     <table class="table border-top m-0">
       <thead>
         <tr>
@@ -62,14 +99,14 @@
             <td>{{ $detail->invoice_description }}</td>
           </tr>
         @endforeach
-          <tr>
-            <td colspan="3" class="align-top px-4 py-5">
+          <tr class="total-row">
+            <td colspan="3" class="align-top">
             </td>
-            <td class="text-end px-4 py-5">
+            <td class="text-end">
               <p class="mb-0">Total:</p>
             </td>
-            <td class="px-4 py-5">
-              <p class="fw-medium mb-0">{{$tandaTerima->total_price}}</p>
+            <td>
+              <p class="mb-0">{{$tandaTerima->total_price}}</p>
             </td>
           </tr>
       </tbody>
@@ -77,12 +114,12 @@
   </div>
 
   <div class="row">
-    <div class="col-12 text-end mt-5">
-      <span class="fw-medium">Penerima,</span>
+    <div class="col-12 text-end">
+      <span>Penerima,</span>
     </div>
-    <br><br><br><br>
-    <div class="col-12 text-end mt-5">
-      <span class="fw-medium">{{$tandaTerima->receiver_name}}</span>
+    <br><br><br>
+    <div class="col-12 text-end">
+      <span>{{$tandaTerima->receiver_name}}</span>
     </div>
   </div>
 </div>

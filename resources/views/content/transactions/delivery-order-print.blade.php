@@ -38,6 +38,14 @@
   td {
     font-weight: 900;
   }
+
+  .barang-column {
+    width: 70%;
+  }
+
+  .qty-column {
+    width: 30%;
+  }
 </style>
 @endsection
 
@@ -93,21 +101,21 @@
     <table class="table border-top m-0">
       <thead>
         <tr>
-          <th>Barang</th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th>Qty</th>
+          <th class="barang-column">Barang</th>
+          <!-- <th></th> -->
+          <!-- <th></th> -->
+          <!-- <th></th> -->
+          <th class="qty-column">Qty</th>
         </tr>
       </thead>
       <tbody>
         @foreach($deliveryOrderDetails as $index => $detail)
           <tr>
-            <td>{{ $detail->name }}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>{{ $detail->quantity }}</td>
+            <td class="barang-column">{{ $detail->name }}</td>
+            <!-- <td></td> -->
+            <!-- <td></td> -->
+            <!-- <td></td> -->
+            <td class="qty-column">{{ $detail->quantity }}</td>
           </tr>
         @endforeach
       </tbody>
