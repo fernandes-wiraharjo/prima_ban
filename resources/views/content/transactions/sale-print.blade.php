@@ -5,19 +5,19 @@
 @section('page-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/css/pages/app-invoice-print.css')}}" />
 <style>
-  .invoice-print {
+  /* .invoice-print {
     padding: 0.1rem !important;
     font-size: 0.65rem;
-  }
+  } */
 
   .invoice-print h6 {
-    font-size: 0.8rem;
+    /* font-size: 0.8rem; */
     margin-bottom: 0;
   }
 
   .invoice-print .table th, .invoice-print .table td {
-    font-size: 0.77rem;
-    padding: 0.1rem !important;
+    /* font-size: 0.77rem; */
+    padding: 0rem !important;
     line-height: 1;
   }
 
@@ -29,18 +29,18 @@
     margin-bottom: 0.1rem !important;
   } */
 
-  .invoice-print .table {
+  /* .invoice-print .table {
     width: 100%;
     table-layout: auto;
     border-collapse: collapse;
-  }
+  } */
 
-  .invoice-print .table th, .invoice-print .table td {
-    word-wrap: break-word;
-    /* border: 1px solid #dee2e6; */
-    vertical-align: top;
-    /* text-align: center; */
-  }
+  /* .invoice-print .table th, .invoice-print .table td { */
+    /* word-wrap: break-word; */
+    /* border: 1px solid #dee2e6; mmg dicomment */
+    /* vertical-align: top; */
+    /* text-align: center; mmg dicomment */
+  /* } */
 
   .invoice-print .table th {
     background-color: #f8f9fa;
@@ -49,22 +49,22 @@
     font-weight: 900;
   }
 
-  .page-break {
+  /* .page-break {
     page-break-inside: avoid;
-  }
+  } */
 
-  .footer-text {
+  /* .footer-text {
     white-space: nowrap;
-  }
+  } */
 
-  @media print {
+  /* @media print {
     .invoice-print {
       page-break-inside: avoid;
     }
     .invoice-print .table tr {
       page-break-inside: avoid;
     }
-  }
+  } */
 
   .table td {
     border: none !important; /* Remove top border from table cells */
@@ -72,7 +72,7 @@
 
   .table-content {
     min-height: 250px; /* Set a minimum height for the invoice content */
-    margin-top: 0;
+    margin-bottom: -15px;
   }
 
   .right-column {
@@ -92,7 +92,11 @@
 
   .bottom-row {
     border-top: 2px solid #dee2e6;
-    border-bottom: 2px solid #dee2e6;
+    /* border-bottom: 2px solid #dee2e6; */
+  }
+
+  .small-line-space {
+    margin-top: -5px;
   }
 </style>
 @endsection
@@ -115,29 +119,29 @@
   <div class="d-flex flex-row">
     <div>
       <span class="demo text-body fw-bold">INVOICE</span>
-      <div class="d-flex svg-illustration gap-2">
+      <div class="d-flex svg-illustration gap-2 small-line-space">
         <!-- <span class="app-brand-logo demo">@include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])</span> -->
         <span class="demo text-body">{{ strtoupper(config('variables.templateName')) }}</span>
       </div>
-      <p class="mb-0">{{ $contactData['address'] }}</p>
-      <p class="mb-0">Telp {{ $contactData['phone'] }}</p>
+      <p class="mb-0 small-line-space">{{ $contactData['address'] }}</p>
+      <p class="mb-0 small-line-space">Telp {{ $contactData['phone'] }}</p>
     </div>
     <div class="right-column">
       <!-- <h4>Invoice #3492</h4> -->
-      <div>
+      <div class="small-line-space">
         <span>Tanggal:</span>
         <span>{{ $formattedDate }}</span>
       </div>
-      <div>
+      <div class="small-line-space">
         <span>Kepada Yth:</span>
       </div>
-      <div>
+      <div class="small-line-space">
         <span>{{ $customer->name }}</span>
       </div>
-      <div>
+      <div class="small-line-space">
         <span>{{ $customer->address }}</span>
       </div>
-      <div>
+      <div class="small-line-space">
         <span>CP: {{ $customer->pic_name }} ({{ $customer->phone_no }})</span>
       </div>
     </div>
@@ -147,7 +151,7 @@
 
   <div class="text-center">
     <h6>
-      <span style="position: absolute; left: 0; margin-left: 50px;">TEKNISI: {{ strtoupper($sale->technician) }}</span>
+      <span style="position: absolute; left: 0; margin-left: 50px;">Teknisi: {{ $sale->technician }}</span>
       <span style="position: relative;">NOTA: {{ $sale->invoice_no }}</span>
     </h6>
   </div>
@@ -156,10 +160,10 @@
     <table class="table border-top m-0">
       <thead>
         <tr>
-          <th>Kode</th>
+          <th style="width: 75px;">Kode</th>
           <th>Barang</th>
-          <th style="width: 50px;">Qty</th>
-          <th style="width: 50px;">Unit</th>
+          <th style="width: 75px;">Qty</th>
+          <th style="width: 75px;">Unit</th>
           <th>Harga</th>
           <th>Jumlah</th>
         </tr>
@@ -167,14 +171,13 @@
       <tbody>
         @foreach($saleDetails as $index => $detail)
           <tr>
-            <td class="text-nowrap">{{ $detail->product_code }}</td>
+            <td class="text-nowrap" style="width: 75px;">{{ $detail->product_code }}</td>
             <td>{{ $detail->product_name }}</td>
-            <td style="width: 50px;">{{ $detail->sale_quantity }}</td>
-            <td style="width: 50px;">{{ $detail->product_uom }}</td>
+            <td style="width: 75px;">{{ $detail->sale_quantity }}</td>
+            <td style="width: 75px;">{{ $detail->product_uom }}</td>
             <td>{{ $detail->price }}</td>
             <td>{{ $detail->total_price }}</td>
           </tr>
-          @break
         @endforeach
           <tr class="bottom-row">
             <td colspan="2" class="align-top">
@@ -194,7 +197,7 @@
               <p class="mb-0">{{ $sale->final_price }}</p>
             </td>
           </tr>
-          <tr class="bottom-row">
+          <!-- <tr class="bottom-row">
             <td colspan="4" class="align-top">
               Tanda Terima,
             </td>
@@ -209,9 +212,27 @@
             <td colspan="6" class="align-top">
               Barang yang sudah dibeli, tidak dapat ditukar atau dikembalikan
             </td>
-          </tr>
+          </tr> -->
       </tbody>
     </table>
+  </div>
+
+  <hr>
+
+  <div class="d-flex justify-content-between flex-row text-body" style="margin-top: -10px">
+    <div>
+      Tanda Terima,
+    </div>
+    <div style="margin-bottom: -10px">
+      <br><br>
+      {{ strtoupper(config('variables.templateName')) }}
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="text-body" style="margin-top: -10px">
+    Barang yang sudah dibeli, tidak dapat ditukar atau dikembalikan
   </div>
 
   <!-- <div class="row">
