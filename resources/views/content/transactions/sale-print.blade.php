@@ -9,39 +9,54 @@
     padding: 0.1rem !important;
     font-size: 0.65rem;
   }
+
   .invoice-print h6 {
     font-size: 0.8rem;
+    margin-bottom: 0;
   }
+
   .invoice-print .table th, .invoice-print .table td {
-    font-size: 0.65rem;
+    font-size: 0.77rem;
     padding: 0.1rem !important;
+    line-height: 1;
   }
+
   .invoice-print .mb-4, .invoice-print .mb-3, .invoice-print .mb-2, .invoice-print .mb-1, .invoice-print .mb-0 {
     margin-bottom: 0.1rem !important;
   }
-  .invoice-print .text-center {
+
+  /* .invoice-print .text-center {
     margin-bottom: 0.1rem !important;
-  }
+  } */
+
   .invoice-print .table {
     width: 100%;
     table-layout: auto;
     border-collapse: collapse;
   }
+
   .invoice-print .table th, .invoice-print .table td {
     word-wrap: break-word;
     /* border: 1px solid #dee2e6; */
     vertical-align: top;
     /* text-align: center; */
   }
+
   .invoice-print .table th {
     background-color: #f8f9fa;
+    border-top: 2px solid #dee2e6; /* Ensure top border on the first row of headers */
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 900;
   }
+
   .page-break {
     page-break-inside: avoid;
   }
+
   .footer-text {
     white-space: nowrap;
   }
+
   @media print {
     .invoice-print {
       page-break-inside: avoid;
@@ -49,6 +64,35 @@
     .invoice-print .table tr {
       page-break-inside: avoid;
     }
+  }
+
+  .table td {
+    border: none !important; /* Remove top border from table cells */
+  }
+
+  .table-content {
+    min-height: 250px; /* Set a minimum height for the invoice content */
+    margin-top: 0;
+  }
+
+  .right-column {
+    margin-left: 350px; /* Adjust the left margin */
+  }
+
+  /* Make all text bolder */
+  .demo,
+  .text-body,
+  .fw-medium,
+  p,
+  span,
+  th,
+  td {
+    font-weight: 900;
+  }
+
+  .bottom-row {
+    border-top: 2px solid #dee2e6;
+    border-bottom: 2px solid #dee2e6;
   }
 </style>
 @endsection
@@ -62,53 +106,53 @@
 @endphp
 
 @section('content')
-<div class="invoice-print p-5">
-
-  <div class="col-md-12 text-center">
-    <div class="svg-illustration mb-4 gap-2">
+<div class="invoice-print">
+  <!-- <div class="col-md-12 text-center">
+    <div class="svg-illustration gap-2">
       <span class="demo text-body fw-bold">INVOICE</span>
     </div>
-  </div>
-  <div class="d-flex justify-content-between flex-row">
-    <div class="mb-4">
-      <div class="d-flex svg-illustration mb-3 gap-2">
+  </div> -->
+  <div class="d-flex flex-row">
+    <div>
+      <span class="demo text-body fw-bold">INVOICE</span>
+      <div class="d-flex svg-illustration gap-2">
         <!-- <span class="app-brand-logo demo">@include('_partials.macros',["width"=>25,"withbg"=>'var(--bs-primary)'])</span> -->
-        <span class="demo text-body fw-bold">{{ strtoupper(config('variables.templateName')) }}</span>
+        <span class="demo text-body">{{ strtoupper(config('variables.templateName')) }}</span>
       </div>
-      <p class="mb-1">{{ $contactData['address'] }}</p>
+      <p class="mb-0">{{ $contactData['address'] }}</p>
       <p class="mb-0">Telp {{ $contactData['phone'] }}</p>
     </div>
-    <div>
+    <div class="right-column">
       <!-- <h4>Invoice #3492</h4> -->
-      <div class="mb-2">
+      <div>
         <span>Tanggal:</span>
-        <span class="fw-medium">{{ $formattedDate }}</span>
+        <span>{{ $formattedDate }}</span>
       </div>
       <div>
         <span>Kepada Yth:</span>
       </div>
       <div>
-        <span class="fw-medium">{{ $customer->name }}</span>
+        <span>{{ $customer->name }}</span>
       </div>
       <div>
-        <span class="fw-medium">{{ $customer->address }}</span>
+        <span>{{ $customer->address }}</span>
       </div>
       <div>
-        <span class="fw-medium">CP: {{ $customer->pic_name }} ({{ $customer->phone_no }})</span>
+        <span>CP: {{ $customer->pic_name }} ({{ $customer->phone_no }})</span>
       </div>
     </div>
   </div>
 
-  <hr />
+  <!-- <hr /> -->
 
-  <div class="text-center mt-4 mb-3">
+  <div class="text-center">
     <h6>
-      <span style="position: absolute; left: 0; margin-left: 50px;">Teknisi: {{ $sale->technician }}</span>
+      <span style="position: absolute; left: 0; margin-left: 50px;">TEKNISI: {{ strtoupper($sale->technician) }}</span>
       <span style="position: relative;">NOTA: {{ $sale->invoice_no }}</span>
     </h6>
   </div>
 
-  <div class="table-responsive">
+  <div class="table-content table-responsive">
     <table class="table border-top m-0">
       <thead>
         <tr>
@@ -130,8 +174,9 @@
             <td>{{ $detail->price }}</td>
             <td>{{ $detail->total_price }}</td>
           </tr>
+          @break
         @endforeach
-          <tr>
+          <tr class="bottom-row">
             <td colspan="2" class="align-top">
               Note: <br> {{ $sale->note }}
             </td>
@@ -144,12 +189,12 @@
               <p class="mb-0">Total:</p>
             </td>
             <td>
-              <p class="fw-medium mb-0">{{ $sale->subtotal_price }}</p>
-              <p class="fw-medium mb-0">{{ $sale->discount }}</p>
-              <p class="fw-medium mb-0">{{ $sale->final_price }}</p>
+              <p class="mb-0">{{ $sale->subtotal_price }}</p>
+              <p class="mb-0">{{ $sale->discount }}</p>
+              <p class="mb-0">{{ $sale->final_price }}</p>
             </td>
           </tr>
-          <tr>
+          <tr class="bottom-row">
             <td colspan="4" class="align-top">
               Tanda Terima,
             </td>
@@ -160,7 +205,7 @@
               {{ strtoupper(config('variables.templateName')) }}
             </td>
           </tr>
-          <tr>
+          <tr class="bottom-row">
             <td colspan="6" class="align-top">
               Barang yang sudah dibeli, tidak dapat ditukar atau dikembalikan
             </td>
