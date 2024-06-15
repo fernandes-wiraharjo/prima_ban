@@ -46,20 +46,6 @@
   .qty-column {
     width: 30%;
   }
-
-  @media print {
-    .table-content {
-      min-height: 250px !important;
-    }
-
-    .right-column {
-      margin-left: 350px !important;
-    }
-
-    .text-end {
-      text-align: right !important;
-    }
-  }
 </style>
 @endsection
 
