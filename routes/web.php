@@ -62,6 +62,7 @@ use App\Http\Controllers\apps\PatternController;
 use App\Http\Controllers\apps\ProductController;
 use App\Http\Controllers\apps\PurchaseController;
 use App\Http\Controllers\apps\SaleController;
+use App\Http\Controllers\apps\ServiceController;
 use App\Http\Controllers\apps\SizeController;
 use App\Http\Controllers\apps\StockHistoryController;
 use App\Http\Controllers\apps\StockBrandController;
@@ -268,6 +269,16 @@ Route::middleware(['auth'])->group(function () {
       Route::post('/detail/add', [ProductController::class, 'addProductDetail'])->name('add-product-detail');
       Route::put('/detail/{id}', [ProductController::class, 'editProductDetail'])->name('edit-product-detail');
       Route::delete('/detail/{id}', [ProductController::class, 'deleteProductDetail'])->name('delete-product-detail');
+    });
+
+    //service
+    Route::prefix('service')->group(function () {
+      Route::get('/', [ServiceController::class, 'index'])->name('master-service');
+      Route::get('/get', [ServiceController::class, 'get'])->name('get-service');
+      Route::get('/{id}', [ServiceController::class, 'getById'])->name('get-service-by-id');
+      Route::post('/add', [ServiceController::class, 'add'])->name('add-service');
+      Route::put('/{id}', [ServiceController::class, 'edit'])->name('edit-service');
+      Route::delete('/{id}', [ServiceController::class, 'delete'])->name('delete-service');
     });
   });
 

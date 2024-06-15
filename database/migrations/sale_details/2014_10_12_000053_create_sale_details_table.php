@@ -13,7 +13,8 @@ return new class extends Migration {
     Schema::create('sale_details', function (Blueprint $table) {
       $table->id();
       $table->unsignedBigInteger('id_sale');
-      $table->unsignedBigInteger('id_product_detail');
+      $table->unsignedBigInteger('id_product_detail')->nullable();
+      $table->unsignedBigInteger('id_service')->nullable();
       $table->smallInteger('quantity');
       $table->decimal('price', 10, 2);
       $table->decimal('total_price', 10, 2);
@@ -33,6 +34,11 @@ return new class extends Migration {
         ->foreign('id_product_detail')
         ->references('id')
         ->on('product_details')
+        ->onDelete('restrict');
+      $table
+        ->foreign('id_service')
+        ->references('id')
+        ->on('services')
         ->onDelete('restrict');
       $table
         ->foreign('created_by')

@@ -451,15 +451,15 @@ class ProductController extends Controller
       );
     }
 
-    // $relatedPurchaseDetail = PurchaseDetail::where('id_product_detail', $id)->exists();
-    // if ($relatedPurchaseDetail) {
-    //   return response()->json(['message' => 'Cannot delete product detail as it has associated purchase detail.'], 200);
-    // }
+    $relatedPurchaseDetail = PurchaseDetail::where('id_product_detail', $id)->exists();
+    if ($relatedPurchaseDetail) {
+      return response()->json(['message' => 'Cannot delete product detail as it has associated purchase detail.'], 200);
+    }
 
-    // $relatedSaleDetail = SaleDetail::where('id_product_detail', $id)->exists();
-    // if ($relatedSaleDetail) {
-    //   return response()->json(['message' => 'Cannot delete product detail as it has associated sale detail.'], 200);
-    // }
+    $relatedSaleDetail = SaleDetail::where('id_product_detail', $id)->exists();
+    if ($relatedSaleDetail) {
+      return response()->json(['message' => 'Cannot delete product detail as it has associated sale detail.'], 200);
+    }
 
     $relatedStockHistory = StockHistory::where('id_product_detail', $id)->exists();
     if ($relatedStockHistory) {

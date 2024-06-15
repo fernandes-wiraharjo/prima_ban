@@ -47,6 +47,7 @@ $(function () {
         { data: 'final_price' },
         // { data: 'bank_account_no' },
         { data: 'status' },
+        { data: 'username' },
         { data: 'action' }
       ],
       columnDefs: [

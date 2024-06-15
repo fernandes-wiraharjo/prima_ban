@@ -52,6 +52,12 @@
       "slug": "master-product"
     },
     {
+      "url": "master/services",
+      "name": "Services",
+      "icon": "menu-icon tf-icons bx bx-color",
+      "slug": "master-service"
+    },
+    {
       "menuHeader": "transactions"
     },
     {

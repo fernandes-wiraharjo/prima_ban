@@ -66,6 +66,7 @@
           <th>Total</th>
           <!-- <th>Bank Account</th> -->
           <th>Status</th>
+          <th>Created By</th>
           <th>Actions</th>
         </tr>
       </thead>

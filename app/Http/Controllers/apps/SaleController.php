@@ -27,7 +27,10 @@ class SaleController extends Controller
   {
     $query = Sale::query()
       ->leftJoin('customers', 'customers.id', 'sales.id_customer')
-      ->selectRaw('sales.*, DATE_FORMAT(sales.date, "%d %b %Y") as formatted_date, customers.name as customer_name');
+      ->leftJoin('users', 'users.id', 'sales.created_by')
+      ->selectRaw(
+        'sales.*, DATE_FORMAT(sales.date, "%d %b %Y") as formatted_date, customers.name as customer_name, users.username'
+      );
 
     $sortableColumns = [
       0 => '',
@@ -39,6 +42,7 @@ class SaleController extends Controller
       4 => 'final_price',
       // 7 => 'bank_account_no',
       5 => 'status',
+      6 => 'username',
     ];
 
     // Retrieve the column index and direction from the request
@@ -68,7 +72,8 @@ class SaleController extends Controller
           // ->orWhere('discount', 'like', $searchValue)
           ->orWhere('final_price', 'like', $searchValue)
           // ->orWhere('sales.bank_account_no', 'like', $searchValue)
-          ->orWhere('status', 'like', $searchValue);
+          ->orWhere('status', 'like', $searchValue)
+          ->orWhere('users.username', 'like', $searchValue);
       });
     }
 
