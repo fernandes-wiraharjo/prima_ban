@@ -82,7 +82,7 @@ class ProductController extends Controller
     $totalFilters = $query->count();
 
     // Apply pagination
-    $patterns = $query
+    $products = $query
       ->offset($request->input('start'))
       ->limit($request->input('length'))
       ->orderBy($sortColumn, $sortDirection)
@@ -93,7 +93,7 @@ class ProductController extends Controller
       'draw' => $request->input('draw'),
       'recordsTotal' => $totalRecords,
       'recordsFiltered' => $totalFilters,
-      'data' => $patterns,
+      'data' => $products,
     ];
 
     return response()->json($responseData);

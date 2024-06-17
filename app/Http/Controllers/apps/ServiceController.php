@@ -19,7 +19,7 @@ class ServiceController extends Controller
 
   public function get(Request $request)
   {
-    $query = Service::query()->get();
+    $query = Service::query();
 
     $sortableColumns = [
       0 => '',
@@ -55,7 +55,7 @@ class ServiceController extends Controller
     $totalFilters = $query->count();
 
     // Apply pagination
-    $patterns = $query
+    $services = $query
       ->offset($request->input('start'))
       ->limit($request->input('length'))
       ->orderBy($sortColumn, $sortDirection)
@@ -66,7 +66,7 @@ class ServiceController extends Controller
       'draw' => $request->input('draw'),
       'recordsTotal' => $totalRecords,
       'recordsFiltered' => $totalFilters,
-      'data' => $patterns,
+      'data' => $services,
     ];
 
     return response()->json($responseData);
@@ -119,9 +119,11 @@ class ServiceController extends Controller
       'is_active' => 'required|in:0,1',
     ]);
 
+    $price = str_replace('.', '', $validatedData['price']);
+
     $data = Service::findOrFail($id);
     $data->name = $validatedData['name'];
-    $data->price = $validatedData['price'];
+    $data->price = $price;
     $data->is_active = $validatedData['is_active'];
     $data->updated_by = Auth::id();
     $data->save();
