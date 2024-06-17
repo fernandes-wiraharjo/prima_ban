@@ -101,14 +101,24 @@ class SaleController extends Controller
   public function indexAdd()
   {
     $customers = Customer::where('is_active', true)->pluck('name', 'id');
-    $products = ProductDetail::query()
+    $products = DB::table('product_details')
       ->selectRaw('product_details.id, CONCAT(p.name, " - ", sizes.code) as name')
       ->leftJoin('products as p', 'p.id', 'product_details.id_product')
       ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
-      ->where('product_details.is_active', true)
-      ->orderBy('p.name')
+      ->where('product_details.is_active', true);
+
+    $services = DB::table('services')
+      ->selectRaw('CONCAT("jasa-", id) as id, name')
+      ->where('is_active', true);
+
+    $unionQuery = $products->union($services);
+
+    $results = DB::table(DB::raw("({$unionQuery->toSql()}) as sub"))
+      ->mergeBindings($unionQuery)
+      ->orderBy('name')
       ->pluck('name', 'id');
-    return view('content.transactions.sale-add', ['customers' => $customers, 'products' => $products]);
+
+    return view('content.transactions.sale-add', ['customers' => $customers, 'products' => $results]);
   }
 
   public function add(Request $request)
@@ -246,13 +256,23 @@ class SaleController extends Controller
   public function getById($id)
   {
     $customers = Customer::where('is_active', true)->pluck('name', 'id');
-    $products = ProductDetail::query()
+    $products = DB::table('product_details')
       ->selectRaw('product_details.id, CONCAT(p.name, " - ", sizes.code) as name')
       ->leftJoin('products as p', 'p.id', 'product_details.id_product')
       ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
-      ->where('product_details.is_active', true)
-      ->orderBy('p.name')
+      ->where('product_details.is_active', true);
+
+    $services = DB::table('services')
+      ->selectRaw('CONCAT("jasa-", id) as id, name')
+      ->where('is_active', true);
+
+    $unionQuery = $products->union($services);
+
+    $items = DB::table(DB::raw("({$unionQuery->toSql()}) as sub"))
+      ->mergeBindings($unionQuery)
+      ->orderBy('name')
       ->pluck('name', 'id');
+
     $sale = Sale::findOrFail($id);
     $saleDetails = SaleDetail::where('id_sale', $id)->get();
 
@@ -260,7 +280,7 @@ class SaleController extends Controller
 
     return view('content.transactions.sale-edit', [
       'id' => $id,
-      'products' => $products,
+      'products' => $items,
       'customers' => $customers,
       'sale' => $sale,
       'saleDetails' => $saleDetails,
