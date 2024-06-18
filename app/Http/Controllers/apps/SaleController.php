@@ -173,21 +173,30 @@ class SaleController extends Controller
       // Process sale details
       $customer = Customer::find($validatedData['id_customer']);
       foreach ($request->input('group-a') as $item) {
-        $findProductDetail = ProductDetail::find($item['item']);
-        $productPrice = 0;
-
-        // Determine the price based on customer type and payment type
-        if ($validatedData['payment_type'] === 'cash') {
-          if ($customer->type === 'user') {
-            $productPrice = $findProductDetail->final_price_user_cash;
-          } else {
-            $productPrice = $findProductDetail->final_price_toko_cash;
-          }
+        if (strpos($item['item'], 'jasa-') === 0) {
+          $serviceId = substr($item['item'], 5);
+          $productDetailId = null;
+          $findService = Service::find($serviceId);
+          $productPrice = $findService->price;
         } else {
-          if ($customer->type === 'toko') {
-            $productPrice = $findProductDetail->final_price_toko_tempo;
+          $findProductDetail = ProductDetail::find($item['item']);
+          $serviceId = null;
+          $productDetailId = $item['item'];
+          $productPrice = 0;
+
+          // Determine the price based on customer type and payment type
+          if ($validatedData['payment_type'] === 'cash') {
+            if ($customer->type === 'user') {
+              $productPrice = $findProductDetail->final_price_user_cash;
+            } else {
+              $productPrice = $findProductDetail->final_price_toko_cash;
+            }
           } else {
-            $productPrice = $findProductDetail->final_price_user_tempo;
+            if ($customer->type === 'toko') {
+              $productPrice = $findProductDetail->final_price_toko_tempo;
+            } else {
+              $productPrice = $findProductDetail->final_price_user_tempo;
+            }
           }
         }
 
@@ -196,7 +205,8 @@ class SaleController extends Controller
 
         $saleDetail = new SaleDetail();
         $saleDetail->id_sale = $sale->id;
-        $saleDetail->id_product_detail = $item['item'];
+        $saleDetail->id_product_detail = $productDetailId;
+        $saleDetail->id_service = $serviceId;
         $saleDetail->quantity = $item['quantity'];
         $saleDetail->price = $productPrice;
         $saleDetail->total_price = $total_price;
@@ -206,26 +216,28 @@ class SaleController extends Controller
         $subtotal_price += $total_price;
 
         //update stock history and product detail stock/qty
-        $lastStockHistory = StockHistory::where('id_product_detail', $item['item'])
-          ->latest()
-          ->first();
+        if ($productDetailId !== null) {
+          $lastStockHistory = StockHistory::where('id_product_detail', $item['item'])
+            ->latest()
+            ->first();
 
-        if ($lastStockHistory) {
-          // Insert into stock history
-          $stock_history = new StockHistory();
-          $stock_history->id_product_detail = $item['item'];
-          $stock_history->id_transaction = $sale->id;
-          $stock_history->movement_type = MovementType::OUT;
-          $stock_history->quantity = $item['quantity'];
-          $stock_history->stock_before = $lastStockHistory->stock_after;
-          $stock_history->stock_after = $lastStockHistory->stock_after - $item['quantity'];
-          $stock_history->created_by = Auth::id();
-          $stock_history->save();
+          if ($lastStockHistory) {
+            // Insert into stock history
+            $stock_history = new StockHistory();
+            $stock_history->id_product_detail = $item['item'];
+            $stock_history->id_transaction = $sale->id;
+            $stock_history->movement_type = MovementType::OUT;
+            $stock_history->quantity = $item['quantity'];
+            $stock_history->stock_before = $lastStockHistory->stock_after;
+            $stock_history->stock_after = $lastStockHistory->stock_after - $item['quantity'];
+            $stock_history->created_by = Auth::id();
+            $stock_history->save();
 
-          $product_detail = ProductDetail::findOrFail($item['item']);
-          $product_detail->quantity = $stock_history->stock_after;
-          $product_detail->updated_by = Auth::id();
-          $product_detail->save();
+            $product_detail = ProductDetail::findOrFail($item['item']);
+            $product_detail->quantity = $stock_history->stock_after;
+            $product_detail->updated_by = Auth::id();
+            $product_detail->save();
+          }
         }
       }
 
@@ -333,21 +345,30 @@ class SaleController extends Controller
 
       $customer = Customer::find($validatedData['id_customer']);
       foreach ($request->input('group-a') as $item) {
-        $findProductDetail = ProductDetail::find($item['item']);
-        $productPrice = 0;
-
-        // Determine the price based on customer type and payment type
-        if ($validatedData['payment_type'] === 'cash') {
-          if ($customer->type === 'user') {
-            $productPrice = $findProductDetail->final_price_user_cash;
-          } else {
-            $productPrice = $findProductDetail->final_price_toko_cash;
-          }
+        if (strpos($item['item'], 'jasa-') === 0) {
+          $serviceId = substr($item['item'], 5);
+          $productDetailId = null;
+          $findService = Service::find($serviceId);
+          $productPrice = $findService->price;
         } else {
-          if ($customer->type === 'toko') {
-            $productPrice = $findProductDetail->final_price_toko_tempo;
+          $findProductDetail = ProductDetail::find($item['item']);
+          $serviceId = null;
+          $productDetailId = $item['item'];
+          $productPrice = 0;
+
+          // Determine the price based on customer type and payment type
+          if ($validatedData['payment_type'] === 'cash') {
+            if ($customer->type === 'user') {
+              $productPrice = $findProductDetail->final_price_user_cash;
+            } else {
+              $productPrice = $findProductDetail->final_price_toko_cash;
+            }
           } else {
-            $productPrice = $findProductDetail->final_price_user_tempo;
+            if ($customer->type === 'toko') {
+              $productPrice = $findProductDetail->final_price_toko_tempo;
+            } else {
+              $productPrice = $findProductDetail->final_price_user_tempo;
+            }
           }
         }
 
@@ -355,15 +376,13 @@ class SaleController extends Controller
         $total_price = $item['quantity'] * $productPrice;
 
         $existingSaleDetail = SaleDetail::where('id_sale', $id)
-          ->where('id_product_detail', $item['item'])
+          ->where('id_product_detail', $productDetailId)
+          ->where('id_service', $serviceId)
           ->first();
 
         if ($existingSaleDetail) {
           // If sale detail exists, check if quantity has changed
           if ($existingSaleDetail->quantity != $item['quantity']) {
-            // Calculate quantity difference
-            $quantityDifference = $item['quantity'] - $existingSaleDetail->quantity;
-
             // Update sale detail with new quantity
             $existingSaleDetail->quantity = $item['quantity'];
             $existingSaleDetail->price = $productPrice;
@@ -371,21 +390,28 @@ class SaleController extends Controller
             $existingSaleDetail->updated_by = Auth::id();
             $existingSaleDetail->save();
 
-            // Update stock history with quantity difference
-            $this->updateStockHistory($id, $item['item'], $quantityDifference);
+            if ($productDetailId !== null) {
+              // Calculate quantity difference
+              $quantityDifference = $item['quantity'] - $existingSaleDetail->quantity;
+              // Update stock history with quantity difference
+              $this->updateStockHistory($id, $productDetailId, $quantityDifference);
+            }
           }
         } else {
           // Sale detail does not exist, create new sale detail
           $saleDetail = new SaleDetail();
           $saleDetail->id_sale = $id;
-          $saleDetail->id_product_detail = $item['item'];
+          $saleDetail->id_product_detail = $productDetailId;
+          $saleDetail->id_service = $serviceId;
           $saleDetail->quantity = $item['quantity'];
           $saleDetail->price = $productPrice;
           $saleDetail->total_price = $total_price;
           $saleDetail->created_by = Auth::id();
           $saleDetail->save();
 
-          $this->updateStockHistory($id, $item['item'], $item['quantity']);
+          if ($productDetailId !== null) {
+            $this->updateStockHistory($id, $productDetailId, $item['quantity']);
+          }
         }
 
         $subtotal_price += $total_price;
@@ -448,18 +474,40 @@ class SaleController extends Controller
   // Function to delete sale details for missing items (for EDIT process)
   private function deleteMissingSaleDetails($items, $saleId)
   {
-    $existingProductDetailIds = array_map(function ($item) {
-      return $item['item'];
-    }, $items);
+    $productDetailIds = [];
+    $serviceIds = [];
 
-    // Find sale details that need to be deleted
-    $saleDetailsToDelete = SaleDetail::where('id_sale', $saleId)
-      ->whereNotIn('id_product_detail', $existingProductDetailIds)
+    // Separate product detail IDs and service IDs
+    foreach ($items as $item) {
+      if (strpos($item['item'], 'jasa-') === 0) {
+        $serviceIds[] = substr($item['item'], 5); // Extract numeric ID from 'jasa-'
+      } else {
+        $productDetailIds[] = $item['item'];
+      }
+    }
+
+    // $existingProductDetailIds = array_map(function ($item) {
+    //   return $item['item'];
+    // }, $items);
+
+    // Find sale details with product details that need to be deleted
+    $productDetailsToDelete = SaleDetail::where('id_sale', $saleId)
+      ->whereNotIn('id_product_detail', $productDetailIds)
       ->get();
 
-    // Delete sale details and update stock history
-    foreach ($saleDetailsToDelete as $saleDetail) {
+    // Find sale details with services that need to be deleted
+    $servicesToDelete = SaleDetail::where('id_sale', $saleId)
+      ->whereNotIn('id_service', $serviceIds)
+      ->get();
+
+    // Delete sale details for product details and update stock history
+    foreach ($productDetailsToDelete as $saleDetail) {
       $this->updateStockHistory($saleId, $saleDetail->id_product_detail, -$saleDetail->quantity);
+      $saleDetail->delete();
+    }
+
+    // Delete sale details for services (no stock history update needed)
+    foreach ($servicesToDelete as $saleDetail) {
       $saleDetail->delete();
     }
   }
@@ -479,7 +527,9 @@ class SaleController extends Controller
 
       // Update stock history for each sale detail
       foreach ($saleDetails as $saleDetail) {
-        $this->updateStockHistory($id, $saleDetail->id_product_detail, -$saleDetail->quantity);
+        if ($saleDetail->id_product_detail !== null) {
+          $this->updateStockHistory($id, $saleDetail->id_product_detail, -$saleDetail->quantity);
+        }
       }
 
       DB::commit();
@@ -498,13 +548,28 @@ class SaleController extends Controller
     $customer = Customer::findOrFail($sale->id_customer);
     $saleDetails = SaleDetail::where('id_sale', $id)
       ->selectRaw(
-        'CONCAT(p.name, " - ", sizes.code) as product_name, pd.code as product_code,
-        sale_details.quantity as sale_quantity, uoms.code as product_uom, sale_details.price, sale_details.total_price'
+        // 'CONCAT(p.name, " - ", sizes.code) as product_name, pd.code as product_code,
+        // sale_details.quantity as sale_quantity, uoms.code as product_uom, sale_details.price, sale_details.total_price'
+        'CASE
+            WHEN sale_details.id_product_detail IS NOT NULL THEN CONCAT(p.name, " - ", sizes.code)
+            ELSE services.name
+         END as product_name,
+         CASE
+            WHEN sale_details.id_product_detail IS NOT NULL THEN pd.code
+            ELSE "-"
+         END as product_code,
+         sale_details.quantity as sale_quantity,
+         CASE
+            WHEN sale_details.id_product_detail IS NOT NULL THEN uoms.code
+            ELSE "-"
+         END as product_uom,
+         sale_details.price, sale_details.total_price'
       )
       ->leftJoin('product_details as pd', 'pd.id', 'sale_details.id_product_detail')
       ->leftJoin('sizes', 'sizes.id', 'pd.id_size')
       ->leftJoin('products as p', 'p.id', 'pd.id_product')
       ->leftJoin('uoms', 'uoms.id', 'p.id_uom')
+      ->leftJoin('services', 'services.id', 'sale_details.id_service')
       ->get();
 
     foreach ($saleDetails as $detail) {
@@ -532,13 +597,28 @@ class SaleController extends Controller
     $customer = Customer::findOrFail($sale->id_customer);
     $saleDetails = SaleDetail::where('id_sale', $id)
       ->selectRaw(
-        'CONCAT(p.name, " - ", sizes.code) as product_name, pd.code as product_code,
-        sale_details.quantity as sale_quantity, uoms.code as product_uom, sale_details.price, sale_details.total_price'
+        // 'CONCAT(p.name, " - ", sizes.code) as product_name, pd.code as product_code,
+        // sale_details.quantity as sale_quantity, uoms.code as product_uom, sale_details.price, sale_details.total_price'
+        'CASE
+            WHEN sale_details.id_product_detail IS NOT NULL THEN CONCAT(p.name, " - ", sizes.code)
+            ELSE services.name
+         END as product_name,
+         CASE
+            WHEN sale_details.id_product_detail IS NOT NULL THEN pd.code
+            ELSE "-"
+         END as product_code,
+         sale_details.quantity as sale_quantity,
+         CASE
+            WHEN sale_details.id_product_detail IS NOT NULL THEN uoms.code
+            ELSE "-"
+         END as product_uom,
+         sale_details.price, sale_details.total_price'
       )
       ->leftJoin('product_details as pd', 'pd.id', 'sale_details.id_product_detail')
       ->leftJoin('sizes', 'sizes.id', 'pd.id_size')
       ->leftJoin('products as p', 'p.id', 'pd.id_product')
       ->leftJoin('uoms', 'uoms.id', 'p.id_uom')
+      ->leftJoin('services', 'services.id', 'sale_details.id_service')
       ->get();
 
     foreach ($saleDetails as $detail) {
