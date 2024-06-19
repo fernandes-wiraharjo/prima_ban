@@ -131,7 +131,10 @@
                     <select class="form-select item-details mb-2" name="group-a[{{ $index }}][item]">
                       <option selected disabled>Select Item</option>
                       @foreach($products as $id => $name)
-                        <option value="{{ $id }}" {{ $detail->id_product_detail == $id ? 'selected' : '' }}>{{ $name }}</option>
+                        <option value="{{ $id }}"
+                          {{ $detail->id_product_detail == $id || 'jasa-' . $detail->id_service == $id  ? 'selected' : '' }}>
+                          {{ $name }}
+                        </option>
                       @endforeach
                     </select>
                   </div>

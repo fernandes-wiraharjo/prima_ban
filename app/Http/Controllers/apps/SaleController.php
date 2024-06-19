@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\ProductDetail;
 use App\Models\Sale;
 use App\Models\SaleDetail;
+use App\Models\Service;
 use App\Models\StockHistory;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
