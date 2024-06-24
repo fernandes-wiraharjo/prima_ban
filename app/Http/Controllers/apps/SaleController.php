@@ -494,11 +494,13 @@ class SaleController extends Controller
     // Find sale details with product details that need to be deleted
     $productDetailsToDelete = SaleDetail::where('id_sale', $saleId)
       ->whereNotIn('id_product_detail', $productDetailIds)
+      ->whereNull('id_service')
       ->get();
 
     // Find sale details with services that need to be deleted
     $servicesToDelete = SaleDetail::where('id_sale', $saleId)
       ->whereNotIn('id_service', $serviceIds)
+      ->whereNull('id_product_detail')
       ->get();
 
     // Delete sale details for product details and update stock history
