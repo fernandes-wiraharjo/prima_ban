@@ -94,7 +94,7 @@ class CustomerController extends Controller
         'address' => 'required|max:250',
         'phone_no' => 'required|max:30',
         'pic_name' => 'required|max:50',
-        'bank_account_no' => 'required|max:20',
+        'bank_account_no' => 'required|max:50',
         'is_active' => 'required|in:0,1',
       ]);
 
@@ -137,7 +137,7 @@ class CustomerController extends Controller
       'address' => 'required|max:250',
       'phone_no' => 'required|max:30',
       'pic_name' => 'required|max:50',
-      'bank_account_no' => 'required|max:20',
+      'bank_account_no' => 'required|max:50',
       'is_active' => 'required|in:0,1',
     ]);
 
