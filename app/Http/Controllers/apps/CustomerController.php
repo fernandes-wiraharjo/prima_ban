@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\apps;
 
 use App\Models\Customer;
-use App\Models\Sales;
+use App\Models\Sale;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -159,7 +159,7 @@ class CustomerController extends Controller
 
   public function delete($id)
   {
-    $relatedSales = Sales::where('id_customer', $id)->exists();
+    $relatedSales = Sale::where('id_customer', $id)->exists();
     if ($relatedSales) {
       return response()->json(['message' => 'Cannot delete customer as it has associated sales.'], 200);
     }
