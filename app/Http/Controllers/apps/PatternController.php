@@ -84,7 +84,7 @@ class PatternController extends Controller
     try {
       // Validate the request
       $validatedData = $request->validate([
-        'parent_brand' => 'required|in:Bridgestone,GT',
+        'parent_brand' => 'required',
         'id_brand' => 'required|exists:brands,id',
         'name' => 'required|max:50',
         'is_active' => 'required|in:0,1',
@@ -131,7 +131,7 @@ class PatternController extends Controller
   public function edit(Request $request, $id)
   {
     $validatedData = $request->validate([
-      'parent_brand' => 'required|in:Bridgestone,GT',
+      'parent_brand' => 'required',
       'id_brand' => 'required|exists:brands,id',
       'name' => 'required|max:50',
       'is_active' => 'required|in:0,1',

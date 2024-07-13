@@ -104,7 +104,7 @@ class ProductController extends Controller
     try {
       // Validate the request
       $validatedData = $request->validate([
-        'parent_brand' => 'required|in:Bridgestone,GT',
+        'parent_brand' => 'required',
         'id_brand' => 'required|exists:brands,id',
         'id_pattern' => 'required|exists:patterns,id',
         'id_uom' => 'required|exists:uoms,id',
@@ -145,7 +145,7 @@ class ProductController extends Controller
   public function edit(Request $request, $id)
   {
     $validatedData = $request->validate([
-      'parent_brand' => 'required|in:Bridgestone,GT',
+      'parent_brand' => 'required',
       'id_brand' => 'required|exists:brands,id',
       'id_pattern' => 'required|exists:patterns,id',
       'id_uom' => 'required|exists:uoms,id',
