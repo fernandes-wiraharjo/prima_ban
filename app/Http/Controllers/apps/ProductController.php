@@ -34,7 +34,7 @@ class ProductController extends Controller
       ->leftJoin('uoms', 'products.id_uom', '=', 'uoms.id')
       ->select(
         'products.*',
-        'patterns.parent_brand',
+        // 'patterns.parent_brand',
         'brands.name as brand_name',
         'patterns.name as pattern_name',
         'uoms.code as uom_name'
@@ -71,7 +71,7 @@ class ProductController extends Controller
       $query->where(function ($query) use ($searchValue) {
         $query
           ->where('products.name', 'like', $searchValue)
-          ->orWhere('parent_brand', 'like', $searchValue)
+          ->orWhere('products.parent_brand', 'like', $searchValue)
           ->orWhere('brands.name', 'like', $searchValue)
           ->orWhere('patterns.name', 'like', $searchValue)
           ->orWhere('uoms.code', 'like', $searchValue);
