@@ -106,6 +106,8 @@
             <option value="Arpi">Arpi</option>
             <option value="Astra">Astra</option>
             <option value="Mitsubishi">Mitsubishi</option>
+            <option value="GS">GS</option>
+            <option value="Yuasa">Yuasa</option>
           </select>
         </div>
         <div class="mb-3">
@@ -174,26 +176,28 @@
                 <option value="Bridgestone">Bridgestone</option>
                 <option value="GT">GT</option>
                 <option value="Dunlop">Dunlop</option>
-              <option value="Goodyear">Goodyear</option>
-              <option value="Toyo">Toyo</option>
-              <option value="Michelin">Michelin</option>
-              <option value="Hankook">Hankook</option>
-              <option value="Maxxis">Maxxis</option>
-              <option value="Accelera">Accelera</option>
-              <option value="Pirelli">Pirelli</option>
-              <option value="Continental">Continental</option>
-              <option value="Pertamina">Pertamina</option>
-              <option value="Shell">Shell</option>
-              <option value="Jumbo">Jumbo</option>
-              <option value="Mobil">Mobil</option>
-              <option value="Castrol">Castrol</option>
-              <option value="Deli">Deli</option>
-              <option value="Isuzu">Isuzu</option>
-              <option value="Sakura">Sakura</option>
-              <option value="Toyota">Toyota</option>
-              <option value="Arpi">Arpi</option>
-              <option value="Astra">Astra</option>
-              <option value="Mitsubishi">Mitsubishi</option>
+                <option value="Goodyear">Goodyear</option>
+                <option value="Toyo">Toyo</option>
+                <option value="Michelin">Michelin</option>
+                <option value="Hankook">Hankook</option>
+                <option value="Maxxis">Maxxis</option>
+                <option value="Accelera">Accelera</option>
+                <option value="Pirelli">Pirelli</option>
+                <option value="Continental">Continental</option>
+                <option value="Pertamina">Pertamina</option>
+                <option value="Shell">Shell</option>
+                <option value="Jumbo">Jumbo</option>
+                <option value="Mobil">Mobil</option>
+                <option value="Castrol">Castrol</option>
+                <option value="Deli">Deli</option>
+                <option value="Isuzu">Isuzu</option>
+                <option value="Sakura">Sakura</option>
+                <option value="Toyota">Toyota</option>
+                <option value="Arpi">Arpi</option>
+                <option value="Astra">Astra</option>
+                <option value="Mitsubishi">Mitsubishi</option>
+                <option value="GS">GS</option>
+                <option value="Yuasa">Yuasa</option>
               </select>
             </div>
             <div class="mb-3">

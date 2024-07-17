@@ -82,6 +82,8 @@
           <option value="Arpi">Arpi</option>
           <option value="Astra">Astra</option>
           <option value="Mitsubishi">Mitsubishi</option>
+          <option value="GS">GS</option>
+          <option value="Yuasa">Yuasa</option>
         </select>
       </div>
       <div class="col-md-4 align-self-end">
