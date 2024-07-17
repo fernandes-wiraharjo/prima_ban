@@ -73,7 +73,7 @@
 
       <div class="text-center mt-4 mb-3">
         <h6>
-          <span style="position: absolute; left: 0; margin-left: 20px;">Teknisi: {{ $sale->technician }}</span>
+          <span style="position: absolute; left: 0; margin-left: 20px;">No Kendaraan: {{ $sale->technician }}</span>
           <span style="position: relative;">NOTA: {{ $sale->invoice_no }}</span>
         </h6>
       </div>

@@ -93,7 +93,7 @@
                 </div>
               </dd>
               <dt class="col-sm-6 mb-2 mb-sm-0 text-md-end">
-                <span class="fw-normal">Teknisi: </span>
+                <span class="fw-normal">No Kendaraan: </span>
               </dt>
               <dd class="col-sm-6 d-flex justify-content-md-end">
                 <div class="w-px-150">
