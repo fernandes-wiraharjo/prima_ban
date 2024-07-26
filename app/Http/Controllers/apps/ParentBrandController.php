@@ -2,25 +2,25 @@
 
 namespace App\Http\Controllers\apps;
 
-use App\Models\Brand;
-use App\Models\Product;
+use App\Models\ParentBrand;
 use App\Models\Pattern;
+use App\Models\Product;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\ValidationException;
 
-class BrandController extends Controller
+class ParentBrandController extends Controller
 {
   public function index()
   {
-    return view('content.masters.master-brand-list');
+    return view('content.masters.master-parent-brand-list');
   }
 
   public function get(Request $request)
   {
-    $query = Brand::query();
+    $query = ParentBrand::query();
 
     $sortableColumns = [
       0 => '',
@@ -82,14 +82,14 @@ class BrandController extends Controller
       ]);
 
       // Create a new brand instance
-      $brand = new Brand();
+      $brand = new ParentBrand();
       $brand->name = $validatedData['name'];
       $brand->is_active = $validatedData['is_active'];
       $brand->created_by = Auth::id();
       $brand->save();
 
       // Redirect or respond with success message
-      return Redirect::back()->with('success', 'Group type created successfully.');
+      return Redirect::back()->with('success', 'Brand created successfully.');
     } catch (ValidationException $e) {
       // Validation failed, redirect back with errors
       return Redirect::back()
@@ -97,13 +97,13 @@ class BrandController extends Controller
         ->withInput();
     } catch (\Exception $e) {
       // Other exceptions (e.g., database errors)
-      return Redirect::back()->with('othererror', 'An error occurred while creating the group type.');
+      return Redirect::back()->with('othererror', 'An error occurred while creating the brand.');
     }
   }
 
   public function getById($id)
   {
-    $brand = Brand::findOrFail($id);
+    $brand = ParentBrand::findOrFail($id);
     return response()->json($brand);
   }
 
@@ -114,36 +114,36 @@ class BrandController extends Controller
       'is_active' => 'required|in:0,1',
     ]);
 
-    $brand = Brand::findOrFail($id);
+    $brand = ParentBrand::findOrFail($id);
     $brand->name = $validatedData['name'];
     $brand->is_active = $validatedData['is_active'];
     $brand->updated_by = Auth::id();
     $brand->save();
 
     return redirect()
-      ->route('master-brand')
-      ->with('success', 'Group type updated successfully.');
+      ->route('master-parent-brand')
+      ->with('success', 'Brand updated successfully.');
   }
 
-  public function delete($id)
+  public function delete($name)
   {
-    $relatedProduct = Product::where('id_brand', $id)->exists();
+    $relatedProduct = Product::where('parent_brand', $name)->exists();
     if ($relatedProduct) {
-      return response()->json(['message' => 'Cannot delete group type as it has associated product.'], 200);
+      return response()->json(['message' => 'Cannot delete brand as it has associated product.'], 200);
     }
 
-    $relatedPattern = Pattern::where('id_brand', $id)->exists();
+    $relatedPattern = Pattern::where('parent_brand', $name)->exists();
     if ($relatedPattern) {
-      return response()->json(['message' => 'Cannot delete group type as it has associated pattern.'], 200);
+      return response()->json(['message' => 'Cannot delete brand as it has associated pattern.'], 200);
     }
 
     // Find the Brand by ID
-    $brand = Brand::findOrFail($id);
+    $brand = ParentBrand::findOrFail($id);
 
     // Delete the brand
     $brand->delete();
 
     // Return a response indicating success
-    return response()->json(['message' => 'Group type deleted successfully'], 200);
+    return response()->json(['message' => 'Brand deleted successfully'], 200);
   }
 }

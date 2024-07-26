@@ -22,6 +22,12 @@
       "slug": "master-supplier"
     },
     {
+      "url": "master/parent-brand",
+      "name": "Brands",
+      "icon": "menu-icon tf-icons bx bx-sitemap",
+      "slug": "master-parent-brand"
+    },
+    {
       "url": "master/brand",
       "name": "Group Types",
       "icon": "menu-icon tf-icons bx bx-sitemap",

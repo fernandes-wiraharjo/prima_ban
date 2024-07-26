@@ -211,6 +211,16 @@ Route::middleware(['auth'])->group(function () {
     });
 
     //brands
+    Route::prefix('parent-brand')->group(function () {
+      Route::get('/', [ParentBrandController::class, 'index'])->name('master-parent-brand');
+      Route::get('/get', [ParentBrandController::class, 'get'])->name('get-parent-brand');
+      Route::get('/{id}', [ParentBrandController::class, 'getById'])->name('get-parent-brand-by-id');
+      Route::post('/add', [ParentBrandController::class, 'add'])->name('add-parent-brand');
+      Route::put('/{id}', [ParentBrandController::class, 'edit'])->name('edit-parent-brand');
+      Route::delete('/{id}', [ParentBrandController::class, 'delete'])->name('delete-parent-brand');
+    });
+
+    //group types
     Route::prefix('brand')->group(function () {
       Route::get('/', [BrandController::class, 'index'])->name('master-brand');
       Route::get('/get', [BrandController::class, 'get'])->name('get-brand');
