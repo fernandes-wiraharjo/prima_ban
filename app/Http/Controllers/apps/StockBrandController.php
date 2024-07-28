@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\apps;
 
+use App\Models\ParentBrand;
 use App\Models\ProductDetail;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,7 +14,8 @@ class StockBrandController extends Controller
 {
   public function index()
   {
-    return view('content.transactions.stock-brand');
+    $parentBrands = ParentBrand::where('is_active', true)->pluck('name', 'id');
+    return view('content.transactions.stock-brand', ['parentBrands' => $parentBrands]);
   }
 
   public function print($brand)

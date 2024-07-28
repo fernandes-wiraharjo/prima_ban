@@ -138,7 +138,12 @@ class ParentBrandController extends Controller
     }
 
     // Find the Brand by ID
-    $brand = ParentBrand::findOrFail($id);
+    $brand = ParentBrand::where('name', $name)->first();
+
+    // If brand not found, return a 404 response
+    if (!$brand) {
+      return response()->json(['message' => 'Brand not found.'], 404);
+    }
 
     // Delete the brand
     $brand->delete();

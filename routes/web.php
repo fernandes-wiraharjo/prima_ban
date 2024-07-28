@@ -22,6 +22,7 @@ use App\Http\Controllers\front_pages\Payment;
 use App\Http\Controllers\front_pages\Checkout;
 use App\Http\Controllers\front_pages\HelpCenter;
 use App\Http\Controllers\front_pages\HelpCenterArticle;
+use App\Http\Controllers\apps\ParentBrandController;
 use App\Http\Controllers\apps\BrandController;
 use App\Http\Controllers\apps\Email;
 use App\Http\Controllers\apps\Chat;

@@ -83,31 +83,9 @@
           <label class="form-label" for="parent-brand">Brand</label>
           <select id="parent-brand" name="parent_brand" class="select2 selectParentBrand form-select">
             <option value="">Select</option>
-            <option value="Bridgestone">Bridgestone</option>
-            <option value="GT">GT</option>
-            <option value="Dunlop">Dunlop</option>
-            <option value="Goodyear">Goodyear</option>
-            <option value="Toyo">Toyo</option>
-            <option value="Michelin">Michelin</option>
-            <option value="Hankook">Hankook</option>
-            <option value="Maxxis">Maxxis</option>
-            <option value="Accelera">Accelera</option>
-            <option value="Pirelli">Pirelli</option>
-            <option value="Continental">Continental</option>
-            <option value="Pertamina">Pertamina</option>
-            <option value="Shell">Shell</option>
-            <option value="Jumbo">Jumbo</option>
-            <option value="Mobil">Mobil</option>
-            <option value="Castrol">Castrol</option>
-            <option value="Deli">Deli</option>
-            <option value="Isuzu">Isuzu</option>
-            <option value="Sakura">Sakura</option>
-            <option value="Toyota">Toyota</option>
-            <option value="Arpi">Arpi</option>
-            <option value="Astra">Astra</option>
-            <option value="Mitsubishi">Mitsubishi</option>
-            <option value="GS">GS</option>
-            <option value="Yuasa">Yuasa</option>
+            @foreach($parentBrands as $id => $name)
+              <option value="{{ $name }}">{{ $name }}</option>
+            @endforeach
           </select>
         </div>
         <div class="mb-3">
@@ -173,31 +151,9 @@
               <label class="form-label" for="edit-parent-brand">Brand</label>
               <select id="edit-parent-brand" name="parent_brand" class="select2 selectParentBrand form-select">
                 <option value="">Select</option>
-                <option value="Bridgestone">Bridgestone</option>
-                <option value="GT">GT</option>
-                <option value="Dunlop">Dunlop</option>
-                <option value="Goodyear">Goodyear</option>
-                <option value="Toyo">Toyo</option>
-                <option value="Michelin">Michelin</option>
-                <option value="Hankook">Hankook</option>
-                <option value="Maxxis">Maxxis</option>
-                <option value="Accelera">Accelera</option>
-                <option value="Pirelli">Pirelli</option>
-                <option value="Continental">Continental</option>
-                <option value="Pertamina">Pertamina</option>
-                <option value="Shell">Shell</option>
-                <option value="Jumbo">Jumbo</option>
-                <option value="Mobil">Mobil</option>
-                <option value="Castrol">Castrol</option>
-                <option value="Deli">Deli</option>
-                <option value="Isuzu">Isuzu</option>
-                <option value="Sakura">Sakura</option>
-                <option value="Toyota">Toyota</option>
-                <option value="Arpi">Arpi</option>
-                <option value="Astra">Astra</option>
-                <option value="Mitsubishi">Mitsubishi</option>
-                <option value="GS">GS</option>
-                <option value="Yuasa">Yuasa</option>
+                @foreach($parentBrands as $id => $name)
+                  <option value="{{ $name }}">{{ $name }}</option>
+                @endforeach
               </select>
             </div>
             <div class="mb-3">

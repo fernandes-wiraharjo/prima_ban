@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\apps;
 
+use App\Models\ParentBrand;
 use App\Models\Brand;
 use App\Models\Pattern;
 use App\Models\Product;
@@ -16,7 +17,8 @@ class PatternController extends Controller
   public function index()
   {
     $brands = Brand::where('is_active', true)->pluck('name', 'id');
-    return view('content.masters.master-pattern-list', ['brands' => $brands]);
+    $parentBrands = ParentBrand::where('is_active', true)->pluck('name', 'id');
+    return view('content.masters.master-pattern-list', ['parentBrands' => $parentBrands, 'brands' => $brands]);
   }
 
   public function get(Request $request)

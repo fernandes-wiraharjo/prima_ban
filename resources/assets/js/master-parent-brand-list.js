@@ -1,5 +1,5 @@
 /**
- * Page Group Type List
+ * Page Brand List
  */
 
 'use strict';
@@ -32,7 +32,7 @@ $(function () {
       processing: true,
       serverSide: true,
       ajax: {
-        url: '/master/brand/get',
+        url: '/master/parent-brand/get',
         type: 'GET',
         dataSrc: 'data' // Specify the property containing the data array in the JSON response
       },
@@ -172,7 +172,7 @@ $(function () {
     var brandId = $(this).data('id');
     // Retrieve customer data via AJAX and populate the form fields
     $.ajax({
-      url: '/master/brand/' + brandId,
+      url: '/master/parent-brand/' + brandId,
       type: 'GET',
       headers: {
         'X-CSRF-TOKEN': token
@@ -180,7 +180,7 @@ $(function () {
       success: function (response) {
         // Populate the form fields with customer data
         $('#edit-brand-id').val(response.id);
-        $('#editBrandForm').attr('action', '/master/brand/' + response.id);
+        $('#editBrandForm').attr('action', '/master/parent-brand/' + response.id);
         $('#edit-brand-name').val(response.name);
         $('#edit-status_' + response.is_active).prop('checked', true);
 
@@ -198,12 +198,11 @@ $(function () {
   // Delete Record
   $('.datatables-brands tbody').on('click', '.delete-record', function () {
     // dt_user.row($(this).parents('tr')).remove().draw();
-    var brandId = $(this).data('id');
     var name = $(this).data('name');
-    if (confirm('Are you sure you want to delete group type ' + name + ' ?')) {
+    if (confirm('Are you sure you want to delete brand ' + name + ' ?')) {
       // Send AJAX request to delete brand
       $.ajax({
-        url: '/master/brand/' + brandId,
+        url: '/master/parent-brand/' + name,
         type: 'DELETE',
         headers: {
           'X-CSRF-TOKEN': token

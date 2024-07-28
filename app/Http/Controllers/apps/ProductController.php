@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\apps;
 
 use App\Enums\MovementType;
+use App\Models\ParentBrand;
 use App\Models\Brand;
 use App\Models\DeliveryOrderDetail;
 use App\Models\PurchaseDetail;
@@ -24,7 +25,12 @@ class ProductController extends Controller
   {
     $brands = Brand::where('is_active', true)->pluck('name', 'id');
     $uoms = UOM::where('is_active', true)->pluck('code', 'id');
-    return view('content.masters.master-product-list', ['brands' => $brands, 'uoms' => $uoms]);
+    $parentBrands = ParentBrand::where('is_active', true)->pluck('name', 'id');
+    return view('content.masters.master-product-list', [
+      'parentBrands' => $parentBrands,
+      'brands' => $brands,
+      'uoms' => $uoms,
+    ]);
   }
 
   public function get(Request $request)

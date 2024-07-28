@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Pattern Page')
+@section('title', 'Brand Page')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}">
@@ -23,12 +23,11 @@
 @endsection
 
 @section('page-script')
-<script src="{{asset('assets/js/master-pattern-list.js')}}"></script>
+<script src="{{asset('assets/js/master-parent-brand-list.js')}}"></script>
 @endsection
 
 @section('content')
 
-<!-- Users List Table -->
   @if(session('success'))
     <div class="alert alert-primary alert-dismissible" role="alert">
       {{ session('success') }}
@@ -55,49 +54,29 @@
 
 <div class="card">
   <div class="card-datatable table-responsive">
-    <table class="datatables-patterns table border-top">
+    <table class="datatables-brands table border-top">
       <thead>
         <tr>
           <th></th>
-          <th>Brand</th>
-          <th>Group Type</th>
-          <th>Pattern</th>
+          <th>Name</th>
           <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
     </table>
   </div>
-  <!-- Offcanvas to add new -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAdd" aria-labelledby="offcanvasAddLabel">
+  <!-- Offcanvas to add new brand -->
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasAddBrand" aria-labelledby="offcanvasAddBrandLabel">
     <div class="offcanvas-header">
-      <h5 id="offcanvasAddLabel" class="offcanvas-title">Add Pattern</h5>
+      <h5 id="offcanvasAddBrandLabel" class="offcanvas-title">Add Brand</h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">
-      <form class="add-new pt-0" id="addNewForm" onsubmit="return false" action="{{ route('add-pattern') }}" method="POST">
+      <form class="add-new-brand pt-0" id="addNewBrandForm" onsubmit="return false" action="{{ route('add-parent-brand') }}" method="POST">
         @csrf
         <div class="mb-3">
-          <label class="form-label" for="parent-brand">Brand</label>
-          <select id="parent-brand" name="parent_brand" class="select2 form-select">
-            <option value="">Select</option>
-            @foreach($parentBrands as $id => $name)
-              <option value="{{ $name }}">{{ $name }}</option>
-            @endforeach
-          </select>
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="brand">Group Type</label>
-          <select id="brand" name="id_brand" class="select2 form-select">
-            <option value="">Select</option>
-            @foreach($brands as $id => $name)
-              <option value="{{ $id }}">{{ $name }}</option>
-            @endforeach
-          </select>
-        </div>
-        <div class="mb-3">
-          <label class="form-label" for="add-name">Name</label>
-          <input type="text" class="form-control" id="add-name" placeholder="name" name="name" aria-label="name" />
+          <label class="form-label" for="add-brand-name">Name</label>
+          <input type="text" class="form-control" id="add-brand-name" placeholder="name" name="name" aria-label="name" />
         </div>
         <div class="mb-3">
           <label class="form-label d-block">Status</label>
@@ -112,7 +91,6 @@
             </div>
           </small>
         </div>
-        <br><br><br><br>
         <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</button>
         <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
       </form>
@@ -120,37 +98,19 @@
   </div>
 
   <!-- edit form -->
-  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEdit" aria-labelledby="offcanvasEditLabel">
+  <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasEditBrand" aria-labelledby="offcanvasEditBrandLabel">
     <div class="offcanvas-header">
-        <h5 id="offcanvasEditLabel" class="offcanvas-title">Edit Pattern</h5>
+        <h5 id="offcanvasEditBrandLabel" class="offcanvas-title">Edit Brand</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body mx-0 flex-grow-0">
-        <form class="edit-form pt-0" id="editForm" onsubmit="return false" action="{{ route('edit-pattern', ['id' => 0]) }}" method="POST">
+        <form class="edit-brand-form pt-0" id="editBrandForm" onsubmit="return false" action="{{ route('edit-brand', ['id' => 0]) }}" method="POST">
         @method('PUT')
         @csrf
-            <input type="hidden" id="edit-id" name="id">
+            <input type="hidden" id="edit-brand-id" name="brand_id">
             <div class="mb-3">
-              <label class="form-label" for="edit-parent-brand">Brand</label>
-              <select id="edit-parent-brand" name="parent_brand" class="select2 form-select">
-              <option value="">Select</option>
-              @foreach($parentBrands as $id => $name)
-                <option value="{{ $name }}">{{ $name }}</option>
-              @endforeach
-              </select>
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="edit-brand">Group Type</label>
-              <select id="edit-brand" name="id_brand" class="select2 form-select">
-                <option value="">Select</option>
-                @foreach($brands as $id => $name)
-                  <option value="{{ $id }}">{{ $name }}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="edit-name">Name</label>
-              <input type="text" class="form-control" id="edit-name" placeholder="name" name="name" aria-label="name" />
+              <label class="form-label" for="edit-brand-name">Name</label>
+              <input type="text" class="form-control" id="edit-brand-name" placeholder="name" name="name" aria-label="name" />
             </div>
             <div class="mb-3">
               <label class="form-label d-block">Status</label>
@@ -165,7 +125,6 @@
                 </div>
               </small>
             </div>
-            <br><br><br><br>
             <button type="submit" class="btn btn-primary me-sm-3 me-1 data-submit">Submit</button>
             <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="offcanvas">Cancel</button>
         </form>
