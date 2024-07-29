@@ -249,7 +249,7 @@
       </div>
     </div>
     <div class="summary-totals">
-    <div class="payment">
+      <div class="payment">
         <p><strong>Pembayaran ke rek:</strong> <br> {{ $sale->bank_account_no }}</p>
       </div>
       <div class="text-end">
