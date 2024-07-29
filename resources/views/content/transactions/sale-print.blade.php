@@ -98,6 +98,30 @@
   .small-line-space {
     margin-top: -5px;
   }
+
+  .summary-section {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #dee2e6;
+    padding-top: 10px;
+  }
+  .note-payment {
+    display: flex;
+    flex-direction: column;
+    width: 35%;
+  }
+  .note, .payment {
+    margin-bottom: 10px;
+  }
+  .summary-totals {
+    display: flex;
+    justify-content: space-between;
+    width: 60%;
+  }
+  .summary-totals .text-end {
+    margin-right: 10px;
+  }
 </style>
 @endsection
 
@@ -179,7 +203,7 @@
             <td>{{ $detail->total_price }}</td>
           </tr>
         @endforeach
-          <tr class="bottom-row">
+          <!-- <tr class="bottom-row">
             <td colspan="2" class="align-top">
               Note: <br> {{ $sale->note }}
             </td>
@@ -196,7 +220,7 @@
               <p class="mb-0">{{ $sale->discount }}</p>
               <p class="mb-0">{{ $sale->final_price }}</p>
             </td>
-          </tr>
+          </tr> -->
           <!-- <tr class="bottom-row">
             <td colspan="4" class="align-top">
               Tanda Terima,
@@ -215,6 +239,30 @@
           </tr> -->
       </tbody>
     </table>
+  </div>
+
+  <!-- Summary section -->
+  <div class="summary-section">
+    <div class="note-payment">
+      <div class="note">
+        <p><strong>Note:</strong> <br> {{ $sale->note }}</p>
+      </div>
+    </div>
+    <div class="summary-totals">
+    <div class="payment">
+        <p><strong>Pembayaran ke rek:</strong> <br> {{ $sale->bank_account_no }}</p>
+      </div>
+      <div class="text-end">
+        <p class="mb-0"><strong>Subtotal:</strong></p>
+        <p class="mb-0"><strong>Diskon:</strong></p>
+        <p class="mb-0"><strong>Total:</strong></p>
+      </div>
+      <div>
+        <p class="mb-0">{{ $sale->subtotal_price }}</p>
+        <p class="mb-0">{{ $sale->discount }}</p>
+        <p class="mb-0">{{ $sale->final_price }}</p>
+      </div>
+    </div>
   </div>
 
   <hr>
