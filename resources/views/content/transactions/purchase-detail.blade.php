@@ -100,7 +100,7 @@
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-quantity">Quantity</label>
-          <input type="text" class="form-control" id="add-quantity" placeholder="quantity" name="quantity" aria-label="quantity" onkeyup="formatNumber(this)" onblur="updateTotalPrice('add')" />
+          <input type="text" class="form-control" id="add-quantity" placeholder="quantity" name="quantity" aria-label="quantity" onblur="updateTotalPrice('add')" />
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-total">Total</label>
@@ -140,7 +140,7 @@
             </div>
             <div class="mb-3">
               <label class="form-label" for="edit-quantity">Quantity</label>
-              <input type="text" class="form-control" id="edit-quantity" placeholder="quantity" name="quantity" aria-label="quantity" onkeyup="formatNumber(this)" onblur="updateTotalPrice('edit')" />
+              <input type="text" class="form-control" id="edit-quantity" placeholder="quantity" name="quantity" aria-label="quantity" onblur="updateTotalPrice('edit')" />
             </div>
             <div class="mb-3">
               <label class="form-label" for="edit-total">Total</label>

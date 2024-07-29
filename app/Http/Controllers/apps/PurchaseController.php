@@ -269,8 +269,11 @@ class PurchaseController extends Controller
       ]);
 
       $price = str_replace('.', '', $validatedData['price']);
-      $quantity = str_replace('.', '', $validatedData['quantity']);
+      $quantity = strtr($validatedData['quantity'], ['.' => '', ',' => '.']);
       $total_price = str_replace('.', '', $validatedData['total_price']);
+
+      // Convert the normalized quantity to a float value
+      $quantity = floatval($quantity);
 
       // Create a new data instance
       $data = new PurchaseDetail();
@@ -335,8 +338,11 @@ class PurchaseController extends Controller
       ]);
 
       $price = str_replace('.', '', $validatedData['price']);
-      $quantity = str_replace('.', '', $validatedData['quantity']);
+      $quantity = strtr($validatedData['quantity'], ['.' => '', ',' => '.']);
       $total_price = str_replace('.', '', $validatedData['total_price']);
+
+      // Convert the normalized quantity to a float value
+      $quantity = floatval($quantity);
 
       $data = PurchaseDetail::findOrFail($id);
       $data->id_purchase = $validatedData['id_purchase'];
