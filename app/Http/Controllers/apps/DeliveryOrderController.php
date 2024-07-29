@@ -88,6 +88,7 @@ class DeliveryOrderController extends Controller
       ->leftJoin('products as p', 'p.id', 'product_details.id_product')
       ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
       ->where('product_details.is_active', true)
+      ->where('p.is_active', true)
       ->orderBy('p.name')
       ->pluck('name', 'id');
     return view('content.transactions.delivery-order-add', ['suppliers' => $suppliers, 'products' => $products]);
@@ -155,6 +156,7 @@ class DeliveryOrderController extends Controller
       ->leftJoin('products as p', 'p.id', 'product_details.id_product')
       ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
       ->where('product_details.is_active', true)
+      ->where('p.is_active', true)
       ->orderBy('p.name')
       ->pluck('name', 'id');
     $deliverOrder = DeliveryOrder::findOrFail($id);

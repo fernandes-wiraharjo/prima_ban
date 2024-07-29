@@ -177,6 +177,7 @@ class PurchaseController extends Controller
     $productDetails = ProductDetail::leftJoin('products as p', 'p.id', 'product_details.id_product')
       ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
       ->where('product_details.is_active', true)
+      ->where('p.is_active', true)
       ->selectRaw('product_details.id, CONCAT(p.name, " - ", sizes.code) as product_detail_name')
       ->pluck('product_detail_name', 'id');
     $purchase = Purchase::leftJoin('suppliers', 'suppliers.id', 'purchases.id_supplier')

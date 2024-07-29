@@ -145,11 +145,11 @@ $(function () {
               '<button class="btn btn-sm btn-icon edit-record" data-id="' +
               $id +
               '"><i class="bx bx-edit"></i></button>' +
-              '<button class="btn btn-sm btn-icon delete-record" data-id="' +
-              $id +
-              '" data-name="' +
-              $name +
-              '"><i class="bx bx-trash"></i></button>' +
+              // '<button class="btn btn-sm btn-icon delete-record" data-id="' +
+              // $id +
+              // '" data-name="' +
+              // $name +
+              // '"><i class="bx bx-trash"></i></button>' +
               '<button class="btn btn-sm btn-icon" data-id="' +
               $id +
               '" data-name="' +

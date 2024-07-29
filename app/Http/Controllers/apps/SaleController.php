@@ -106,7 +106,8 @@ class SaleController extends Controller
       ->selectRaw('product_details.id, CONCAT(p.name, " - ", sizes.code) as name')
       ->leftJoin('products as p', 'p.id', 'product_details.id_product')
       ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
-      ->where('product_details.is_active', true);
+      ->where('product_details.is_active', true)
+      ->where('p.is_active', true);
 
     $services = DB::table('services')
       ->selectRaw('CONCAT("jasa-", id) as id, name')
@@ -273,7 +274,8 @@ class SaleController extends Controller
       ->selectRaw('product_details.id, CONCAT(p.name, " - ", sizes.code) as name')
       ->leftJoin('products as p', 'p.id', 'product_details.id_product')
       ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
-      ->where('product_details.is_active', true);
+      ->where('product_details.is_active', true)
+      ->where('p.is_active', true);
 
     $services = DB::table('services')
       ->selectRaw('CONCAT("jasa-", id) as id, name')
