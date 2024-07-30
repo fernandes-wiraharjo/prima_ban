@@ -135,7 +135,7 @@
                   </div>
                   <div class="col-md-2 col-12 mb-md-0 mb-3">
                     <p class="mb-2 repeater-title">Qty</p>
-                    <input type="number" class="form-control invoice-item-qty" placeholder="1" name="group-a[0][quantity]"/>
+                    <input type="text" class="form-control invoice-item-qty" placeholder="1" name="group-a[0][quantity]"/>
                   </div>
                 </div>
                 <div class="d-flex flex-column align-items-center justify-content-between border-start p-2">

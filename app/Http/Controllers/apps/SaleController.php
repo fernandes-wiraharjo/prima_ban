@@ -138,15 +138,15 @@ class SaleController extends Controller
           'invoice_no' => 'required|unique:sales,invoice_no',
           'group-a' => 'required|array',
           'group-a.*.item' => 'required',
-          'group-a.*.quantity' => 'required|numeric|min:1',
+          'group-a.*.quantity' => 'required',
         ],
         [
           // Custom error messages
           'group-a.required' => 'Please select at least one item.',
           'group-a.*.item.required' => 'Please select at least one item.',
           'group-a.*.quantity.required' => 'Please specify the quantity for each item.',
-          'group-a.*.quantity.numeric' => 'Quantity must be a number.',
-          'group-a.*.quantity.min' => 'Quantity must be at least 1.',
+          // 'group-a.*.quantity.numeric' => 'Quantity must be a number.',
+          // 'group-a.*.quantity.min' => 'Quantity must be at least 1.',
           'invoice_no.unique' => 'The invoice number has already been taken.',
         ]
       );
@@ -201,6 +201,10 @@ class SaleController extends Controller
             }
           }
         }
+
+        // Convert the normalized quantity to a float value
+        $item['quantity'] = strtr($item['quantity'], ['.' => '', ',' => '.']);
+        $item['quantity'] = floatval($item['quantity']);
 
         //total price per detail
         $total_price = $item['quantity'] * $productPrice;
@@ -291,6 +295,17 @@ class SaleController extends Controller
     $sale = Sale::findOrFail($id);
     $saleDetails = SaleDetail::where('id_sale', $id)->get();
 
+    foreach ($saleDetails as $saleDetail) {
+      $quantity = $saleDetail->quantity;
+      // Check if the decimal part is 0 or .00, then format as integer
+      if (fmod($quantity, 1) == 0.0) {
+        $saleDetail->quantity = number_format($quantity, 0, ',', '.');
+      } else {
+        // Otherwise, keep the decimal places but replace dot with comma
+        $saleDetail->quantity = rtrim(rtrim(number_format($quantity, 2, ',', '.'), '0'), ',');
+      }
+    }
+
     $sale->discount = intval($sale->discount);
 
     return view('content.transactions.sale-edit', [
@@ -317,15 +332,15 @@ class SaleController extends Controller
           'invoice_no' => 'required|unique:sales,invoice_no,' . $id,
           'group-a' => 'required|array',
           'group-a.*.item' => 'required',
-          'group-a.*.quantity' => 'required|numeric|min:1',
+          'group-a.*.quantity' => 'required',
         ],
         [
           // Custom error messages
           'group-a.required' => 'Please select at least one item.',
           'group-a.*.item.required' => 'Please select at least one item.',
           'group-a.*.quantity.required' => 'Please specify the quantity for each item.',
-          'group-a.*.quantity.numeric' => 'Quantity must be a number.',
-          'group-a.*.quantity.min' => 'Quantity must be at least 1.',
+          // 'group-a.*.quantity.numeric' => 'Quantity must be a number.',
+          // 'group-a.*.quantity.min' => 'Quantity must be at least 1.',
           'invoice_no.unique' => 'The invoice number has already been taken.',
         ]
       );
@@ -375,6 +390,10 @@ class SaleController extends Controller
           }
         }
 
+        // Convert the normalized quantity to a float value
+        $item['quantity'] = strtr($item['quantity'], ['.' => '', ',' => '.']);
+        $item['quantity'] = floatval($item['quantity']);
+
         //total price per detail
         $total_price = $item['quantity'] * $productPrice;
 
@@ -386,19 +405,19 @@ class SaleController extends Controller
         if ($existingSaleDetail) {
           // If sale detail exists, check if quantity has changed
           if ($existingSaleDetail->quantity != $item['quantity']) {
-            // Update sale detail with new quantity
-            $existingSaleDetail->quantity = $item['quantity'];
-            $existingSaleDetail->price = $productPrice;
-            $existingSaleDetail->total_price = $total_price;
-            $existingSaleDetail->updated_by = Auth::id();
-            $existingSaleDetail->save();
-
             if ($productDetailId !== null) {
               // Calculate quantity difference
               $quantityDifference = $item['quantity'] - $existingSaleDetail->quantity;
               // Update stock history with quantity difference
               $this->updateStockHistory($id, $productDetailId, $quantityDifference);
             }
+
+            // Update sale detail with new quantity
+            $existingSaleDetail->quantity = $item['quantity'];
+            $existingSaleDetail->price = $productPrice;
+            $existingSaleDetail->total_price = $total_price;
+            $existingSaleDetail->updated_by = Auth::id();
+            $existingSaleDetail->save();
           }
         } else {
           // Sale detail does not exist, create new sale detail
@@ -578,6 +597,15 @@ class SaleController extends Controller
       ->get();
 
     foreach ($saleDetails as $detail) {
+      $quantity = $detail->sale_quantity;
+      // Check if the decimal part is 0 or .00, then format as integer
+      if (fmod($quantity, 1) == 0.0) {
+        $detail->sale_quantity = number_format($quantity, 0, ',', '.');
+      } else {
+        // Otherwise, keep the decimal places but replace dot with comma
+        $detail->sale_quantity = rtrim(rtrim(number_format($quantity, 2, ',', '.'), '0'), ',');
+      }
+
       $detail->price = 'Rp' . number_format($detail->price, 0, ',', '.');
       $detail->total_price = 'Rp' . number_format($detail->total_price, 0, ',', '.');
     }
@@ -627,6 +655,15 @@ class SaleController extends Controller
       ->get();
 
     foreach ($saleDetails as $detail) {
+      $quantity = $detail->sale_quantity;
+      // Check if the decimal part is 0 or .00, then format as integer
+      if (fmod($quantity, 1) == 0.0) {
+        $detail->sale_quantity = number_format($quantity, 0, ',', '.');
+      } else {
+        // Otherwise, keep the decimal places but replace dot with comma
+        $detail->sale_quantity = rtrim(rtrim(number_format($quantity, 2, ',', '.'), '0'), ',');
+      }
+
       $detail->price = 'Rp' . number_format($detail->price, 0, ',', '.');
       $detail->total_price = 'Rp' . number_format($detail->total_price, 0, ',', '.');
     }
