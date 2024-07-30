@@ -63,6 +63,14 @@ $(function () {
               '</div>';
             return $row_output;
           }
+        },
+        {
+          // Quantity
+          targets: [4, 5, 6],
+          render: function (data, type, full, meta) {
+            // Format quantity as thousands
+            return Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
+          }
         }
       ],
       order: [[1, 'desc']],
