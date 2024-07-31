@@ -36,6 +36,17 @@ class StockBrandController extends Controller
       ->orderBy('pattern_name')
       ->get();
 
+    foreach ($stockBrands as $detail) {
+      $quantity = $detail->product_quantity;
+      // Check if the decimal part is 0 or .00, then format as integer
+      if (fmod($quantity, 1) == 0.0) {
+        $detail->product_quantity = number_format($quantity, 0, ',', '.');
+      } else {
+        // Otherwise, keep the decimal places but replace dot with comma
+        $detail->product_quantity = rtrim(rtrim(number_format($quantity, 2, ',', '.'), '0'), ',');
+      }
+    }
+
     $pageConfigs = ['myLayout' => 'blank'];
     return view('content.transactions.stock-brand-print', [
       'brand' => $brand,

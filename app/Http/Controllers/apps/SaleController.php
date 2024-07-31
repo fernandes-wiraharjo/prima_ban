@@ -419,6 +419,15 @@ class SaleController extends Controller
             $existingSaleDetail->updated_by = Auth::id();
             $existingSaleDetail->save();
           }
+
+          // If sale detail exists, check if product price has changed
+          if ($productPrice != $existingSaleDetail->price) {
+            // Update sale detail with new price
+            $existingSaleDetail->price = $productPrice;
+            $existingSaleDetail->total_price = $total_price;
+            $existingSaleDetail->updated_by = Auth::id();
+            $existingSaleDetail->save();
+          }
         } else {
           // Sale detail does not exist, create new sale detail
           $saleDetail = new SaleDetail();

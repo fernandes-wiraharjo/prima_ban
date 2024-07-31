@@ -112,7 +112,7 @@
     width: 35%;
   }
   .note, .payment {
-    margin-bottom: 10px;
+    margin-bottom: -15px;
   }
   .summary-totals {
     display: flex;

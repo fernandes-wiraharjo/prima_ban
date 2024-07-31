@@ -15,11 +15,14 @@
 <script src="{{asset('assets/vendor/libs/flatpickr/flatpickr.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/cleavejs/cleave.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/cleavejs/cleave-phone.js')}}"></script>
-<script src="{{asset('assets/vendor/libs/jquery-repeater/jquery-repeater.js')}}"></script>
+<!-- <script src="{{asset('assets/vendor/libs/jquery-repeater/jquery-repeater.js')}}"></script> -->
 <script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
 @endsection
 
 @section('page-script')
+<script>
+  var products = @json($products);
+</script>
 <!-- <script src="{{asset('assets/js/offcanvas-send-invoice.js')}}"></script> -->
 <script src="{{asset('assets/js/sale-add.js')}}"></script>
 @endsection
@@ -121,34 +124,36 @@
 
         <!-- <form class="source-item py-sm-3"> -->
         <div class="mb-3" data-repeater-list="group-a">
-            <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
-              <div class="d-flex border rounded position-relative pe-0">
-                <div class="row w-100 m-0 p-3">
-                  <div class="col-md-10 col-12 mb-md-0 mb-3 ps-md-0">
-                    <p class="mb-2 repeater-title">Barang</p>
-                    <select class="form-select item-details mb-2" name="group-a[0][item]">
-                      <option selected disabled>Select Item</option>
-                      @foreach($products as $id => $name)
-                        <option value="{{ $id }}">{{ $name }}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="col-md-2 col-12 mb-md-0 mb-3">
-                    <p class="mb-2 repeater-title">Qty</p>
-                    <input type="text" class="form-control invoice-item-qty" placeholder="1" name="group-a[0][quantity]"/>
-                  </div>
+          <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
+            <div class="d-flex border rounded position-relative pe-0">
+              <div class="row w-100 m-0 p-3">
+                <div class="col-md-10 col-12 mb-md-0 mb-3 ps-md-0">
+                  <p class="mb-2 repeater-title">Barang</p>
+                  <select class="select2 form-select item-details mb-2" name="group-a[0][item]">
+                    <option selected disabled>Item</option>
+                    <!-- <option value="">Select</option> -->
+                    @foreach($products as $id => $name)
+                      <option value="{{ $id }}">{{ $name }}</option>
+                    @endforeach
+                  </select>
                 </div>
-                <div class="d-flex flex-column align-items-center justify-content-between border-start p-2">
-                  <i class="bx bx-x fs-4 text-muted cursor-pointer" data-repeater-delete></i>
+                <div class="col-md-2 col-12 mb-md-0 mb-3">
+                  <p class="mb-2 repeater-title">Qty</p>
+                  <input type="text" class="form-control invoice-item-qty" placeholder="1" name="group-a[0][quantity]" />
                 </div>
+              </div>
+              <div class="d-flex flex-column align-items-center justify-content-between border-start p-2">
+                <i class="bx bx-x fs-4 text-muted cursor-pointer" data-repeater-delete></i>
               </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-12">
-              <button type="button" class="btn btn-primary" data-repeater-create>Add Item</button>
-            </div>
+        </div>
+
+        <div class="row">
+          <div class="col-12">
+            <button type="button" class="btn btn-primary" id="add-item" data-repeater-create>Add Item</button>
           </div>
+        </div>
         <!-- </form> -->
 
         <!-- <hr class="my-4 mx-n4" />
