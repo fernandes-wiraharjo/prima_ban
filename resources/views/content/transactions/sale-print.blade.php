@@ -100,11 +100,11 @@
   }
 
   .summary-section {
-    margin-top: 20px;
+    margin-top: 10px;
     display: flex;
     justify-content: space-between;
     border-top: 1px solid #dee2e6;
-    padding-top: 10px;
+    padding-top: 5px;
   }
   .note-payment {
     display: flex;
@@ -112,7 +112,7 @@
     width: 35%;
   }
   .note, .payment {
-    margin-bottom: -15px;
+    margin-bottom: 0;
   }
   .summary-totals {
     display: flex;
@@ -120,7 +120,7 @@
     width: 60%;
   }
   .summary-totals .text-end {
-    margin-right: 10px;
+    margin-right: 5px;
   }
 </style>
 @endsection
