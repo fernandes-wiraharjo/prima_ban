@@ -245,17 +245,17 @@
   <div class="summary-section">
     <div class="note-payment">
       <div class="note">
-        <p><strong>Note:</strong> <br> {{ $sale->note }}</p>
+        <p>Note: <br> {{ $sale->note }}</p>
       </div>
     </div>
     <div class="summary-totals">
       <div class="payment">
-        <p><strong>Pembayaran ke rek:</strong> <br> {{ $sale->bank_account_no }}</p>
+        <p>Pembayaran ke rek: <br> {{ $sale->bank_account_no }}</p>
       </div>
       <div class="text-end">
-        <p class="mb-0"><strong>Subtotal:</strong></p>
-        <p class="mb-0"><strong>Diskon:</strong></p>
-        <p class="mb-0"><strong>Total:</strong></p>
+        <p class="mb-0">Subtotal:</p>
+        <p class="mb-0">Diskon:</p>
+        <p class="mb-0">Total:</p>
       </div>
       <div>
         <p class="mb-0">{{ $sale->subtotal_price }}</p>
