@@ -71,7 +71,7 @@
   }
 
   .table-content {
-    min-height: 150px; /* Set a minimum height for the invoice content */
+    min-height: 160px; /* Set a minimum height for the invoice content */
     margin-bottom: -15px;
   }
 
