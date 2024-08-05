@@ -71,7 +71,7 @@
   }
 
   .table-content {
-    min-height: 160px; /* Set a minimum height for the invoice content */
+    min-height: 205px; /* Set a minimum height for the invoice content */
     margin-bottom: -15px;
   }
 
@@ -105,6 +105,7 @@
     justify-content: space-between;
     border-top: 1px solid #dee2e6;
     padding-top: 5px;
+    font-size: 14px;
   }
   .note-payment {
     display: flex;
@@ -199,8 +200,8 @@
             <td>{{ $detail->product_name }}</td>
             <td style="width: 75px;">{{ $detail->sale_quantity }}</td>
             <td style="width: 75px;">{{ $detail->product_uom }}</td>
-            <td>{{ $detail->price }}</td>
-            <td>{{ $detail->total_price }}</td>
+            <td class="text-end">{{ $detail->price }}</td>
+            <td class="text-end">{{ $detail->total_price }}</td>
           </tr>
         @endforeach
           <!-- <tr class="bottom-row">
@@ -253,21 +254,21 @@
         <p>Pembayaran ke rek: <br> {{ $sale->bank_account_no }}</p>
       </div>
       <div class="text-end">
-        <p class="mb-0">Subtotal:</p>
-        <p class="mb-0">Diskon:</p>
-        <p class="mb-0">Total:</p>
+        <p class="mb-0 small-line-space">Subtotal:</p>
+        <p class="mb-0 small-line-space">Diskon:</p>
+        <p class="mb-0 small-line-space">Total:</p>
       </div>
       <div>
-        <p class="mb-0">{{ $sale->subtotal_price }}</p>
-        <p class="mb-0">{{ $sale->discount }}</p>
-        <p class="mb-0">{{ $sale->final_price }}</p>
+        <p class="mb-0 small-line-space text-end">{{ $sale->subtotal_price }}</p>
+        <p class="mb-0 small-line-space text-end">{{ $sale->discount }}</p>
+        <p class="mb-0 small-line-space text-end">{{ $sale->final_price }}</p>
       </div>
     </div>
   </div>
 
-  <hr>
+  <hr class="small-line-space">
 
-  <div class="d-flex justify-content-between flex-row text-body" style="margin-top: -10px">
+  <div class="d-flex justify-content-between flex-row text-body" style="margin-top: -10px; font-size: 14px;">
     <div>
       Tanda Terima,
     </div>
@@ -277,9 +278,9 @@
     </div>
   </div>
 
-  <hr>
+  <hr style="margin-top: 7px">
 
-  <div class="text-body" style="margin-top: -10px">
+  <div class="text-body" style="font-size:14px; margin-top:-20px;">
     Barang yang sudah dibeli, tidak dapat ditukar atau dikembalikan
   </div>
 

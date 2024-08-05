@@ -673,13 +673,13 @@ class SaleController extends Controller
         $detail->sale_quantity = rtrim(rtrim(number_format($quantity, 2, ',', '.'), '0'), ',');
       }
 
-      $detail->price = 'Rp' . number_format($detail->price, 0, ',', '.');
-      $detail->total_price = 'Rp' . number_format($detail->total_price, 0, ',', '.');
+      $detail->price = number_format($detail->price, 0, ',', '.');
+      $detail->total_price = number_format($detail->total_price, 0, ',', '.');
     }
 
-    $sale->subtotal_price = 'Rp' . number_format($sale->subtotal_price, 0, ',', '.');
-    $sale->discount = 'Rp' . number_format($sale->discount, 0, ',', '.');
-    $sale->final_price = 'Rp' . number_format($sale->final_price, 0, ',', '.');
+    $sale->subtotal_price = number_format($sale->subtotal_price, 0, ',', '.');
+    $sale->discount = number_format($sale->discount, 0, ',', '.');
+    $sale->final_price = number_format($sale->final_price, 0, ',', '.');
 
     $pageConfigs = ['myLayout' => 'blank'];
     return view('content.transactions.sale-print', [
