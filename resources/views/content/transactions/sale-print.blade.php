@@ -255,7 +255,7 @@
       </div>
       <div class="text-end">
         <p class="mb-0 small-line-space">Subtotal:</p>
-        <p class="mb-0 small-line-space">Diskon:</p>
+        <p class="mb-0 small-line-space">:</p>
         <p class="mb-0 small-line-space">Total:</p>
       </div>
       <div>
