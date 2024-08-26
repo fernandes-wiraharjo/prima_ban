@@ -20,6 +20,9 @@
 @endsection
 
 @section('page-script')
+<script>
+  var products = @json($products);
+</script>
 <script src="{{asset('assets/js/delivery-order-edit.js')}}"></script>
 @endsection
 
@@ -98,13 +101,13 @@
 
         <!-- <form class="source-item py-sm-3"> -->
           <div class="mb-3" data-repeater-list="group-a">
-          @foreach($deliveryOrderDetails as $index => $detail)
             <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
-              <div class="d-flex border rounded position-relative pe-0">
+            @foreach($deliveryOrderDetails as $index => $detail)
+              <div class="d-flex border rounded position-relative pe-0 {{ $index > 0 ? 'mt-5' : '' }}">
                 <div class="row w-100 m-0 p-3">
                   <div class="col-md-10 col-12 mb-md-0 mb-3 ps-md-0">
                     <p class="mb-2 repeater-title">Barang</p>
-                    <select class="form-select item-details mb-2" name="group-a[{{ $index }}][item]">
+                    <select class="select2 form-select item-details mb-2" name="group-a[{{ $index }}][item]">
                       <option selected disabled>Select Item</option>
                       @foreach($products as $id => $name)
                         <option value="{{ $id }}" {{ $detail->id_product_detail == $id ? 'selected' : '' }}>{{ $name }}</option>
@@ -113,19 +116,19 @@
                   </div>
                   <div class="col-md-2 col-12 mb-md-0 mb-3">
                     <p class="mb-2 repeater-title">Qty</p>
-                    <input type="number" class="form-control invoice-item-qty" placeholder="1" name="group-a[{{ $index }}][quantity]" value="{{ $detail->quantity }}"/>
+                    <input type="text" class="form-control invoice-item-qty" placeholder="1" name="group-a[{{ $index }}][quantity]" value="{{ $detail->quantity }}"/>
                   </div>
                 </div>
                 <div class="d-flex flex-column align-items-center justify-content-between border-start p-2">
                   <i class="bx bx-x fs-4 text-muted cursor-pointer" data-repeater-delete></i>
                 </div>
               </div>
+            @endforeach
             </div>
-          @endforeach
           </div>
           <div class="row">
             <div class="col-12">
-              <button type="button" class="btn btn-primary" data-repeater-create>Add Item</button>
+              <button type="button" class="btn btn-primary" id="add-item" data-repeater-create>Add Item</button>
             </div>
           </div>
         <!-- </form> -->

@@ -104,15 +104,15 @@ class DeliveryOrderController extends Controller
           'id_supplier' => 'required|exists:suppliers,id',
           'group-a' => 'required|array',
           'group-a.*.item' => 'required', // Ensure each item is selected
-          'group-a.*.quantity' => 'required|numeric|min:1', // Ensure each quantity is numeric and at least 1
+          'group-a.*.quantity' => 'required',
         ],
         [
           // Custom error messages
           'group-a.required' => 'Please select at least one item.',
           'group-a.*.item.required' => 'Please select at least one item.',
           'group-a.*.quantity.required' => 'Please specify the quantity for each item.',
-          'group-a.*.quantity.numeric' => 'Quantity must be a number.',
-          'group-a.*.quantity.min' => 'Quantity must be at least 1.',
+          // 'group-a.*.quantity.numeric' => 'Quantity must be a number.',
+          // 'group-a.*.quantity.min' => 'Quantity must be at least 1.',
         ]
       );
 
@@ -125,6 +125,10 @@ class DeliveryOrderController extends Controller
 
       // Process delivery order details
       foreach ($validatedData['group-a'] as $item) {
+        // Convert the normalized quantity to a float value
+        $item['quantity'] = strtr($item['quantity'], ['.' => '', ',' => '.']);
+        $item['quantity'] = floatval($item['quantity']);
+
         $deliveryOrderDetail = new DeliveryOrderDetail();
         $deliveryOrderDetail->id_delivery_order = $deliveryOrder->id;
         $deliveryOrderDetail->id_product_detail = $item['item'];
@@ -161,6 +165,18 @@ class DeliveryOrderController extends Controller
       ->pluck('name', 'id');
     $deliverOrder = DeliveryOrder::findOrFail($id);
     $deliveryOrderDetails = DeliveryOrderDetail::where('id_delivery_order', $id)->get();
+
+    foreach ($deliveryOrderDetails as $deliveryOrderDetail) {
+      $quantity = $deliveryOrderDetail->quantity;
+      // Check if the decimal part is 0 or .00, then format as integer
+      if (fmod($quantity, 1) == 0.0) {
+        $deliveryOrderDetail->quantity = number_format($quantity, 0, ',', '.');
+      } else {
+        // Otherwise, keep the decimal places but replace dot with comma
+        $deliveryOrderDetail->quantity = rtrim(rtrim(number_format($quantity, 2, ',', '.'), '0'), ',');
+      }
+    }
+
     return view('content.transactions.delivery-order-edit', [
       'id' => $id,
       'deliveryOrder' => $deliverOrder,
@@ -180,15 +196,15 @@ class DeliveryOrderController extends Controller
           'id_supplier' => 'required|exists:suppliers,id',
           'group-a' => 'required|array',
           'group-a.*.item' => 'required', // Ensure each item is selected
-          'group-a.*.quantity' => 'required|numeric|min:1', // Ensure each quantity is numeric and at least 1
+          'group-a.*.quantity' => 'required',
         ],
         [
           // Custom error messages
           'group-a.required' => 'Please select at least one item.',
           'group-a.*.item.required' => 'Please select at least one item.',
           'group-a.*.quantity.required' => 'Please specify the quantity for each item.',
-          'group-a.*.quantity.numeric' => 'Quantity must be a number.',
-          'group-a.*.quantity.min' => 'Quantity must be at least 1.',
+          // 'group-a.*.quantity.numeric' => 'Quantity must be a number.',
+          // 'group-a.*.quantity.min' => 'Quantity must be at least 1.',
         ]
       );
 
@@ -201,6 +217,10 @@ class DeliveryOrderController extends Controller
       DeliveryOrderDetail::where('id_delivery_order', $id)->delete();
 
       foreach ($validatedData['group-a'] as $item) {
+        // Convert the normalized quantity to a float value
+        $item['quantity'] = strtr($item['quantity'], ['.' => '', ',' => '.']);
+        $item['quantity'] = floatval($item['quantity']);
+
         $deliveryOrderDetail = new DeliveryOrderDetail();
         $deliveryOrderDetail->id_delivery_order = $id;
         $deliveryOrderDetail->id_product_detail = $item['item'];
@@ -244,6 +264,18 @@ class DeliveryOrderController extends Controller
       ->where('delivery_order_details.id_delivery_order', $id)
       ->orderBy('delivery_order_details.id')
       ->get();
+
+    foreach ($deliveryOrderDetails as $detail) {
+      $quantity = $detail->quantity;
+      // Check if the decimal part is 0 or .00, then format as integer
+      if (fmod($quantity, 1) == 0.0) {
+        $detail->quantity = number_format($quantity, 0, ',', '.');
+      } else {
+        // Otherwise, keep the decimal places but replace dot with comma
+        $detail->quantity = rtrim(rtrim(number_format($quantity, 2, ',', '.'), '0'), ',');
+      }
+    }
+
     return view('content.transactions.delivery-order-preview', [
       'id' => $id,
       'deliveryOrder' => $deliveryOrder,
@@ -255,6 +287,7 @@ class DeliveryOrderController extends Controller
 
   public function print($id)
   {
+    $pageConfigs = ['myLayout' => 'blank'];
     $deliveryOrder = DeliveryOrder::findOrFail($id);
     $formattedDate = date('d M Y', strtotime($deliveryOrder->date));
     $supplier = Supplier::findOrFail($deliveryOrder->id_supplier);
@@ -266,7 +299,18 @@ class DeliveryOrderController extends Controller
       ->where('delivery_order_details.id_delivery_order', $id)
       ->orderBy('delivery_order_details.id')
       ->get();
-    $pageConfigs = ['myLayout' => 'blank'];
+
+    foreach ($deliveryOrderDetails as $detail) {
+      $quantity = $detail->quantity;
+      // Check if the decimal part is 0 or .00, then format as integer
+      if (fmod($quantity, 1) == 0.0) {
+        $detail->quantity = number_format($quantity, 0, ',', '.');
+      } else {
+        // Otherwise, keep the decimal places but replace dot with comma
+        $detail->quantity = rtrim(rtrim(number_format($quantity, 2, ',', '.'), '0'), ',');
+      }
+    }
+
     return view('content.transactions.delivery-order-print', [
       'id' => $id,
       'deliveryOrder' => $deliveryOrder,

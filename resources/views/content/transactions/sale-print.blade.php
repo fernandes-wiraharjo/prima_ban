@@ -266,10 +266,10 @@
     </div>
   </div>
 
-  <hr class="small-line-space">
+  <hr style="margin-top: -10px;">
 
   <div class="d-flex justify-content-between flex-row text-body" style="margin-top: -10px; font-size: 14px;">
-    <div>
+    <div style="margin-top: -7px">
       Tanda Terima,
     </div>
     <div style="margin-bottom: -10px">
@@ -278,9 +278,9 @@
     </div>
   </div>
 
-  <hr style="margin-top: 7px">
+  <hr style="margin-top: 15px">
 
-  <div class="text-body" style="font-size:14px; margin-top:-20px;">
+  <div class="text-body" style="font-size:10px; margin-top:-17px;">
     Barang yang sudah dibeli, tidak dapat ditukar atau dikembalikan
   </div>
 
