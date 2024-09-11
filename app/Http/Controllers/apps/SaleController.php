@@ -394,9 +394,6 @@ class SaleController extends Controller
         $item['quantity'] = strtr($item['quantity'], ['.' => '', ',' => '.']);
         $item['quantity'] = floatval($item['quantity']);
 
-        //total price per detail
-        $total_price = $item['quantity'] * $productPrice;
-
         $existingSaleDetail = SaleDetail::where('id_sale', $id)
           ->where('id_product_detail', $productDetailId)
           ->where('id_service', $serviceId)
@@ -412,23 +409,29 @@ class SaleController extends Controller
               $this->updateStockHistory($id, $productDetailId, $quantityDifference);
             }
 
+            //total price per detail
+            $total_price = $item['quantity'] * $existingSaleDetail->price;
+
             // Update sale detail with new quantity
             $existingSaleDetail->quantity = $item['quantity'];
-            $existingSaleDetail->price = $productPrice;
+            // $existingSaleDetail->price = $productPrice;
             $existingSaleDetail->total_price = $total_price;
             $existingSaleDetail->updated_by = Auth::id();
             $existingSaleDetail->save();
           }
 
           // If sale detail exists, check if product price has changed
-          if ($productPrice != $existingSaleDetail->price) {
-            // Update sale detail with new price
-            $existingSaleDetail->price = $productPrice;
-            $existingSaleDetail->total_price = $total_price;
-            $existingSaleDetail->updated_by = Auth::id();
-            $existingSaleDetail->save();
-          }
+          // if ($productPrice != $existingSaleDetail->price) {
+          //   // Update sale detail with new price
+          //   $existingSaleDetail->price = $productPrice;
+          //   $existingSaleDetail->total_price = $total_price;
+          //   $existingSaleDetail->updated_by = Auth::id();
+          //   $existingSaleDetail->save();
+          // }
         } else {
+          //total price per detail
+          $total_price = $item['quantity'] * $productPrice;
+
           // Sale detail does not exist, create new sale detail
           $saleDetail = new SaleDetail();
           $saleDetail->id_sale = $id;
