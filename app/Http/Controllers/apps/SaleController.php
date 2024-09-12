@@ -401,6 +401,9 @@ class SaleController extends Controller
 
         if ($existingSaleDetail) {
           // If sale detail exists, check if quantity has changed
+          //total price per detail
+          $total_price = $item['quantity'] * $existingSaleDetail->price;
+
           if ($existingSaleDetail->quantity != $item['quantity']) {
             if ($productDetailId !== null) {
               // Calculate quantity difference
@@ -408,9 +411,6 @@ class SaleController extends Controller
               // Update stock history with quantity difference
               $this->updateStockHistory($id, $productDetailId, $quantityDifference);
             }
-
-            //total price per detail
-            $total_price = $item['quantity'] * $existingSaleDetail->price;
 
             // Update sale detail with new quantity
             $existingSaleDetail->quantity = $item['quantity'];
