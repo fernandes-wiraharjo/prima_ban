@@ -77,9 +77,16 @@ $(function () {
   // Function to dynamically create select2 options
   function getSelectOptions(products) {
     let options = '<option selected disabled>Item</option>';
-    for (let id in products) {
-      options += `<option value="${id}">${products[id]}</option>`;
-    }
+    products.forEach(product => {
+      options += `<option value="${product.id}"
+                    data-type="${product.type}"
+                    data-price-user-cash="${product.final_price_user_cash}"
+                    data-price-user-tempo="${product.final_price_user_tempo}"
+                    data-price-toko-cash="${product.final_price_toko_cash}"
+                    data-price-toko-tempo="${product.final_price_toko_tempo}">
+                    ${product.name}
+                  </option>`;
+    });
     return options;
   }
 
@@ -92,6 +99,7 @@ $(function () {
             <select class="select2 form-select item-details mb-2" name="group-a[${itemCount}][item]">
               ${getSelectOptions(products)}
             </select>
+            <span class="item-price"></span>
           </div>
           <div class="col-md-2 col-12 mb-md-0 mb-3">
             <p class="mb-2 repeater-title">Qty</p>
@@ -102,6 +110,7 @@ $(function () {
           <i class="bx bx-x fs-4 text-muted cursor-pointer" data-repeater-delete></i>
         </div>
       </div>`;
+
     $('.repeater-wrapper').append(newItemHtml);
     itemCount++;
     $('.select2').select2(); // Re-initialize Select2 for newly added items
@@ -114,4 +123,41 @@ $(function () {
     });
     itemCount = $('.repeater-wrapper > div').length;
   }
+
+  // Handle selection change to update price
+  $(document).on('change', '.item-details', function () {
+    const selectedOption = $(this).find(':selected');
+    const type = selectedOption.data('type'); //product type
+    const customerType = $('#customer').find(':selected').data('type');
+    const paymentType = $('#payment-type').find(':selected').val();
+
+    let price = '';
+
+    if (!customerType || !paymentType) {
+      alert('Please select customer and payment type');
+      return;
+    }
+
+    if (type === 'product') {
+      if (customerType === 'user' && paymentType === 'cash') {
+        price = selectedOption.data('price-user-cash');
+      } else if (customerType === 'user' && paymentType === 'tempo') {
+        price = selectedOption.data('price-user-tempo');
+      } else if (customerType === 'toko' && paymentType === 'cash') {
+        price = selectedOption.data('price-toko-cash');
+      } else if (customerType === 'toko' && paymentType === 'tempo') {
+        price = selectedOption.data('price-toko-tempo');
+      }
+    } else if (type === 'service') {
+      price = selectedOption.data('price-user-cash'); // Only one price for services
+    }
+
+    // Format the price using thousand separator
+    if (price) {
+      price = parseFloat(price).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+    }
+
+    // Display the price next to the selected item
+    $(this).closest('.row').find('.item-price').text(`(${price})`);
+  });
 });

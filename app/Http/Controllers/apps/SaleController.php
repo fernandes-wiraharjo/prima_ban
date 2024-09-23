@@ -101,16 +101,25 @@ class SaleController extends Controller
 
   public function indexAdd()
   {
-    $customers = Customer::where('is_active', true)->pluck('name', 'id');
+    $customers = Customer::where('is_active', true)
+      ->select('id', 'name', 'type')
+      ->get();
+
     $products = DB::table('product_details')
-      ->selectRaw('product_details.id, CONCAT(p.name, " - ", sizes.code) as name')
+      ->selectRaw(
+        'product_details.id, CONCAT(p.name, " - ", sizes.code) as name, final_price_user_cash, final_price_user_tempo,
+        final_price_toko_cash, final_price_toko_tempo, "product" as type'
+      )
       ->leftJoin('products as p', 'p.id', 'product_details.id_product')
       ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
       ->where('product_details.is_active', true)
       ->where('p.is_active', true);
 
     $services = DB::table('services')
-      ->selectRaw('CONCAT("jasa-", id) as id, name')
+      ->selectRaw(
+        'CONCAT("jasa-", id) as id, name, price as final_price_user_cash, null as final_price_user_tempo,
+        null as final_price_toko_cash, null as final_price_toko_tempo, "service" as type'
+      )
       ->where('is_active', true);
 
     $unionQuery = $products->union($services);
@@ -118,7 +127,7 @@ class SaleController extends Controller
     $results = DB::table(DB::raw("({$unionQuery->toSql()}) as sub"))
       ->mergeBindings($unionQuery)
       ->orderBy('name')
-      ->pluck('name', 'id');
+      ->get();
 
     return view('content.transactions.sale-add', ['customers' => $customers, 'products' => $results]);
   }

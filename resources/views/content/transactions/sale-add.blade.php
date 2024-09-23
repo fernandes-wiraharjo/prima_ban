@@ -89,8 +89,8 @@
                 <div class="w-px-150">
                 <select id="customer" name="id_customer" class="select2 select-customer form-select" required>
                   <option value="">Select</option>
-                  @foreach($customers as $id => $name)
-                    <option value="{{ $id }}">{{ $name }}</option>
+                  @foreach($customers as $customer)
+                    <option value="{{ $customer->id }}" data-type="{{ $customer->type }}">{{ $customer->name }}</option>
                   @endforeach
                 </select>
                 </div>
@@ -132,10 +132,18 @@
                   <select class="select2 form-select item-details mb-2" name="group-a[0][item]">
                     <option selected disabled>Item</option>
                     <!-- <option value="">Select</option> -->
-                    @foreach($products as $id => $name)
-                      <option value="{{ $id }}">{{ $name }}</option>
+                    @foreach($products as $product)
+                      <option value="{{ $product->id }}"
+                        data-type="{{ $product->type }}"
+                        data-price-user-cash="{{ $product->final_price_user_cash }}"
+                        data-price-user-tempo="{{ $product->final_price_user_tempo }}"
+                        data-price-toko-cash="{{ $product->final_price_toko_cash }}"
+                        data-price-toko-tempo="{{ $product->final_price_toko_tempo }}">
+                        {{ $product->name }}
+                      </option>
                     @endforeach
                   </select>
+                  <span class="item-price"></span>
                 </div>
                 <div class="col-md-2 col-12 mb-md-0 mb-3">
                   <p class="mb-2 repeater-title">Qty</p>
@@ -252,7 +260,8 @@
       </select>
     </div>
     <p class="mb-2">Tipe Pembayaran</p>
-      <select class="form-select mb-4" id="payment-type" name="payment_type">
+      <select class="form-select mb-4" id="payment-type" name="payment_type" required>
+        <option value=""></option>
         <option value="cash">Tunai</option>
         <option value="tempo">Tempo</option>
       </select>
