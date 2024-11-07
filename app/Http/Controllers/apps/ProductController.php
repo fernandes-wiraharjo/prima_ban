@@ -446,7 +446,10 @@ class ProductController extends Controller
         ->withInput();
     } catch (\Exception $e) {
       // Other exceptions (e.g., database errors)
-      return Redirect::back()->with('othererror', 'An error occurred while updating the product detail.');
+      return Redirect::back()->with(
+        'othererror',
+        'An error occurred while updating the product detail. ' . $e->getMessage()
+      );
     }
   }
 
