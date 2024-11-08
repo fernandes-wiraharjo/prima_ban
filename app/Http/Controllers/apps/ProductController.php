@@ -389,7 +389,10 @@ class ProductController extends Controller
       $price_toko_tempo = str_replace('.', '', $validatedData['price_toko_tempo']);
       $discount_toko_tempo = str_replace('.', '', $validatedData['discount_toko_tempo']);
       $final_price_toko_tempo = str_replace('.', '', $validatedData['final_price_toko_tempo']);
-      $quantity = str_replace('.', '', $validatedData['quantity']);
+      // $quantity = str_replace('.', '', $validatedData['quantity']);
+      // Convert the normalized quantity to a float value
+      $quantity = strtr($validatedData['quantity'], ['.' => '', ',' => '.']);
+      $quantity = floatval($quantity);
 
       $data = ProductDetail::findOrFail($id);
       $data->id_size = $validatedData['id_size'];

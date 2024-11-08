@@ -153,7 +153,7 @@
         </div>
         <div class="mb-3">
           <label class="form-label" for="add-quantity">Quantity</label>
-          <input type="text" class="form-control" id="add-quantity" placeholder="stock" name="quantity" aria-label="quantity" onkeyup="formatNumber(this)" />
+          <input type="text" class="form-control" id="add-quantity" placeholder="stock" name="quantity" aria-label="quantity" />
         </div>
         <div class="mb-3">
           <label class="form-label d-block">Status</label>
@@ -249,7 +249,7 @@
             </div>
             <div class="mb-3">
               <label class="form-label" for="edit-quantity">Quantity</label>
-              <input type="text" class="form-control" id="edit-quantity" placeholder="stock" name="quantity" aria-label="quantity" onkeyup="formatNumber(this)" />
+              <input type="text" class="form-control" id="edit-quantity" placeholder="stock" name="quantity" aria-label="quantity" />
             </div>
             <div class="mb-3">
               <label class="form-label d-block">Status</label>
