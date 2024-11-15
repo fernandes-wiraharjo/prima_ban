@@ -731,4 +731,22 @@ class SaleController extends Controller
       'pageConfigs' => $pageConfigs,
     ]);
   }
+
+  public function checkInvoiceNo(Request $request)
+  {
+    $invoiceNo = $request->input('invoice_no');
+    $saleId = $request->input('sale_id');
+
+    // Check if the invoice number exists in the database
+    $exists = \DB::table('sales')
+      ->where('invoice_no', $invoiceNo)
+      ->when($saleId, function ($query, $saleId) {
+        return $query->where('id', '!=', $saleId);
+      })
+      ->exists();
+
+    return response()->json([
+      'is_unique' => !$exists,
+    ]);
+  }
 }

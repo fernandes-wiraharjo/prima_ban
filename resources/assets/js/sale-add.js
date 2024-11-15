@@ -41,6 +41,38 @@
       });
     });
   }
+
+  $('form').on('submit', function (e) {
+    e.preventDefault(); // Prevent form submission
+
+    // Get the invoice number from the input field
+    var invoiceNo = $('input[name="invoice_no"]').val();
+    var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    // Make an AJAX request to check if the invoice number is unique
+    $.ajax({
+      url: '/check-invoice-no', // Create a route for checking uniqueness
+      type: 'POST',
+      headers: {
+        'X-CSRF-TOKEN': csrfToken
+      },
+      data: {
+        invoice_no: invoiceNo
+      },
+      success: function (response) {
+        if (response.is_unique) {
+          // If unique, submit the form
+          e.currentTarget.submit();
+        } else {
+          // Show an error message if not unique
+          alert('Invoice number already exists.');
+        }
+      },
+      error: function () {
+        alert('Something went wrong.');
+      }
+    });
+  });
 })();
 
 // repeater (jquery)

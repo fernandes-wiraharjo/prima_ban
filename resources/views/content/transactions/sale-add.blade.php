@@ -9,6 +9,7 @@
 
 @section('page-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/css/pages/app-invoice.css')}}" />
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 
 @section('vendor-script')

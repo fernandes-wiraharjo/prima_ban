@@ -365,6 +365,8 @@ Route::middleware(['auth'])->group(function () {
       );
     });
   });
+
+  Route::post('/check-invoice-no', [SaleController::class, 'checkInvoiceNo']);
 });
 
 // Route::get('/', [Analytics::class, 'index'])->name('dashboard-analytics');

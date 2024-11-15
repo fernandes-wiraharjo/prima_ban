@@ -63,6 +63,7 @@
           <div class="col-md-12 text-center">
             <div class="svg-illustration mb-4 gap-2">
               <span class="demo text-body fw-bold">INVOICE</span>
+              <input type="hidden" name="sale_id" value="{{ $id }}" />
             </div>
           </div>
           <div class="col-md-6 mb-md-0 mb-4">
