@@ -109,7 +109,8 @@ $(function () {
           }
         },
         {
-          targets: [4],
+          // targets: [4],
+          targets: 4,
           render: function (data, type, full, meta) {
             // Format number
             return 'Rp' + Number(data).toLocaleString('id-ID', { minimumFractionDigits: 0 });
