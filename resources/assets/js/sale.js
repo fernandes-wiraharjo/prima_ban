@@ -18,6 +18,28 @@ $(function () {
     headingColor = config.colors.headingColor;
   }
 
+  //DATE RANGE
+  var bsRangePickerDropdown = $('#bs-rangepicker-dropdown');
+  // Get the first and last date of the current month
+  var startOfMonth = moment().startOf('month').format('DD/MM/YYYY');
+  var endOfMonth = moment().endOf('month').format('DD/MM/YYYY');
+  if (bsRangePickerDropdown.length) {
+    bsRangePickerDropdown.daterangepicker({
+      showDropdowns: true,
+      locale: {
+        format: 'DD/MM/YYYY' // Day/Month/Year format
+      },
+      startDate: startOfMonth, // Default start date
+      endDate: endOfMonth, // Default end date
+      opens: isRtl ? 'left' : 'right'
+    });
+
+    // Trigger DataTable reload when date range is selected
+    bsRangePickerDropdown.on('apply.daterangepicker', function (ev, picker) {
+      $('.datatables-sale').DataTable().ajax.reload(null, false); // Reload DataTable without resetting the page
+    });
+  }
+
   // Variable declaration for table
   var dt_table = $('.datatables-sale'),
     statusObj = {
@@ -34,7 +56,15 @@ $(function () {
       ajax: {
         url: '/transaction/sale/get',
         type: 'GET',
-        dataSrc: 'data' // Specify the property containing the data array in the JSON response
+        // dataSrc: 'data' // Specify the property containing the data array in the JSON response
+        data: function (d) {
+          // Add date range to the AJAX request
+          var picker = $('#bs-rangepicker-dropdown').data('daterangepicker');
+          if (picker) {
+            d.start_date = picker.startDate.format('YYYY-MM-DD');
+            d.end_date = picker.endDate.format('YYYY-MM-DD');
+          }
+        }
       },
       columns: [
         // columns according to JSON

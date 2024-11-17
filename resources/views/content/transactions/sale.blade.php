@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css')}}">
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/@form-validation/umd/styles/index.min.css')}}" />
-
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css')}}" />
 @endsection
 
 @section('vendor-script')
@@ -20,6 +20,7 @@
 <script src="{{asset('assets/vendor/libs/@form-validation/umd/plugin-auto-focus/index.min.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/cleavejs/cleave.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/cleavejs/cleave-phone.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js')}}"></script>
 @endsection
 
 @section('page-script')
@@ -51,6 +52,13 @@
       </button>
     </div>
   @endif
+
+<div class="row mb-3">
+  <div class="col-md-6 col-12">
+    <label for="bs-rangepicker-dropdown" class="form-label">Filter By Date Range</label>
+    <input type="text" id="bs-rangepicker-dropdown" class="form-control" />
+  </div>
+</div>
 
 <div class="card">
   <div class="card-datatable table-responsive">

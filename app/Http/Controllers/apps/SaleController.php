@@ -78,6 +78,13 @@ class SaleController extends Controller
       });
     }
 
+    // Apply date range filter
+    if ($request->has('start_date') && $request->has('end_date')) {
+      $startDate = $request->input('start_date');
+      $endDate = $request->input('end_date');
+      $query->whereBetween('sales.date', [$startDate, $endDate]);
+    }
+
     // Get total filter records count
     $totalFilters = $query->count();
 
