@@ -58,6 +58,19 @@ class SaleController extends Controller
       $sortColumn = 'date'; // Default to 'username' or any other preferred column
     }
 
+    // Check if sorting is for 'invoice_no'
+    if ($sortColumn === 'invoice_no') {
+      // Sort numerically by the first numeric part of the invoice_no
+      $query
+        ->orderByRaw('CAST(SUBSTRING_INDEX(invoice_no, "/", 1) AS UNSIGNED) ' . $sortDirection)
+        ->orderByRaw(
+          'CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(invoice_no, "/", -1), "/", 1) AS UNSIGNED) ' . $sortDirection
+        );
+    } else {
+      // Apply sorting for other columns
+      $query->orderBy($sortColumn, $sortDirection);
+    }
+
     // Get total records count (before filtering)
     $totalRecords = $query->count();
 
@@ -92,7 +105,7 @@ class SaleController extends Controller
     $data = $query
       ->offset($request->input('start'))
       ->limit($request->input('length'))
-      ->orderBy($sortColumn, $sortDirection)
+      // ->orderBy($sortColumn, $sortDirection)
       ->get();
 
     // Prepare response data
