@@ -107,6 +107,12 @@
       "name": "Stock Per Brand",
       "icon": "menu-icon tf-icons bx bx-color",
       "slug": "transaction-stock-brand"
+    },
+    {
+      "url": "transaction/stock-size",
+      "name": "Stock Per Size",
+      "icon": "menu-icon tf-icons bx bx-color",
+      "slug": "transaction-stock-size"
     }
   ]
 }

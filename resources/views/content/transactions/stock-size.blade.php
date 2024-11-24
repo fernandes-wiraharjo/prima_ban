@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Sale Belum Lunas Page')
+@section('title', 'Stock Size Page')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css')}}">
@@ -23,7 +23,7 @@
 @endsection
 
 @section('page-script')
-<script src="{{asset('assets/js/sale-belum-lunas.js')}}"></script>
+<script src="{{asset('assets/js/stock-size.js')}}"></script>
 @endsection
 
 @section('content')
@@ -56,12 +56,11 @@
   <div class="card-body">
     <div class="row mb-3">
       <div class="col-md-4">
-        <label for="customer" class="form-label">Select Customer</label>
-        <select id="customer" name="id_customer" class="select2 form-select">
+        <label for="size" class="form-label">Select Size</label>
+        <select id="size" name="size" class="select2 form-select">
         <option value="">Select</option>
-          <option value="0">All</option>
-          @foreach($customers as $id => $name)
-            <option value="{{ $id }}">{{ $name }}</option>
+          @foreach($sizes as $id => $code)
+            <option value="{{ $code }}">{{ $code }}</option>
           @endforeach
         </select>
       </div>

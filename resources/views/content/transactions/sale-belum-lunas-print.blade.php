@@ -34,13 +34,23 @@
         </tr>
       </thead>
       <tbody>
-        @foreach($sales as $index => $sale)
+         @php
+          $groupedCustomerNames = $sales->groupBy('customer_name');
+        @endphp
+        @foreach($groupedCustomerNames as $customer => $sales)
           <tr>
-            <td class="text-nowrap">{{ $sale->customer_name }}</td>
-            <td>{{ $sale->formatted_date }}</td>
-            <td>{{ $sale->invoice_no }}</td>
-            <td>{{ $sale->final_price }}</td>
+            <td class="text-nowrap" rowspan="{{ $sales->count() }}">{{ $customer }}</td>
+            <td>{{ $sales[0]->formatted_date }}</td>
+            <td>{{ $sales[0]->invoice_no }}</td>
+            <td>{{ $sales[0]->final_price }}</td>
           </tr>
+          @foreach($sales->slice(1) as $sale)
+            <tr onclick="window.open('/transaction/sale/{{ $sale->id }}/preview', '_blank')" style="cursor: pointer;">
+              <td>{{ $sale->formatted_date }}</td>
+              <td>{{ $sale->invoice_no }}</td>
+              <td>{{ $sale->final_price }}</td>
+            </tr>
+          @endforeach
         @endforeach
       </tbody>
     </table>

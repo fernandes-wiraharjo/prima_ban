@@ -732,14 +732,22 @@ class SaleController extends Controller
 
   public function printBelumLunas($idCustomer)
   {
-    $sales = Sale::query()
+    $query = Sale::query()
       ->leftJoin('customers', 'customers.id', 'sales.id_customer')
       ->selectRaw(
-        'sales.invoice_no, DATE_FORMAT(sales.date, "%d %b %Y") as formatted_date, customers.name as customer_name, sales.final_price'
+        'sales.id, sales.invoice_no, DATE_FORMAT(sales.date, "%d %b %Y") as formatted_date, customers.name as customer_name, sales.final_price'
       )
       ->where('sales.status', 'belum lunas')
-      ->where('sales.id_customer', $idCustomer)
-      ->get();
+      ->orderBy('customers.name', 'asc')
+      ->orderBy('sales.date', 'asc')
+      ->orderBy('sales.invoice_no', 'asc');
+
+    if ($idCustomer && $idCustomer !== '0') {
+      // Filter by specific customer
+      $query->where('sales.id_customer', $idCustomer);
+    }
+
+    $sales = $query->get();
 
     foreach ($sales as $sale) {
       $sale->final_price = 'Rp' . number_format($sale->final_price, 0, ',', '.');

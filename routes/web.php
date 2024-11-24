@@ -67,6 +67,7 @@ use App\Http\Controllers\apps\ServiceController;
 use App\Http\Controllers\apps\SizeController;
 use App\Http\Controllers\apps\StockHistoryController;
 use App\Http\Controllers\apps\StockBrandController;
+use App\Http\Controllers\apps\StockSizeController;
 use App\Http\Controllers\apps\SupplierController;
 use App\Http\Controllers\apps\TandaTerimaController;
 use App\Http\Controllers\apps\UserList;
@@ -330,6 +331,13 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('stock-brand')->group(function () {
       Route::get('/', [StockBrandController::class, 'index'])->name('transaction-stock-brand');
       Route::get('/print/{brand}', [StockBrandController::class, 'print'])->name('print-stock-brand');
+    });
+
+    Route::prefix('stock-size')->group(function () {
+      Route::get('/', [StockSizeController::class, 'index'])->name('transaction-stock-size');
+      Route::get('/print/{size}', [StockSizeController::class, 'print'])
+        ->where('size', '.*')
+        ->name('print-stock-size');
     });
 
     //purchase
