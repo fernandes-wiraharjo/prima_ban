@@ -19,6 +19,11 @@ use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
+  private function normalizeNumber($value)
+  {
+    return floatval(strtr($value, ['.' => '', ',' => '.']));
+  }
+
   public function index()
   {
     return view('content.transactions.sale');
@@ -167,12 +172,14 @@ class SaleController extends Controller
           'invoice_no' => 'required|unique:sales,invoice_no',
           'group-a' => 'required|array',
           'group-a.*.item' => 'required',
+          'group-a.*.price' => 'required',
           'group-a.*.quantity' => 'required',
         ],
         [
           // Custom error messages
           'group-a.required' => 'Please select at least one item.',
           'group-a.*.item.required' => 'Please select at least one item.',
+          'group-a.*.price.required' => 'Please specify the price for each item.',
           'group-a.*.quantity.required' => 'Please specify the quantity for each item.',
           // 'group-a.*.quantity.numeric' => 'Quantity must be a number.',
           // 'group-a.*.quantity.min' => 'Quantity must be at least 1.',
@@ -184,7 +191,7 @@ class SaleController extends Controller
       //subtotal price sale header
       $subtotal_price = 0;
 
-      // Create a new tanda terima instance
+      // Create a new sales instance
       $sale = new Sale();
       $sale->date = $validatedData['date'];
       $sale->id_customer = $validatedData['id_customer'];
@@ -204,36 +211,14 @@ class SaleController extends Controller
       // Process sale details
       $customer = Customer::find($validatedData['id_customer']);
       foreach ($request->input('group-a') as $item) {
-        if (strpos($item['item'], 'jasa-') === 0) {
-          $serviceId = substr($item['item'], 5);
-          $productDetailId = null;
-          $findService = Service::find($serviceId);
-          $productPrice = $findService->price;
-        } else {
-          $findProductDetail = ProductDetail::find($item['item']);
-          $serviceId = null;
-          $productDetailId = $item['item'];
-          $productPrice = 0;
+        $serviceId = strpos($item['item'], 'jasa-') === 0 ? substr($item['item'], 5) : null;
+        $productDetailId = $serviceId ? null : $item['item'];
 
-          // Determine the price based on customer type and payment type
-          if ($validatedData['payment_type'] === 'cash') {
-            if ($customer->type === 'user') {
-              $productPrice = $findProductDetail->final_price_user_cash;
-            } else {
-              $productPrice = $findProductDetail->final_price_toko_cash;
-            }
-          } else {
-            if ($customer->type === 'toko') {
-              $productPrice = $findProductDetail->final_price_toko_tempo;
-            } else {
-              $productPrice = $findProductDetail->final_price_user_tempo;
-            }
-          }
-        }
+        // Convert the normalized price to a float value
+        $productPrice = $this->normalizeNumber($item['price']);
 
         // Convert the normalized quantity to a float value
-        $item['quantity'] = strtr($item['quantity'], ['.' => '', ',' => '.']);
-        $item['quantity'] = floatval($item['quantity']);
+        $item['quantity'] = $this->normalizeNumber($item['quantity']);
 
         //total price per detail
         $total_price = $item['quantity'] * $productPrice;
@@ -302,16 +287,25 @@ class SaleController extends Controller
 
   public function getById($id)
   {
-    $customers = Customer::where('is_active', true)->pluck('name', 'id');
+    // $customers = Customer::where('is_active', true)->pluck('name', 'id');
+    $customers = Customer::where('is_active', true)
+      ->select('id', 'name', 'type')
+      ->get();
     $products = DB::table('product_details')
-      ->selectRaw('product_details.id, CONCAT(p.name, " - ", sizes.code) as name')
+      ->selectRaw(
+        'product_details.id, CONCAT(p.name, " - ", sizes.code) as name, final_price_user_cash, final_price_user_tempo,
+        final_price_toko_cash, final_price_toko_tempo, "product" as type'
+      )
       ->leftJoin('products as p', 'p.id', 'product_details.id_product')
       ->leftJoin('sizes', 'sizes.id', 'product_details.id_size')
       ->where('product_details.is_active', true)
       ->where('p.is_active', true);
 
     $services = DB::table('services')
-      ->selectRaw('CONCAT("jasa-", id) as id, name')
+      ->selectRaw(
+        'CONCAT("jasa-", id) as id, name, price as final_price_user_cash, null as final_price_user_tempo,
+        null as final_price_toko_cash, null as final_price_toko_tempo, "service" as type'
+      )
       ->where('is_active', true);
 
     $unionQuery = $products->union($services);
@@ -319,19 +313,30 @@ class SaleController extends Controller
     $items = DB::table(DB::raw("({$unionQuery->toSql()}) as sub"))
       ->mergeBindings($unionQuery)
       ->orderBy('name')
-      ->pluck('name', 'id');
+      ->get();
+    // ->pluck('name', 'id');
 
     $sale = Sale::findOrFail($id);
     $saleDetails = SaleDetail::where('id_sale', $id)->get();
 
     foreach ($saleDetails as $saleDetail) {
       $quantity = $saleDetail->quantity;
-      // Check if the decimal part is 0 or .00, then format as integer
+      $price = $saleDetail->price;
+
+      // Check if the decimal part of qty is 0 or .00, then format as integer
       if (fmod($quantity, 1) == 0.0) {
         $saleDetail->quantity = number_format($quantity, 0, ',', '.');
       } else {
         // Otherwise, keep the decimal places but replace dot with comma
         $saleDetail->quantity = rtrim(rtrim(number_format($quantity, 2, ',', '.'), '0'), ',');
+      }
+
+      // Check if the decimal part of price is 0 or .00, then format as integer
+      if (fmod($price, 1) == 0.0) {
+        $saleDetail->price = number_format($price, 0, ',', '.');
+      } else {
+        // Otherwise, keep the decimal places but replace dot with comma
+        $saleDetail->price = rtrim(rtrim(number_format($price, 2, ',', '.'), '0'), ',');
       }
     }
 
@@ -361,12 +366,14 @@ class SaleController extends Controller
           'invoice_no' => 'required|unique:sales,invoice_no,' . $id,
           'group-a' => 'required|array',
           'group-a.*.item' => 'required',
+          'group-a.*.price' => 'required',
           'group-a.*.quantity' => 'required',
         ],
         [
           // Custom error messages
           'group-a.required' => 'Please select at least one item.',
           'group-a.*.item.required' => 'Please select at least one item.',
+          'group-a.*.price.required' => 'Please specify the price for each item.',
           'group-a.*.quantity.required' => 'Please specify the quantity for each item.',
           // 'group-a.*.quantity.numeric' => 'Quantity must be a number.',
           // 'group-a.*.quantity.min' => 'Quantity must be at least 1.',
@@ -392,36 +399,14 @@ class SaleController extends Controller
 
       $customer = Customer::find($validatedData['id_customer']);
       foreach ($request->input('group-a') as $item) {
-        if (strpos($item['item'], 'jasa-') === 0) {
-          $serviceId = substr($item['item'], 5);
-          $productDetailId = null;
-          $findService = Service::find($serviceId);
-          $productPrice = $findService->price;
-        } else {
-          $findProductDetail = ProductDetail::find($item['item']);
-          $serviceId = null;
-          $productDetailId = $item['item'];
-          $productPrice = 0;
+        $serviceId = strpos($item['item'], 'jasa-') === 0 ? substr($item['item'], 5) : null;
+        $productDetailId = $serviceId ? null : $item['item'];
 
-          // Determine the price based on customer type and payment type
-          if ($validatedData['payment_type'] === 'cash') {
-            if ($customer->type === 'user') {
-              $productPrice = $findProductDetail->final_price_user_cash;
-            } else {
-              $productPrice = $findProductDetail->final_price_toko_cash;
-            }
-          } else {
-            if ($customer->type === 'toko') {
-              $productPrice = $findProductDetail->final_price_toko_tempo;
-            } else {
-              $productPrice = $findProductDetail->final_price_user_tempo;
-            }
-          }
-        }
+        // Convert the normalized price to a float value
+        $productPrice = $this->normalizeNumber($item['price']);
 
         // Convert the normalized quantity to a float value
-        $item['quantity'] = strtr($item['quantity'], ['.' => '', ',' => '.']);
-        $item['quantity'] = floatval($item['quantity']);
+        $item['quantity'] = $this->normalizeNumber($item['quantity']);
 
         $existingSaleDetail = SaleDetail::where('id_sale', $id)
           ->where('id_product_detail', $productDetailId)
@@ -431,7 +416,7 @@ class SaleController extends Controller
         if ($existingSaleDetail) {
           // If sale detail exists, check if quantity has changed
           //total price per detail
-          $total_price = $item['quantity'] * $existingSaleDetail->price;
+          $total_price = $item['quantity'] * $productPrice;
 
           if ($existingSaleDetail->quantity != $item['quantity']) {
             if ($productDetailId !== null) {
@@ -450,13 +435,13 @@ class SaleController extends Controller
           }
 
           // If sale detail exists, check if product price has changed
-          // if ($productPrice != $existingSaleDetail->price) {
-          //   // Update sale detail with new price
-          //   $existingSaleDetail->price = $productPrice;
-          //   $existingSaleDetail->total_price = $total_price;
-          //   $existingSaleDetail->updated_by = Auth::id();
-          //   $existingSaleDetail->save();
-          // }
+          if ($productPrice != $existingSaleDetail->price) {
+            // Update sale detail with new price
+            $existingSaleDetail->price = $productPrice;
+            $existingSaleDetail->total_price = $total_price;
+            $existingSaleDetail->updated_by = Auth::id();
+            $existingSaleDetail->save();
+          }
         } else {
           //total price per detail
           $total_price = $item['quantity'] * $productPrice;

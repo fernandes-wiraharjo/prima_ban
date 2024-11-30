@@ -91,8 +91,12 @@
                 <div class="w-px-150">
                 <select id="customer" name="id_customer" class="select2 select-customer form-select" required>
                   <option value="">Select</option>
-                  @foreach($customers as $id => $name)
-                    <option value="{{ $id }}" {{ $id == $sale->id_customer ? 'selected' : '' }}>{{ $name }}</option>
+                  @foreach($customers as $customer)
+                    <option value="{{ $customer->id }}"
+                      data-type="{{ $customer->type }}"
+                      {{ $customer->id == $sale->id_customer ? 'selected' : '' }}>
+                      {{ $customer->name }}
+                    </option>
                   @endforeach
                 </select>
                 </div>
@@ -130,17 +134,26 @@
             @foreach($saleDetails as $index => $detail)
               <div class="d-flex border rounded position-relative pe-0 {{ $index > 0 ? 'mt-5' : '' }}">
                 <div class="row w-100 m-0 p-3">
-                  <div class="col-md-10 col-12 mb-md-0 mb-3 ps-md-0">
+                  <div class="col-md-7 col-12 mb-md-0 mb-3 ps-md-0">
                     <p class="mb-2 repeater-title">Barang</p>
                     <select class="select2 form-select item-details mb-2" name="group-a[{{ $index }}][item]">
                       <option selected disabled>Item</option>
-                      @foreach($products as $id => $name)
-                        <option value="{{ $id }}"
-                          {{ $detail->id_product_detail == $id || 'jasa-' . $detail->id_service == $id  ? 'selected' : '' }}>
-                          {{ $name }}
+                      @foreach($products as $product)
+                        <option value="{{ $product->id }}"
+                          data-type="{{ $product->type }}"
+                          data-price-user-cash="{{ $product->final_price_user_cash }}"
+                          data-price-user-tempo="{{ $product->final_price_user_tempo }}"
+                          data-price-toko-cash="{{ $product->final_price_toko_cash }}"
+                          data-price-toko-tempo="{{ $product->final_price_toko_tempo }}"
+                          {{ $detail->id_product_detail == $product->id || 'jasa-' . $detail->id_service == $product->id  ? 'selected' : '' }}>
+                          {{ $product->name }}
                         </option>
                       @endforeach
                     </select>
+                  </div>
+                  <div class="col-md-3 col-12 mb-md-0 mb-3">
+                    <p class="mb-2 repeater-title">Harga</p>
+                    <input type="text" class="form-control invoice-item-price" placeholder="0" name="group-a[{{ $index }}][price]" value="{{ $detail->price }}" onkeyup="formatNumber(this)" required />
                   </div>
                   <div class="col-md-2 col-12 mb-md-0 mb-3">
                     <p class="mb-2 repeater-title">Qty</p>

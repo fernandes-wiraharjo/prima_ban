@@ -1,5 +1,16 @@
 'use strict';
 
+function formatNumber(input) {
+  // Remove non-numeric characters
+  var value = input.value.replace(/\D/g, '');
+
+  // Format with thousand separators
+  var formattedValue = Number(value).toLocaleString('id-ID', { minimumFractionDigits: 0 });
+
+  // Update input value
+  input.value = formattedValue;
+}
+
 (function () {
   // const invoicePriceList = document.querySelectorAll('.invoice-price'),
   const invoiceDateList = document.querySelectorAll('.date-picker'),
@@ -126,12 +137,15 @@ $(function () {
     const newItemHtml = `
       <div class="d-flex border rounded position-relative pe-0 mt-5">
         <div class="row w-100 m-0 p-3">
-          <div class="col-md-10 col-12 mb-md-0 mb-3 ps-md-0">
+          <div class="col-md-7 col-12 mb-md-0 mb-3 ps-md-0">
             <p class="mb-2 repeater-title">Barang</p>
             <select class="select2 form-select item-details mb-2" name="group-a[${itemCount}][item]">
               ${getSelectOptions(products)}
             </select>
-            <span class="item-price"></span>
+          </div>
+          <div class="col-md-3 col-12 mb-md-0 mb-3">
+            <p class="mb-2 repeater-title">Harga</p>
+            <input type="text" class="form-control invoice-item-price" placeholder="0" name="group-a[${itemCount}][price]" onkeyup="formatNumber(this)" required />
           </div>
           <div class="col-md-2 col-12 mb-md-0 mb-3">
             <p class="mb-2 repeater-title">Qty</p>
@@ -186,10 +200,12 @@ $(function () {
 
     // Format the price using thousand separator
     if (price) {
-      price = parseFloat(price).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+      // price = parseFloat(price).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+      price = parseFloat(price).toLocaleString('id-ID');
     }
 
     // Display the price next to the selected item
-    $(this).closest('.row').find('.item-price').text(`(${price})`);
+    // $(this).closest('.row').find('.item-price').text(`(${price})`);
+    $(this).closest('.row').find('.invoice-item-price').val(price);
   });
 });

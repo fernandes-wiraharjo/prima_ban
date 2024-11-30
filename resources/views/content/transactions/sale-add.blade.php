@@ -128,7 +128,7 @@
           <div class="repeater-wrapper pt-0 pt-md-4" data-repeater-item>
             <div class="d-flex border rounded position-relative pe-0">
               <div class="row w-100 m-0 p-3">
-                <div class="col-md-10 col-12 mb-md-0 mb-3 ps-md-0">
+                <div class="col-md-7 col-12 mb-md-0 mb-3 ps-md-0">
                   <p class="mb-2 repeater-title">Barang</p>
                   <select class="select2 form-select item-details mb-2" name="group-a[0][item]">
                     <option selected disabled>Item</option>
@@ -144,7 +144,11 @@
                       </option>
                     @endforeach
                   </select>
-                  <span class="item-price"></span>
+                  <!-- <span class="item-price"></span> -->
+                </div>
+                <div class="col-md-3 col-12 mb-md-0 mb-3">
+                  <p class="mb-2 repeater-title">Harga</p>
+                  <input type="text" class="form-control invoice-item-price" placeholder="0" name="group-a[0][price]" onkeyup="formatNumber(this)" required />
                 </div>
                 <div class="col-md-2 col-12 mb-md-0 mb-3">
                   <p class="mb-2 repeater-title">Qty</p>

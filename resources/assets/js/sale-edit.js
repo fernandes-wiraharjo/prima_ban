@@ -1,5 +1,16 @@
 'use strict';
 
+function formatNumber(input) {
+  // Remove non-numeric characters
+  var value = input.value.replace(/\D/g, '');
+
+  // Format with thousand separators
+  var formattedValue = Number(value).toLocaleString('id-ID', { minimumFractionDigits: 0 });
+
+  // Update input value
+  input.value = formattedValue;
+}
+
 (function () {
   // const invoicePriceList = document.querySelectorAll('.invoice-price'),
   const invoiceDateList = document.querySelectorAll('.date-picker'),
@@ -116,9 +127,16 @@ $(function () {
   // Function to dynamically create select2 options
   function getSelectOptions(products) {
     let options = '<option selected disabled>Item</option>';
-    for (let id in products) {
-      options += `<option value="${id}">${products[id]}</option>`;
-    }
+    products.forEach(product => {
+      options += `<option value="${product.id}"
+                    data-type="${product.type}"
+                    data-price-user-cash="${product.final_price_user_cash}"
+                    data-price-user-tempo="${product.final_price_user_tempo}"
+                    data-price-toko-cash="${product.final_price_toko_cash}"
+                    data-price-toko-tempo="${product.final_price_toko_tempo}">
+                    ${product.name}
+                  </option>`;
+    });
     return options;
   }
 
@@ -126,11 +144,15 @@ $(function () {
     const newItemHtml = `
       <div class="d-flex border rounded position-relative pe-0 mt-5">
         <div class="row w-100 m-0 p-3">
-          <div class="col-md-10 col-12 mb-md-0 mb-3 ps-md-0">
+          <div class="col-md-7 col-12 mb-md-0 mb-3 ps-md-0">
             <p class="mb-2 repeater-title">Barang</p>
             <select class="select2 form-select item-details mb-2" name="group-a[${itemCount}][item]">
               ${getSelectOptions(products)}
             </select>
+          </div>
+          <div class="col-md-3 col-12 mb-md-0 mb-3">
+            <p class="mb-2 repeater-title">Harga</p>
+            <input type="text" class="form-control invoice-item-price" placeholder="0" name="group-a[${itemCount}][price]" onkeyup="formatNumber(this)" required />
           </div>
           <div class="col-md-2 col-12 mb-md-0 mb-3">
             <p class="mb-2 repeater-title">Qty</p>
@@ -153,4 +175,43 @@ $(function () {
     });
     itemCount = $('.repeater-wrapper > div').length;
   }
+
+  // Handle selection change to update price
+  $(document).on('change', '.item-details', function () {
+    const selectedOption = $(this).find(':selected');
+    const type = selectedOption.data('type'); //product type
+    const customerType = $('#customer').find(':selected').data('type');
+    const paymentType = $('#payment-type').find(':selected').val();
+
+    let price = '';
+
+    if (!customerType || !paymentType) {
+      alert('Please select customer and payment type');
+      return;
+    }
+
+    if (type === 'product') {
+      if (customerType === 'user' && paymentType === 'cash') {
+        price = selectedOption.data('price-user-cash');
+      } else if (customerType === 'user' && paymentType === 'tempo') {
+        price = selectedOption.data('price-user-tempo');
+      } else if (customerType === 'toko' && paymentType === 'cash') {
+        price = selectedOption.data('price-toko-cash');
+      } else if (customerType === 'toko' && paymentType === 'tempo') {
+        price = selectedOption.data('price-toko-tempo');
+      }
+    } else if (type === 'service') {
+      price = selectedOption.data('price-user-cash'); // Only one price for services
+    }
+
+    // Format the price using thousand separator
+    if (price) {
+      // price = parseFloat(price).toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
+      price = parseFloat(price).toLocaleString('id-ID');
+    }
+
+    // Display the price next to the selected item
+    // $(this).closest('.row').find('.item-price').text(`(${price})`);
+    $(this).closest('.row').find('.invoice-item-price').val(price);
+  });
 });
