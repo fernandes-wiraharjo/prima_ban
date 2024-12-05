@@ -91,6 +91,12 @@
       "slug": "transaction-sale-belum-lunas"
     },
     {
+      "url": "transaction/sale/get/by-customer",
+      "name": "Sales By Customer",
+      "icon": "menu-icon tf-icons bx bx-food-menu",
+      "slug": "transaction-sale-by-customer"
+    },
+    {
       "url": "transaction/tanda-terima",
       "name": "Tanda Terima",
       "icon": "menu-icon tf-icons bx bx-notepad",

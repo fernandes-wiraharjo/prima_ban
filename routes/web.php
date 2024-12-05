@@ -371,6 +371,10 @@ Route::middleware(['auth'])->group(function () {
       Route::get('/print/belum-lunas/{idCustomer}', [SaleController::class, 'printBelumLunas'])->name(
         'print-sale-belum-lunas'
       );
+      Route::get('/get/by-customer', [SaleController::class, 'indexByCustomer'])->name('transaction-sale-by-customer');
+      Route::get('/print/by-customer/{idCustomer}', [SaleController::class, 'printByCustomer'])->name(
+        'print-sale-by-customer'
+      );
     });
   });
 

@@ -762,4 +762,59 @@ class SaleController extends Controller
       'is_unique' => !$exists,
     ]);
   }
+
+  public function indexByCustomer()
+  {
+    $customers = Customer::where('is_active', true)->pluck('name', 'id');
+    return view('content.transactions.sale-by-customer', ['customers' => $customers]);
+  }
+
+  public function printByCustomer($idCustomer)
+  {
+    // Retrieve the customer by their ID
+    $customer = Customer::find($idCustomer);
+
+    $query = Sale::query()
+      ->leftJoin('sale_details as sd', 'sd.id_sale', 'sales.id')
+      ->leftJoin('product_details as pd', 'pd.id', 'sd.id_product_detail')
+      ->leftJoin('products as p', 'p.id', 'pd.id_product')
+      ->leftJoin('sizes', 'sizes.id', 'pd.id_size')
+      ->leftJoin('services', 'services.id', 'sd.id_service')
+      ->selectRaw(
+        'DATE_FORMAT(sales.date, "%d %b %Y") as formatted_date, sales.invoice_no, sd.quantity, sd.price, sd.total_price,
+        CASE
+           WHEN sd.id_service IS NOT NULL AND sd.id_product_detail IS NULL THEN services.name
+           ELSE CONCAT(p.name, " - ", sizes.code)
+         END as product_name'
+      )
+      ->where('sales.id_customer', $idCustomer)
+      ->orderBy('sales.date', 'asc')
+      ->orderByRaw('CAST(SUBSTRING_INDEX(invoice_no, "/", 1) AS UNSIGNED) asc')
+      ->orderByRaw('CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(invoice_no, "/", -1), "/", 1) AS UNSIGNED) asc')
+      ->orderBy('product_name', 'asc');
+
+    $sales = $query->get();
+
+    foreach ($sales as $sale) {
+      $quantity = $sale->quantity;
+      // Check if the decimal part is 0 or .00, then format as integer
+      if (fmod($quantity, 1) == 0.0) {
+        $sale->quantity = number_format($quantity, 0, ',', '.');
+      } else {
+        // Otherwise, keep the decimal places but replace dot with comma
+        $sale->quantity = rtrim(rtrim(number_format($quantity, 2, ',', '.'), '0'), ',');
+      }
+
+      $sale->price = 'Rp' . number_format($sale->price, 0, ',', '.');
+      // $sale->total_price = 'Rp' . number_format($sale->total_price, 0, ',', '.');
+      $sale->total_price_formatted = 'Rp' . number_format($sale->total_price, 0, ',', '.');
+    }
+
+    $pageConfigs = ['myLayout' => 'blank'];
+    return view('content.transactions.sale-by-customer-print', [
+      'customer' => $customer,
+      'salesByCustomer' => $sales,
+      'pageConfigs' => $pageConfigs,
+    ]);
+  }
 }
