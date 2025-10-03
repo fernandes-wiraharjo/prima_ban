@@ -169,6 +169,7 @@ $(function () {
   function updateNames() {
     $('.repeater-wrapper > div').each(function (index) {
       $(this).find('.item-details').attr('name', `group-a[${index}][item]`);
+      $(this).find('.invoice-item-price').attr('name', `group-a[${index}][price]`);
       $(this).find('.invoice-item-qty').attr('name', `group-a[${index}][quantity]`);
     });
     itemCount = $('.repeater-wrapper > div').length;

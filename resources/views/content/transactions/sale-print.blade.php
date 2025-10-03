@@ -185,8 +185,9 @@
     <table class="table border-top m-0">
       <thead>
         <tr>
-          <th style="width: 75px;">Kode</th>
+          <!-- <th style="width: 75px;">Kode</th> -->
           <th>Barang</th>
+          <th>Ket.</th>
           <th style="width: 75px;">Qty</th>
           <th style="width: 75px;">Unit</th>
           <th>Harga</th>
@@ -196,8 +197,9 @@
       <tbody>
         @foreach($saleDetails as $index => $detail)
           <tr>
-            <td class="text-nowrap" style="width: 75px;">{{ $detail->product_code }}</td>
+            <!-- <td class="text-nowrap" style="width: 75px;">{{ $detail->product_code }}</td> -->
             <td>{{ $detail->product_name }}</td>
+            <td>{{ $detail->description }}</td>
             <td style="width: 75px;">{{ $detail->sale_quantity }}</td>
             <td style="width: 75px;">{{ $detail->product_uom }}</td>
             <td class="text-end">{{ $detail->price }}</td>

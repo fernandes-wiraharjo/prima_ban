@@ -411,6 +411,8 @@ class SaleController extends Controller
         // Convert the normalized quantity to a float value
         $item['quantity'] = $this->normalizeNumber($item['quantity']);
 
+        $itemDescription = $item['description'];
+
         $existingSaleDetail = SaleDetail::where('id_sale', $id)
           ->where('id_product_detail', $productDetailId)
           ->where('id_service', $serviceId)
@@ -445,6 +447,14 @@ class SaleController extends Controller
             $existingSaleDetail->updated_by = Auth::id();
             $existingSaleDetail->save();
           }
+
+          // If sale detail exists, check if item description has changed
+          if ($itemDescription != $existingSaleDetail->description) {
+            // Update sale detail with new item description
+            $existingSaleDetail->description = $itemDescription;
+            $existingSaleDetail->updated_by = Auth::id();
+            $existingSaleDetail->save();
+          }
         } else {
           //total price per detail
           $total_price = $item['quantity'] * $productPrice;
@@ -455,6 +465,7 @@ class SaleController extends Controller
           $saleDetail->id_product_detail = $productDetailId;
           $saleDetail->id_service = $serviceId;
           $saleDetail->quantity = $item['quantity'];
+          $saleDetail->description = $itemDescription;
           $saleDetail->price = $productPrice;
           $saleDetail->total_price = $total_price;
           $saleDetail->created_by = Auth::id();
@@ -616,7 +627,7 @@ class SaleController extends Controller
             WHEN sale_details.id_product_detail IS NOT NULL THEN uoms.code
             ELSE "-"
          END as product_uom,
-         sale_details.price, sale_details.total_price'
+         sale_details.price, sale_details.total_price, sale_details.description'
       )
       ->leftJoin('product_details as pd', 'pd.id', 'sale_details.id_product_detail')
       ->leftJoin('sizes', 'sizes.id', 'pd.id_size')
@@ -674,7 +685,7 @@ class SaleController extends Controller
             WHEN sale_details.id_product_detail IS NOT NULL THEN uoms.code
             ELSE "-"
          END as product_uom,
-         sale_details.price, sale_details.total_price'
+         sale_details.price, sale_details.total_price, sale_details.description'
       )
       ->leftJoin('product_details as pd', 'pd.id', 'sale_details.id_product_detail')
       ->leftJoin('sizes', 'sizes.id', 'pd.id_size')
@@ -784,7 +795,7 @@ class SaleController extends Controller
       ->leftJoin('sizes', 'sizes.id', 'pd.id_size')
       ->leftJoin('services', 'services.id', 'sd.id_service')
       ->selectRaw(
-        'DATE_FORMAT(sales.date, "%d %b %Y") as formatted_date, sales.invoice_no, sd.quantity, sd.price, sd.total_price,
+        'DATE_FORMAT(sales.date, "%d %b %Y") as formatted_date, sales.invoice_no, sd.quantity, sd.price, sd.total_price, sd.description,
         CASE
            WHEN sd.id_service IS NOT NULL AND sd.id_product_detail IS NULL THEN services.name
            ELSE CONCAT(p.name, " - ", sizes.code)

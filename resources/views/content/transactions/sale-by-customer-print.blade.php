@@ -53,6 +53,7 @@
           <th>Invoice</th>
           <th>Jumlah</th>
           <th>Barang/Jasa</th>
+          <th>Ket.</th>
           <th>Harga</th>
           <th>Total Harga</th>
         </tr>
@@ -75,6 +76,7 @@
             <td rowspan="{{ $invoiceSales->count() }}">{{ $invoiceNo }}</td>
             <td>{{ $invoiceSales[0]->quantity }}</td>
             <td>{{ $invoiceSales[0]->product_name }}</td>
+            <td>{{ $invoiceSales[0]->description }}</td>
             <td>{{ $invoiceSales[0]->price }}</td>
             <td>{{ $invoiceSales[0]->total_price_formatted }}</td>
           </tr>
@@ -82,6 +84,7 @@
             <tr>
               <td>{{ $sale->quantity }}</td>
               <td>{{ $sale->product_name }}</td>
+              <td>{{ $sale->description }}</td>
               <td>{{ $sale->price }}</td>
               <td>{{ $sale->total_price_formatted }}</td>
             </tr>
