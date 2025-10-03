@@ -223,6 +223,8 @@ class SaleController extends Controller
         //total price per detail
         $total_price = $item['quantity'] * $productPrice;
 
+        $description = $item['description'];
+
         $saleDetail = new SaleDetail();
         $saleDetail->id_sale = $sale->id;
         $saleDetail->id_product_detail = $productDetailId;
@@ -230,6 +232,7 @@ class SaleController extends Controller
         $saleDetail->quantity = $item['quantity'];
         $saleDetail->price = $productPrice;
         $saleDetail->total_price = $total_price;
+        $saleDetail->description = $description;
         $saleDetail->created_by = Auth::id();
         $saleDetail->save();
 
