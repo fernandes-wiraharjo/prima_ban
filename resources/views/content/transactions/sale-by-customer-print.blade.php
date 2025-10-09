@@ -92,7 +92,7 @@
         @endforeach
         <!-- Add a row for the grand total -->
         <tr>
-          <td colspan="5" class="text-end"><strong>Grand Total:</strong></td>
+          <td colspan="6" class="text-end"><strong>Grand Total:</strong></td>
           <td><strong>Rp{{ number_format($grandTotal, 0, ',', '.') }}</strong></td>
         </tr>
       @endforeach
